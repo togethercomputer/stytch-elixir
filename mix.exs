@@ -18,6 +18,8 @@ defmodule Stytch.MixProject do
   end
 
   defp deps do
-    []
+    [
+      {:oapi_generator, "~> 0.2.0", only: :dev, runtime: false}
+    ]
   end
 end
