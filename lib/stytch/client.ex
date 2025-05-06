@@ -12,6 +12,59 @@ defmodule Stytch.Client do
     |> put_req_opts(details.opts[:req_opts])
     |> put_telemetry(details.call)
     |> Req.request()
+    |> handle_response(details.call)
+  end
+
+  @spec handle_response({:ok, Req.Response.t()}, {module, atom}) :: {:ok, term} | {:error | term}
+  @spec handle_response({:error, Exception.t()}, {module, atom}) :: {:error, term}
+  defp handle_response({:ok, %Req.Response{} = response}, call) do
+    case response do
+      %Req.Response{body: body, status: s} when s in 200..299 ->
+        {:ok, body}
+
+      %Req.Response{body: body, status: status} ->
+        {:current_stacktrace, stack} = Process.info(self(), :current_stacktrace)
+        # Drop `Process.info/2`, `handle_response/1`, and `request/1`.
+        stacktrace = Enum.drop(stack, 3)
+
+        fields =
+          Keyword.merge(
+            [
+              code: status,
+              message: "Unknown Error",
+              operation: call,
+              reason: :error,
+              source: body,
+              stacktrace: stacktrace
+            ],
+            extract_error(body)
+          )
+
+        {:error, struct!(%Stytch.Error{}, fields)}
+    end
+  end
+
+  defp handle_response({:error, error}, call) do
+    {:current_stacktrace, stack} = Process.info(self(), :current_stacktrace)
+    # Drop `Process.info/2`, `handle_response/1`, and `request/1`.
+    stacktrace = Enum.drop(stack, 3)
+
+    fields =
+      [
+        code: nil,
+        message: "Unknown Error",
+        operation: call,
+        reason: :error,
+        source: error,
+        stacktrace: stacktrace
+      ]
+
+    {:error, struct!(%Stytch.Error{}, fields)}
+  end
+
+  @spec extract_error(term) :: keyword
+  defp extract_error(%{"error_message" => error_message}) do
+    [message: error_message]
   end
 
   @spec put_auth_and_base_url(Req.Request.t(), {String.t(), String.t()} | nil) :: Req.Request.t()
