@@ -1,5 +1,8 @@
 {
   "cSpell.words": [
     "stytch"
-  ]
+  ],
+  "yaml.schemas": {
+    "https://spec.openapis.org/oas/3.1/schema/2022-10-07": "file:///Users/aj/Projects/togethercomputer/stytch-ex/vendor/output.yaml"
+  }
 }

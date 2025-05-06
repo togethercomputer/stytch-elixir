@@ -1,0 +1,1964 @@
+# Generated from Postman collection
+# and hand-edited from there. Good luck!
+openapi: 3.1.0
+info:
+  title: "Stytch B2B API [Last Updated: 2024-02-14]"
+  description: >-
+    Stytch’s B2B API is designed to address the unique authentication and user
+    management needs of organization-based applications at every stage of
+    growth.
+  version: 1.0.0
+servers:
+  - description: Test environment
+    url: https://test.stytch.com
+  - description: Live environment
+    url: https://api.stytch.com
+components:
+  schemas:
+    ActiveSCIMConnection:
+      type: object
+      properties:
+        connection_id:
+          type: string
+        display_name:
+          type: string
+        bearer_token_last_four:
+          type: string
+        bearer_token_expires_at:
+          type: string
+          format: date-time
+
+    ActiveSSOConnection:
+      type: object
+      properties:
+        connection_id:
+          type: string
+        display_name:
+          type: string
+
+    EmailImplicitRoleAssignment:
+      type: object
+      properties:
+        domain:
+          type: string
+        role:
+          type: string
+
+    Organization:
+      type: object
+      properties:
+        allowed_auth_methods:
+          type: array
+          items:
+            type: string
+            enum:
+              - sso
+              - magic_link
+              - email_otp
+              - password
+              - google_oauth
+              - microsoft_oauth
+              - slack_oauth
+              - github_oauth
+              - hubspot_oauth
+          description: >-
+            An array of allowed authentication methods.
+            This list is enforced when auth_methods is set to RESTRICTED.
+            The list's accepted values are: sso, magic_link, email_otp, password, google_oauth, microsoft_oauth, slack_oauth, github_oauth, and hubspot_oauth.
+        allowed_mfa_methods:
+          type: array
+          items:
+            type: string
+            enum:
+              - sms_otp
+              - totp
+          description: >-
+            An array of allowed MFA authentication methods.
+            This list is enforced when mfa_methods is set to RESTRICTED.
+            The list's accepted values are: sms_otp and totp.
+        allowed_oauth_tenants:
+          type: object
+          additionalProperties: true
+          description: >-
+            A map of allowed OAuth tenants.
+            If this field is not passed in, the Organization will not allow JIT provisioning by OAuth Tenant.
+            Allowed keys are "slack", "hubspot", and "github".
+        auth_methods:
+          type: string
+          enum:
+            - ALL_ALLOWED
+            - RESTRICTED
+          description: >-
+            The setting that controls which authentication methods can be used by Members of an Organization.
+            The accepted values are:
+
+            ALL_ALLOWED – the default setting which allows all authentication methods to be used.
+
+            RESTRICTED – only methods that comply with allowed_auth_methods can be used for authentication.
+            This setting does not apply to Members with is_breakglass set to true.
+        claimed_email_domains:
+          type: array
+          items:
+            type: string
+          description: A list of email domains that are claimed by the Organization.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp of the Organization's creation.
+            Values conform to the RFC 3339 standard and are expressed in UTC, e.g. 2021-12-29T12:33:09Z.
+        email_allowed_domains:
+          type: array
+          items:
+            type: string
+          description: >-
+            An array of email domains that allow invites or JIT provisioning for new Members.
+            This list is enforced when either email_invites or email_jit_provisioning is set to RESTRICTED.
+
+            Common domains such as gmail.com are not allowed. See the common email domains resource for the full list.
+        email_invites:
+          type: string
+          enum:
+            - ALL_ALLOWED
+            - RESTRICTED
+            - NOT_ALLOWED
+          description: >-
+            The authentication setting that controls how a new Member can be invited to an organization by email.
+            The accepted values are: 
+
+            ALL_ALLOWED – any new Member can be invited to join via email.
+
+            RESTRICTED – only new Members with verified emails that comply with email_allowed_domains can be invited via email.
+
+            NOT_ALLOWED – disable email invites.
+        email_jit_provisioning:
+          type: string
+          enum:
+            - RESTRICTED
+            - NOT_ALLOWED
+          description: >-
+            The authentication setting that controls how a new Member can be provisioned by authenticating via Email Magic Link or OAuth.
+            The accepted values are:
+
+            RESTRICTED – only new Members with verified emails that comply with email_allowed_domains can be provisioned upon authentication via Email Magic Link or OAuth.
+
+            NOT_ALLOWED – disable JIT provisioning via Email Magic Link and OAuth.
+        mfa_methods:
+          type: string
+          enum:
+            - ALL_ALLOWED
+            - RESTRICTED
+          description: >-
+            The setting that controls which MFA methods can be used by Members of an Organization.
+            The accepted values are:
+
+            ALL_ALLOWED – the default setting which allows all authentication methods to be used.
+
+            RESTRICTED – only methods that comply with allowed_mfa_methods can be used for authentication.
+            This setting does not apply to Members with is_breakglass set to true.
+        mfa_policy:
+          type: string
+          enum:
+            - REQUIRED_FOR_ALL
+            - OPTIONAL
+          description: >-
+            The setting that controls the MFA policy for all Members in the Organization.
+            The accepted values are:
+
+            REQUIRED_FOR_ALL – All Members within the Organization will be required to complete MFA every time they wish to log in.
+            However, any active Session that existed prior to this setting change will remain valid.
+
+            OPTIONAL – The default value.
+            The Organization does not require MFA by default for all Members.
+            Members will be required to complete MFA only if their mfa_enrolled status is set to true.
+        oauth_tenant_jit_provisioning:
+          type: string
+          enum:
+            - RESTRICTED
+            - NOT_ALLOWED
+          description: >-
+            The authentication setting that controls how a new Member can JIT provision into an organization by tenant.
+            The accepted values are:
+
+            RESTRICTED – only new Members with tenants in allowed_oauth_tenants can JIT provision via tenant.
+
+            NOT_ALLOWED – disable JIT provisioning by OAuth Tenant.
+        organization_id:
+          type: string
+          description: >-
+            Globally unique UUID that identifies a specific Organization.
+            The organization_id is critical to perform operations on an Organization, so be sure to preserve this value.
+            You may also use the organization_slug here as a convenience.
+        organization_logo_url:
+          type: string
+          description: >-
+            The image URL of the Organization logo.
+        organization_name:
+          type: string
+          description: >-
+            The name of the Organization. Must be between 1 and 128 characters in length.
+        organization_slug:
+          type: string
+          description: >-
+            The unique URL slug of the Organization.
+            The slug only accepts alphanumeric characters and the following reserved characters: - . _ ~.
+            Must be between 2 and 128 characters in length.
+            Wherever an organization_id is expected in a path or request parameter, you may also use the organization_slug as a convenience.
+        rbac_email_implicit_role_assignments:
+          type: array
+          items:
+            $ref: "#/components/schemas/EmailImplicitRoleAssignment"
+          description: >-
+            Implicit role assignments based off of email domains.
+            For each domain-Role pair, all Members whose email addresses have the specified email domain will be granted the associated Role, regardless of their login method.
+            See the RBAC guide for more information about role assignment.
+        scim_active_connection:
+          $ref: "#/components/schemas/ActiveSCIMConnection"
+        sso_active_connections:
+          type: array
+          items:
+            $ref: "#/components/schemas/ActiveSSOConnection"
+          description: An array of active SAML Connection references or OIDC Connection references.
+        sso_default_connection_id:
+          type: string
+          description: The default connection used for SSO when there are multiple active connections.
+        sso_jit_provisioning:
+          type: string
+          enum:
+            - ALL_ALLOWED
+            - RESTRICTED
+            - NOT_ALLOWED
+          description: >-
+            The authentication setting that controls the JIT provisioning of Members when authenticating via SSO.
+            The accepted values are:
+
+            ALL_ALLOWED – new Members will be automatically provisioned upon successful authentication via any of the Organization's sso_active_connections.
+
+            RESTRICTED – only new Members with SSO logins that comply with sso_jit_provisioning_allowed_connections can be provisioned upon authentication.
+
+            NOT_ALLOWED – disable JIT provisioning via SSO.
+        sso_jit_provisioning_allowed_connections:
+          type: array
+          items:
+            type: string
+          description: >-
+            An array of connection_ids that reference SAML Connection objects.
+            Only these connections will be allowed to JIT provision Members via SSO when sso_jit_provisioning is set to RESTRICTED.
+        trusted_metadata:
+          type: object
+          additionalProperties: true
+          description: >-
+            An arbitrary JSON object for storing application-specific data or identity-provider-specific data.
+        updated_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp of when the Organization was last updated.
+            Values conform to the RFC 3339 standard and are expressed in UTC, e.g. 2021-12-29T12:33:09Z.
+  securitySchemes:
+    noauthAuth:
+      type: http
+      scheme: noauth
+    basicAuth:
+      type: http
+      scheme: basic
+security:
+  - basicAuth: []
+paths:
+  /v1/b2b/organizations:
+    post:
+      operationId: organizations/create
+      tags:
+        - organizations
+      summary: Create an Organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "organization_name": "Your Org Name",
+                    "organization_slug": "your-org-slug"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/create-organization
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                  statusCode:
+                    type: integer
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+  /v1/b2b/organizations/{organization_id}:
+    get:
+      operationId: organizations/get
+      tags:
+        - organizations
+      summary: Get an Organization
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      operationId: organizations/update
+      tags:
+        - organizations
+      summary: Update an Organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "organization_name": "New updated name",
+                    "email_jit_provisioning": "RESTRICTED",
+                    "email_allowed_domains": ["stytch.com"]
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/update-organization
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-05e98d25-f22f-41bd-a511-a6c270364a88
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      operationId: organizations/delete
+      tags:
+        - organizations
+      summary: Delete an Organization
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/organizations/search:
+    post:
+      operationId: organizations/search
+      tags:
+        - organizations
+      summary: Search for Organizations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "limit": 100,
+                    "cursor": ""
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/search-organizations
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/organizations/{organization_id}/members:
+    post:
+      operationId: members/create
+      tags:
+        - members
+      summary: Create a Member
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "email_address": "test@stytch.com"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/create-member
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/organizations/{organization_id}/member:
+    get:
+      operationId: members/get
+      tags:
+        - members
+      summary: Get a Member
+      parameters:
+        - name: member_id
+          in: query
+          schema:
+            type: string
+          description: Get member by ID
+          example: member-test-306a1f1d-6869-45ac-9ef5-1d70e68ce49b
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-05e98d25-f22f-41bd-a511-a6c270364a88
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/organizations/members/dangerously_get/{member_id}:
+    get:
+      operationId: members/dangerously_get
+      tags:
+        - members
+      summary: Get a Member (Dangerous)
+      parameters:
+        - name: member_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: member-test-2a475638-7381-48f1-b03e-efcf80cf4544
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/organizations/{organization_id}/members/{member_id}:
+    put:
+      operationId: members/update
+      tags:
+        - members
+      summary: Update a Member
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "name": "Test user"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/update-member
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+        - name: member_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: member-test-a5a2f9f7-d150-49fb-94b0-adacbae82a70
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      operationId: members/delete
+      tags:
+        - members
+      summary: Delete a Member
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+        - name: member_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: member-test-a5a2f9f7-d150-49fb-94b0-adacbae82a70
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/organizations/{organization_id}/members/{member_id}/reactivate:
+    put:
+      operationId: members/reactivate
+      tags:
+        - members
+      summary: Reactivate a Member
+      requestBody:
+        content: {}
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+        - name: member_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: member-test-a5a2f9f7-d150-49fb-94b0-adacbae82a70
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/organizations/members/search:
+    post:
+      operationId: members/search
+      tags:
+        - members
+      summary: Search for Members
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "organization_ids": ["organization-test-b081f00b-c290-4e6f-8219-2f79942ccc6b"],
+                    "limit": 100,
+                    "cursor": ""
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/search-organizations
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/organizations/{organization_id}/members/passwords/{member_password_id}:
+    delete:
+      operationId: members/delete_password
+      tags:
+        - members
+      summary: Delete Member password
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+        - name: member_password_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: member-password-test-51861cbc-d3b9-428b-9761-227f5fb12be9
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/organizations/{organization_id}/members/mfa_phone_numbers/{member_id}:
+    delete:
+      operationId: members/delete_mfa_phone_number
+      tags:
+        - members
+      summary: Delete Member MFA phone number
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+        - name: member_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: member-test-a5a2f9f7-d150-49fb-94b0-adacbae82a70
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/rbac/policy:
+    get:
+      operationId: rbac/get_policy
+      tags:
+        - rbac
+      summary: Get RBAC Policy
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/magic_links/email/login_or_signup:
+    post:
+      operationId: magic_links/login_or_signup
+      tags:
+        - magic_links
+      summary: Send login or signup email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "organization_id": "organization-test-51096cce-277f-4645-b7fd-b7432fc038a9",
+                    "email_address": "test@stytch.com"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/send-login-signup-email
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/magic_links/email/invite:
+    post:
+      operationId: magic_links/invite
+      tags:
+        - magic_links
+      summary: Send invite email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "organization_id": "organization-test-51096cce-277f-4645-b7fd-b7432fc038a9",
+                    "email_address": "test@stytch.com"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/send-invite-email
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/magic_links/authenticate:
+    post:
+      operationId: magic_links/authenticate
+      tags:
+        - magic_links
+      summary: Authenticate Magic Link
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "magic_links_token": "vufHxvOdF7DcKeyZbgmxqYX2lrCGo8Y7c3aTe1XIwVVZ",
+                    "session_duration_minutes": 60
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/authenticate-magic-link
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/magic_links/email/discovery/send:
+    post:
+      operationId: magic_links/send_discovery
+      tags:
+        - magic_links
+      summary: Send discovery email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "email_address": "test@stytch.com"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/send-discovery-email
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/magic_links/discovery/authenticate:
+    post:
+      operationId: magic_links/authenticate_discovery
+      tags:
+        - magic_links
+      summary: Authenticate discovery Magic Link
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "discovery_magic_links_token": "token_here"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/authenticate-discovery-magic-link
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/public/oauth/google/start:
+    get:
+      operationId: oauth/login_google
+      tags:
+        - oauth
+      summary: Login with Google
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: public_token
+          in: query
+          schema:
+            type: string
+          example: "{{PUBLIC_TOKEN}}"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/public/oauth/microsoft/start:
+    get:
+      operationId: oauth/login_microsoft
+      tags:
+        - oauth
+      summary: Login with Microsoft
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: public_token
+          in: query
+          schema:
+            type: string
+          example: "{{PUBLIC_TOKEN}}"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/oauth/authenticate:
+    post:
+      operationId: oauth/authenticate
+      tags:
+        - oauth
+      summary: Authenticate OAuth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "oauth_token": ""
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/email-reset
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/public/oauth/google/discovery/start:
+    get:
+      operationId: oauth/discovery_google
+      tags:
+        - oauth
+      summary: Use Google for discovery
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: public_token
+          in: query
+          schema:
+            type: string
+          example: "{{PUBLIC_TOKEN}}"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/public/oauth/microsoft/discovery/start:
+    get:
+      operationId: oauth/discovery_microsoft
+      tags:
+        - oauth
+      summary: Use Microsoft for discovery
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: public_token
+          in: query
+          schema:
+            type: string
+          example: "{{PUBLIC_TOKEN}}"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/oauth/discovery/authenticate:
+    post:
+      operationId: oauth/authenticate_discovery
+      tags:
+        - oauth
+      summary: Authenticate discovery OAuth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                discovery_oauth_token: ""
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/sessions/jwks/{project_id}:
+    get:
+      operationId: session/get_jwks
+      tags:
+        - session
+      summary: Get JWKs
+      parameters:
+        - name: project_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/sessions:
+    get:
+      operationId: session/get
+      tags:
+        - session
+      summary: Get Session
+      parameters:
+        - name: organization_id
+          in: query
+          schema:
+            type: string
+          example: organization-test-51096cce-277f-4645-b7fd-b7432fc038a9
+        - name: member_id
+          in: query
+          schema:
+            type: string
+          example: member-test-24f7d7fd-4a57-4921-a159-b3cc5f93ce64
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/sessions/authenticate:
+    post:
+      operationId: session/authenticate
+      tags:
+        - session
+      summary: Authenticate Session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "session_token": "E5RqJjUOSf4FSyaY8_A64unM058qhHMYpxXVDGAFt3Rb"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/authenticate-session
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/sessions/exchange:
+    post:
+      operationId: session/exchange
+      tags:
+        - session
+      summary: Exchange session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "organization_id": "organization-test-8b40bc71-0147-45e6-8dd7-6602ad4896af",
+                    "session_token": "session_token_here"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/exchange-session
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/sessions/revoke:
+    post:
+      operationId: session/revoke
+      tags:
+        - session
+      summary: Revoke Session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "member_session_id": "member-session-test-e84e3e2d-8e6f-4caf-a29f-df1351239106"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/revoke-session
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/sso/saml/{organization_id}:
+    post:
+      operationId: sso/create_saml
+      tags:
+        - sso
+      summary: Create SAML Connection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {}
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/create-saml-connection
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/sso/saml/{organization_id}/connections/{connection_id}:
+    put:
+      operationId: sso/update_saml
+      tags:
+        - sso
+      summary: Update SAML Connection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "display_name": "Updated name"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/update-saml-connection
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+        - name: connection_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: saml-connection-test-d2df88fc-f062-46d4-a821-9418642fc0ee
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/sso/saml/{organization_id}/connections/{connection_id}/url:
+    put:
+      operationId: sso/update_saml_by_metadata_url
+      tags:
+        - sso
+      summary: Update SAML Connection by metadata URL
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                metadata_url: ""
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+        - name: connection_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: saml-connection-test-d2df88fc-f062-46d4-a821-9418642fc0ee
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/sso/oidc/{organization_id}:
+    post:
+      operationId: sso/create_oidc
+      tags:
+        - sso
+      summary: Create OIDC Connection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {}
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/create-oidc-connection
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/sso/oidc/{organization_id}/connections/{connection_id}:
+    put:
+      operationId: sso/update_oidc
+      tags:
+        - sso
+      summary: Update OIDC Connection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "display_name": "Updated name"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/update-oidc-connection
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+        - name: connection_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: oidc-connection-test-fec0bc42-2bea-49ca-a8bd-02ebf72c5abc
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/sso/{organization_id}:
+    get:
+      operationId: sso/get_connections
+      tags:
+        - sso
+      summary: Get SSO Connections
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/sso/{organization_id}/connections/{connection_id}:
+    delete:
+      operationId: sso/delete_connection
+      tags:
+        - sso
+      summary: Delete SSO Connection
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+        - name: connection_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: saml-connection-test-d2df88fc-f062-46d4-a821-9418642fc0ee
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/public/sso/start:
+    get:
+      operationId: sso/start
+      tags:
+        - sso
+      summary: Start SSO Authentication
+      parameters:
+        - name: connection_id
+          in: query
+          schema:
+            type: string
+          example: saml-connection-test-1e8a4491-2138-47cd-a579-ebe040f1ff5c
+        - name: public_token
+          in: query
+          schema:
+            type: string
+          example: "{{PUBLIC_TOKEN}}"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/sso/authenticate:
+    post:
+      operationId: sso/complete
+      tags:
+        - sso
+      summary: Complete SSO Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "sso_token": "token_here",
+                    "session_duration_minutes": 60
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/sso-authenticate
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/sso/saml/{organization_id}/connections/{connection_id}/verification_certificates/{certificate_id}:
+    delete:
+      operationId: sso/delete_saml_verification_certificate
+      tags:
+        - sso
+      summary: Delete SAML Verification Certificate
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+        - name: connection_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: saml-connection-test-d2df88fc-f062-46d4-a821-9418642fc0ee
+        - name: certificate_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: saml-signing-key-test-5eb257b6-d45f-476e-9af1-a0aba0848ead
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/sso/external/{organization_id}:
+    post:
+      operationId: sso/create_external_connection
+      tags:
+        - sso
+      summary: Create External Connection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "external_organization_id": "External Org ID",
+                    "external_connection_id": "External Org SSO Connection ID"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/create-external-connection
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: >-
+            Globally unique UUID that identifies a specific Organization. The
+            organization_id is critical to perform operations on an
+            Organization, so be sure to preserve this value.
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/sso/external/{organization_id}/connections/{connection_id}:
+    put:
+      operationId: sso/update_external_connection
+      tags:
+        - sso
+      summary: Update External Connection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {}
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/update-external-connection
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: >-
+            Globally unique UUID that identifies a specific Organization. The
+            organization_id is critical to perform operations on an
+            Organization, so be sure to preserve this value.
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+        - name: connection_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: >-
+            Globally unique UUID that identifies a specific External SSO
+            Connection.
+          example: saml-connection-test-d2df88fc-f062-46d4-a821-9418642fc0ee
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/discovery/organizations:
+    post:
+      operationId: discovery/list
+      tags:
+        - discovery
+      summary: List discovered Organizations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "intermediate_session_token": "token_here"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/list-discovered-organizations
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/discovery/organizations/create:
+    post:
+      operationId: discovery/create_organization
+      tags:
+        - discovery
+      summary: Create Organization via Discovery
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "intermediate_session_token": "token_here",
+                    "session_duration_minutes": 60,
+                    "organization_name": "Stytch",
+                    "organization_slug": "stytch"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/create-organization-via-discovery
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/discovery/intermediate_sessions/exchange:
+    post:
+      operationId: discovery/exchange_intermediate_session
+      tags:
+        - discovery
+      summary: Exchange intermediate session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "intermediate_session_token": "token_here",
+                    "organization_id": "organization-test-39520e41-3912-41e1-9ef0-95388bb8356c"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/exchange-intermediate-session
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/passwords/authenticate:
+    post:
+      operationId: passwords/authenticate
+      tags:
+        - passwords
+      summary: Authenticate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "organization_id": "organization-test-51096cce-277f-4645-b7fd-b7432fc038a9",
+                    "email_address": "test@stytch.com",
+                    "password": "123abc"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/passwords-authenticate
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/passwords/email/reset/start:
+    post:
+      operationId: passwords/email_reset_start
+      tags:
+        - passwords
+      summary: Password reset by email start
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "organization_id": "organization-test-51096cce-277f-4645-b7fd-b7432fc038a9",
+                    "email_address": "test@stytch.com"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/email-reset-start
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/passwords/email/reset:
+    post:
+      operationId: passwords/email_reset
+      tags:
+        - passwords
+      summary: Password reset by email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "password_reset_token": "TOKEN_HERE",
+                    "password": "123abc"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/email-reset
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/passwords/existing_password/reset:
+    post:
+      operationId: passwords/existing_reset
+      tags:
+        - passwords
+      summary: Password reset by existing password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "organization_id": "organization-test-51096cce-277f-4645-b7fd-b7432fc038a9",
+                    "email_address": "test@stytch.com",
+                    "existing_password": "zxcvbn123",
+                    "new_password": "123abc"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/existing-reset
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/passwords/session/reset:
+    post:
+      operationId: passwords/session_reset
+      tags:
+        - passwords
+      summary: Password reset by session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "organization_id": "organization-test-51096cce-277f-4645-b7fd-b7432fc038a9",
+                    "password": "123abc",
+                    "session_token": "TOKEN"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/passwords-authenticate
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/passwords/strength_check:
+    post:
+      operationId: passwords/strength_check
+      tags:
+        - passwords
+      summary: Strength check
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "email_address": "test@stytch.com",
+                    "password": "123abc"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/strength-check
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/passwords/migrate:
+    post:
+      operationId: passwords/migrate
+      tags:
+        - passwords
+      summary: Migrate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "organization_id": "organization-test-51096cce-277f-4645-b7fd-b7432fc038a9",
+                    "email_address": "test@stytch.com",
+                    "hash_type": "bcrypt",
+                    "hash": "$2a$04$2V5QoDv2NhF7Y/4oKNG.D.Sv1vMOX4ywfpwG7SxGrNo.tSwkgyueO"
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/migrate
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/otps/sms/send:
+    post:
+      operationId: mfa/sms_send
+      tags:
+        - mfa
+      summary: OTP SMS Send
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "organization_id": "organization-test-51096cce-277f-4645-b7fd-b7432fc038a9",
+                    "member_id": ""
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/otp-sms-send
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/totp/authenticate:
+    post:
+      operationId: mfa/authenticate
+      tags:
+        - mfa
+      summary: Authenticate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "organization_id": "",
+                    "member_id": "",
+                    "code": ""
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/authenticate-otp-sms
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/otps/sms/authenticate:
+    post:
+      operationId: mfa/rotate_recovery_codes
+      tags:
+        - mfa
+      summary: Rotate recovery codes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "organization_id": "organization-test-51096cce-277f-4645-b7fd-b7432fc038a9",
+                    "member_id": "",
+                    "code": ""
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/authenticate-otp-sms
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/recovery_codes/rotate:
+    post:
+      operationId: mfa/recover
+      tags:
+        - mfa
+      summary: Recover
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                    "organization_id": "organization-test-51096cce-277f-4645-b7fd-b7432fc038a9",
+                    "member_id": ""
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/recovery-codes-rotate
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/public/{project_id}/oauth2/token:
+    post:
+      operationId: m2m/get_token
+      tags:
+        - m2m
+      summary: Get access token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                client_id: ""
+                client_secret: ""
+                grant_type: client_credentials
+      parameters:
+        - name: project_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: "{{PROJECT_ID}}"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/m2m/clients:
+    post:
+      operationId: m2m/create_client
+      tags:
+        - m2m
+      summary: Create M2M client
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: {}
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/m2m/clients/{client_id}:
+    get:
+      operationId: m2m/get_client
+      tags:
+        - m2m
+      summary: Get M2M client
+      parameters:
+        - name: client_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: m2m-client-test-a48cac88-49f5-4d4e-8951-06a2eb5b3ba4
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      operationId: m2m/update_client
+      tags:
+        - m2m
+      summary: Update M2M client
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                client_name: updated name
+      parameters:
+        - name: client_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: m2m-client-test-a48cac88-49f5-4d4e-8951-06a2eb5b3ba4
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      operationId: m2m/delete_client
+      tags:
+        - m2m
+      summary: Delete M2M client
+      parameters:
+        - name: client_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: m2m-client-test-a48cac88-49f5-4d4e-8951-06a2eb5b3ba4
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/m2m/clients/search:
+    post:
+      operationId: m2m/search_clients
+      tags:
+        - m2m
+      summary: Search M2M clients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: {}
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/m2m/clients/{client_id}/secrets/rotate/start:
+    post:
+      operationId: m2m/start_secret_rotation
+      tags:
+        - m2m
+      summary: Start secret rotation
+      requestBody:
+        content: {}
+      parameters:
+        - name: client_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: m2m-client-test-a48cac88-49f5-4d4e-8951-06a2eb5b3ba4
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/m2m/clients/{client_id}/secrets/rotate:
+    post:
+      operationId: m2m/rotate_secret
+      tags:
+        - m2m
+      summary: Rotate secret
+      requestBody:
+        content: {}
+      parameters:
+        - name: client_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: m2m-client-test-a48cac88-49f5-4d4e-8951-06a2eb5b3ba4
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/m2m/clients/{client_id}/secrets/rotate/cancel:
+    post:
+      operationId: m2m/cancel_secret_rotation
+      tags:
+        - m2m
+      summary: Cancel secret rotation
+      requestBody:
+        content: {}
+      parameters:
+        - name: client_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: m2m-client-test-a48cac88-49f5-4d4e-8951-06a2eb5b3ba4
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/otps/email/login_or_signup:
+    post:
+      operationId: email_otp/login_or_signup
+      tags:
+        - email_otp
+      summary: Send login or signup email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                  "organization_id": "",
+                  "email_address": ""
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/send-login-signup-email-otp
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/otps/email/authenticate:
+    post:
+      operationId: email_otp/authenticate
+      tags:
+        - email_otp
+      summary: Authenticate One-time Passcode (OTP)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: "{\n  \"organization_id\": \"\",\n  \"member_id\": \"\",\n\t\"code\": \"\"\n}\n// For all available parameters see https://stytch.com/docs/b2b/api/authenticate-email-otp"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/otps/email/discovery/send:
+    post:
+      operationId: email_otp/send_discovery
+      tags:
+        - email_otp
+      summary: Send Discovery Email OTP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                  "email_address": ""
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/send-discovery-email-otp
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/otps/email/discovery/authenticate:
+    post:
+      operationId: email_otp/authenticate_discovery
+      tags:
+        - email_otp
+      summary: Authenticate Discovery One-Time Passcode (OTP)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                  "email_address": "",
+                  "code": ""
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/authenticate-discovery-email-otp
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/b2b/impersonation/authenticate:
+    post:
+      operationId: impersonation/authenticate
+      tags:
+        - impersonation
+      summary: Authenticate Impersonation Token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: >-
+                {
+                  "impersonation_token": ""
+                }
+
+                // For all available parameters see
+                https://stytch.com/docs/b2b/api/authenticate-impersonation-token
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
