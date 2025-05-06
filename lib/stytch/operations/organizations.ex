@@ -5,10 +5,16 @@ defmodule Stytch.Organizations do
 
   @default_client Stytch.Client
 
+  @type create_200_json_resp :: %{
+          organization: Stytch.Organization.t() | nil,
+          request_id: String.t() | nil,
+          statusCode: integer | nil
+        }
+
   @doc """
   Create an Organization
   """
-  @spec create(map, keyword) :: {:ok, any} | :error
+  @spec create(map, keyword) :: {:ok, map} | :error
   def create(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -19,7 +25,7 @@ defmodule Stytch.Organizations do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, {Stytch.Organizations, :create_200_json_resp}}],
       opts: opts
     })
   end
@@ -94,5 +100,15 @@ defmodule Stytch.Organizations do
       response: [{200, :unknown}],
       opts: opts
     })
+  end
+
+  @doc false
+  @spec __fields__(atom) :: keyword
+  def __fields__(:create_200_json_resp) do
+    [
+      organization: {Stytch.Organization, :t},
+      request_id: {:string, :generic},
+      statusCode: :integer
+    ]
   end
 end
