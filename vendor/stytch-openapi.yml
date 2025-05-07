@@ -72,6 +72,14 @@ components:
         - id
         - provider_subject
 
+    AuthenticatorAppFactor:
+      type: object
+      properties:
+        totp_id:
+          type: string
+      required:
+        - totp_id
+
     AuthenticationFactor:
       type: object
       properties:
@@ -182,74 +190,13 @@ components:
         - type
         - delivery_method
 
-    WebAuthnFactor:
+    BiometricFactor:
       type: object
       properties:
-        webauthn_registration_id:
-          type: string
-        domain:
-          type: string
-        user_agent:
+        biometric_registration_id:
           type: string
       required:
-        - webauthn_registration_id
-        - domain
-
-    AuthenticatorAppFactor:
-      type: object
-      properties:
-        totp_id:
-          type: string
-      required:
-        - totp_id
-
-    GithubOAuthFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_subject:
-          type: string
-        email_id:
-          type: string
-      required:
-        - id
-        - provider_subject
-
-    RecoveryCodeFactor:
-      type: object
-      properties:
-        totp_recovery_code_id:
-          type: string
-      required:
-        - totp_recovery_code_id
-
-    FacebookOAuthFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_subject:
-          type: string
-        email_id:
-          type: string
-      required:
-        - id
-        - provider_subject
-
-    CryptoWalletFactor:
-      type: object
-      properties:
-        crypto_wallet_id:
-          type: string
-        crypto_wallet_address:
-          type: string
-        crypto_wallet_type:
-          type: string
-      required:
-        - crypto_wallet_id
-        - crypto_wallet_address
-        - crypto_wallet_type
+        - biometric_registration_id
 
     BitbucketOAuthFactor:
       type: object
@@ -277,7 +224,68 @@ components:
         - id
         - provider_subject
 
+    CryptoWalletFactor:
+      type: object
+      properties:
+        crypto_wallet_id:
+          type: string
+        crypto_wallet_address:
+          type: string
+        crypto_wallet_type:
+          type: string
+      required:
+        - crypto_wallet_id
+        - crypto_wallet_address
+        - crypto_wallet_type
+
     DiscordOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    EmailFactor:
+      type: object
+      properties:
+        email_id:
+          type: string
+          description: >
+            The globally unique UUID of the Member's email.
+        email_address:
+          type: string
+          description: >
+            The email address of the Member.
+      required:
+        - email_id
+        - email_address
+
+    EmailImplicitRoleAssignment:
+      type: object
+      properties:
+        domain:
+          type: string
+        role_id:
+          type: string
+      required:
+        - domain
+        - role_id
+
+    EmbeddableMagicLinkFactor:
+      type: object
+      properties:
+        embedded_id:
+          type: string
+      required:
+        - embedded_id
+
+    FacebookOAuthFactor:
       type: object
       properties:
         id:
@@ -316,235 +324,6 @@ components:
         - id
         - provider_subject
 
-    InstagramOAuthFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_subject:
-          type: string
-        email_id:
-          type: string
-      required:
-        - id
-        - provider_subject
-
-    LinkedInOAuthFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_subject:
-          type: string
-        email_id:
-          type: string
-      required:
-        - id
-        - provider_subject
-
-    ShopifyOAuthFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_subject:
-          type: string
-        email_id:
-          type: string
-      required:
-        - id
-        - provider_subject
-
-    SlackOAuthFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_subject:
-          type: string
-        email_id:
-          type: string
-      required:
-        - id
-        - provider_subject
-
-    SnapchatOAuthFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_subject:
-          type: string
-        email_id:
-          type: string
-      required:
-        - id
-        - provider_subject
-
-    SpotifyOAuthFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_subject:
-          type: string
-        email_id:
-          type: string
-      required:
-        - id
-        - provider_subject
-
-    SteamOAuthFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_subject:
-          type: string
-        email_id:
-          type: string
-      required:
-        - id
-        - provider_subject
-
-    TikTokOAuthFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_subject:
-          type: string
-        email_id:
-          type: string
-      required:
-        - id
-        - provider_subject
-
-    TwitchOAuthFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_subject:
-          type: string
-        email_id:
-          type: string
-      required:
-        - id
-        - provider_subject
-
-    TwitterOAuthFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_subject:
-          type: string
-        email_id:
-          type: string
-      required:
-        - id
-        - provider_subject
-
-    EmbeddableMagicLinkFactor:
-      type: object
-      properties:
-        embedded_id:
-          type: string
-      required:
-        - embedded_id
-
-    BiometricFactor:
-      type: object
-      properties:
-        biometric_registration_id:
-          type: string
-      required:
-        - biometric_registration_id
-
-    SAMLSSOFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_id:
-          type: string
-        external_id:
-          type: string
-      required:
-        - id
-        - provider_id
-        - external_id
-
-    OIDCSSOFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_id:
-          type: string
-        external_id:
-          type: string
-      required:
-        - id
-        - provider_id
-        - external_id
-
-    SalesforceOAuthFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_subject:
-          type: string
-        email_id:
-          type: string
-      required:
-        - id
-        - provider_subject
-
-    YahooOAuthFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_subject:
-          type: string
-        email_id:
-          type: string
-      required:
-        - id
-        - provider_subject
-
-    HubspotOAuthFactor:
-      type: object
-      properties:
-        id:
-          type: string
-        provider_subject:
-          type: string
-        email_id:
-          type: string
-      required:
-        - id
-        - provider_subject
-
-    SlackOAuthExchangeFactor:
-      type: object
-      properties:
-        email_id:
-          type: string
-      required:
-        - email_id
-
-    HubspotOAuthExchangeFactor:
-      type: object
-      properties:
-        email_id:
-          type: string
-      required:
-        - email_id
-
     GithubOAuthExchangeFactor:
       type: object
       properties:
@@ -553,6 +332,19 @@ components:
       required:
         - email_id
 
+    GithubOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
     GoogleOAuthExchangeFactor:
       type: object
       properties:
@@ -560,51 +352,6 @@ components:
           type: string
       required:
         - email_id
-
-    ImpersonatedFactor:
-      type: object
-      properties:
-        impersonator_id:
-          type: string
-        impersonator_email_address:
-          type: string
-      required:
-        - impersonator_id
-        - impersonator_email_address
-
-    OAuthAccessTokenExchangeFactor:
-      type: object
-      properties:
-        client_id:
-          type: string
-      required:
-        - client_id
-
-    EmailFactor:
-      type: object
-      properties:
-        email_id:
-          type: string
-          description: >
-            The globally unique UUID of the Member's email.
-        email_address:
-          type: string
-          description: >
-            The email address of the Member.
-      required:
-        - email_id
-        - email_address
-
-    EmailImplicitRoleAssignment:
-      type: object
-      properties:
-        domain:
-          type: string
-        role_id:
-          type: string
-      required:
-        - domain
-        - role_id
 
     GoogleOAuthFactor:
       type: object
@@ -621,6 +368,51 @@ components:
           type: string
           description: >
             The globally unique UUID of the Member's email.
+      required:
+        - id
+        - provider_subject
+
+    HubspotOAuthExchangeFactor:
+      type: object
+      properties:
+        email_id:
+          type: string
+      required:
+        - email_id
+
+    HubspotOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    ImpersonatedFactor:
+      type: object
+      properties:
+        impersonator_id:
+          type: string
+        impersonator_email_address:
+          type: string
+      required:
+        - impersonator_id
+        - impersonator_email_address
+
+    InstagramOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
       required:
         - id
         - provider_subject
@@ -659,6 +451,19 @@ components:
       required:
         - kty
         - kid
+
+    LinkedInOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
 
     Member:
       type: object
@@ -881,6 +686,14 @@ components:
         - id
         - provider_subject
 
+    OAuthAccessTokenExchangeFactor:
+      type: object
+      properties:
+        client_id:
+          type: string
+      required:
+        - client_id
+
     OAuthRegistration:
       type: object
       properties:
@@ -909,236 +722,19 @@ components:
         - provider_subject
         - member_oauth_registration_id
 
-    Organization:
+    OIDCSSOFactor:
       type: object
       properties:
-        allowed_auth_methods:
-          type: array
-          items:
-            type: string
-            enum:
-              - sso
-              - magic_link
-              - email_otp
-              - password
-              - google_oauth
-              - microsoft_oauth
-              - slack_oauth
-              - github_oauth
-              - hubspot_oauth
-          description: >-
-            An array of allowed authentication methods.
-            This list is enforced when auth_methods is set to RESTRICTED.
-            The list's accepted values are: sso, magic_link, email_otp, password, google_oauth, microsoft_oauth, slack_oauth, github_oauth, and hubspot_oauth.
-        allowed_mfa_methods:
-          type: array
-          items:
-            type: string
-            enum:
-              - sms_otp
-              - totp
-          description: >-
-            An array of allowed MFA authentication methods.
-            This list is enforced when mfa_methods is set to RESTRICTED.
-            The list's accepted values are: sms_otp and totp.
-        allowed_oauth_tenants:
-          type: object
-          additionalProperties: true
-          description: >-
-            A map of allowed OAuth tenants.
-            If this field is not passed in, the Organization will not allow JIT provisioning by OAuth Tenant.
-            Allowed keys are "slack", "hubspot", and "github".
-        auth_methods:
+        id:
           type: string
-          enum:
-            - ALL_ALLOWED
-            - RESTRICTED
-          description: >-
-            The setting that controls which authentication methods can be used by Members of an Organization.
-            The accepted values are:
-
-            ALL_ALLOWED – the default setting which allows all authentication methods to be used.
-
-            RESTRICTED – only methods that comply with allowed_auth_methods can be used for authentication.
-            This setting does not apply to Members with is_breakglass set to true.
-        claimed_email_domains:
-          type: array
-          items:
-            type: string
-          description: A list of email domains that are claimed by the Organization.
-        created_at:
+        provider_id:
           type: string
-          format: date-time
-          description: >-
-            The timestamp of the Organization's creation.
-            Values conform to the RFC 3339 standard and are expressed in UTC, e.g. 2021-12-29T12:33:09Z.
-        email_allowed_domains:
-          type: array
-          items:
-            type: string
-          description: >-
-            An array of email domains that allow invites or JIT provisioning for new Members.
-            This list is enforced when either email_invites or email_jit_provisioning is set to RESTRICTED.
-
-            Common domains such as gmail.com are not allowed. See the common email domains resource for the full list.
-        email_invites:
+        external_id:
           type: string
-          enum:
-            - ALL_ALLOWED
-            - RESTRICTED
-            - NOT_ALLOWED
-          description: >-
-            The authentication setting that controls how a new Member can be invited to an organization by email.
-            The accepted values are: 
-
-            ALL_ALLOWED – any new Member can be invited to join via email.
-
-            RESTRICTED – only new Members with verified emails that comply with email_allowed_domains can be invited via email.
-
-            NOT_ALLOWED – disable email invites.
-        email_jit_provisioning:
-          type: string
-          enum:
-            - RESTRICTED
-            - NOT_ALLOWED
-          description: >-
-            The authentication setting that controls how a new Member can be provisioned by authenticating via Email Magic Link or OAuth.
-            The accepted values are:
-
-            RESTRICTED – only new Members with verified emails that comply with email_allowed_domains can be provisioned upon authentication via Email Magic Link or OAuth.
-
-            NOT_ALLOWED – disable JIT provisioning via Email Magic Link and OAuth.
-        mfa_methods:
-          type: string
-          enum:
-            - ALL_ALLOWED
-            - RESTRICTED
-          description: >-
-            The setting that controls which MFA methods can be used by Members of an Organization.
-            The accepted values are:
-
-            ALL_ALLOWED – the default setting which allows all authentication methods to be used.
-
-            RESTRICTED – only methods that comply with allowed_mfa_methods can be used for authentication.
-            This setting does not apply to Members with is_breakglass set to true.
-        mfa_policy:
-          type: string
-          enum:
-            - REQUIRED_FOR_ALL
-            - OPTIONAL
-          description: >-
-            The setting that controls the MFA policy for all Members in the Organization.
-            The accepted values are:
-
-            REQUIRED_FOR_ALL – All Members within the Organization will be required to complete MFA every time they wish to log in.
-            However, any active Session that existed prior to this setting change will remain valid.
-
-            OPTIONAL – The default value.
-            The Organization does not require MFA by default for all Members.
-            Members will be required to complete MFA only if their mfa_enrolled status is set to true.
-        oauth_tenant_jit_provisioning:
-          type: string
-          enum:
-            - RESTRICTED
-            - NOT_ALLOWED
-          description: >-
-            The authentication setting that controls how a new Member can JIT provision into an organization by tenant.
-            The accepted values are:
-
-            RESTRICTED – only new Members with tenants in allowed_oauth_tenants can JIT provision via tenant.
-
-            NOT_ALLOWED – disable JIT provisioning by OAuth Tenant.
-        organization_id:
-          type: string
-          description: >-
-            Globally unique UUID that identifies a specific Organization.
-            The organization_id is critical to perform operations on an Organization, so be sure to preserve this value.
-            You may also use the organization_slug here as a convenience.
-        organization_logo_url:
-          type: string
-          description: >-
-            The image URL of the Organization logo.
-        organization_name:
-          type: string
-          description: >-
-            The name of the Organization. Must be between 1 and 128 characters in length.
-        organization_slug:
-          type: string
-          description: >-
-            The unique URL slug of the Organization.
-            The slug only accepts alphanumeric characters and the following reserved characters: - . _ ~.
-            Must be between 2 and 128 characters in length.
-            Wherever an organization_id is expected in a path or request parameter, you may also use the organization_slug as a convenience.
-        rbac_email_implicit_role_assignments:
-          type: array
-          items:
-            $ref: "#/components/schemas/EmailImplicitRoleAssignment"
-          description: >-
-            Implicit role assignments based off of email domains.
-            For each domain-Role pair, all Members whose email addresses have the specified email domain will be granted the associated Role, regardless of their login method.
-            See the RBAC guide for more information about role assignment.
-        scim_active_connection:
-          $ref: "#/components/schemas/ActiveSCIMConnection"
-        sso_active_connections:
-          type: array
-          items:
-            $ref: "#/components/schemas/ActiveSSOConnection"
-          description: An array of active SAML Connection references or OIDC Connection references.
-        sso_default_connection_id:
-          type: string
-          description: The default connection used for SSO when there are multiple active connections.
-        sso_jit_provisioning:
-          type: string
-          enum:
-            - ALL_ALLOWED
-            - RESTRICTED
-            - NOT_ALLOWED
-          description: >-
-            The authentication setting that controls the JIT provisioning of Members when authenticating via SSO.
-            The accepted values are:
-
-            ALL_ALLOWED – new Members will be automatically provisioned upon successful authentication via any of the Organization's sso_active_connections.
-
-            RESTRICTED – only new Members with SSO logins that comply with sso_jit_provisioning_allowed_connections can be provisioned upon authentication.
-
-            NOT_ALLOWED – disable JIT provisioning via SSO.
-        sso_jit_provisioning_allowed_connections:
-          type: array
-          items:
-            type: string
-          description: >-
-            An array of connection_ids that reference SAML Connection objects.
-            Only these connections will be allowed to JIT provision Members via SSO when sso_jit_provisioning is set to RESTRICTED.
-        trusted_metadata:
-          type: object
-          additionalProperties: true
-          description: >-
-            An arbitrary JSON object for storing application-specific data or identity-provider-specific data.
-        updated_at:
-          type: string
-          format: date-time
-          description: >-
-            The timestamp of when the Organization was last updated.
-            Values conform to the RFC 3339 standard and are expressed in UTC, e.g. 2021-12-29T12:33:09Z.
       required:
-        - allowed_auth_methods
-        - allowed_mfa_methods
-        - auth_methods
-        - claimed_email_domains
-        - email_allowed_domains
-        - email_invites
-        - email_jit_provisioning
-        - mfa_methods
-        - mfa_policy
-        - oauth_tenant_jit_provisioning
-        - organization_id
-        - organization_logo_url
-        - organization_name
-        - organization_slug
-        - rbac_email_implicit_role_assignments
-        - sso_active_connections
-        - sso_jit_provisioning
-        - sso_jit_provisioning_allowed_connections
+        - id
+        - provider_id
+        - external_id
 
     PhoneNumberFactor:
       type: object
@@ -1155,6 +751,14 @@ components:
         - phone_id
         - phone_number
 
+    RecoveryCodeFactor:
+      type: object
+      properties:
+        totp_recovery_code_id:
+          type: string
+      required:
+        - totp_recovery_code_id
+
     RetiredEmail:
       type: object
       properties:
@@ -1169,6 +773,33 @@ components:
       required:
         - email_id
         - email_address
+
+    SAMLSSOFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_id:
+          type: string
+        external_id:
+          type: string
+      required:
+        - id
+        - provider_id
+        - external_id
+
+    SalesforceOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
 
     SCIMRegistration:
       type: object
@@ -1194,38 +825,150 @@ components:
         - connection_id
         - registration_id
 
-    SSORegistration:
+    ShopifyOAuthFactor:
       type: object
       properties:
-        connection_id:
+        id:
           type: string
-          description: >-
-            Globally unique UUID that identifies a specific SSO `connection_id` for a Member.
-        external_id:
+        provider_subject:
           type: string
-          description: >-
-            The ID of the member given by the identity provider.
-        registration_id:
+        email_id:
           type: string
-          description: >-
-            The unique ID of an SSO Registration.
-        sso_attributes:
-          type: object
-          additionalProperties: true
-          description: >-
-            An object for storing SSO attributes brought over from the identity provider.
       required:
-        - connection_id
-        - external_id
-        - registration_id
+        - id
+        - provider_subject
 
-  securitySchemes:
-    noauthAuth:
-      type: http
-      scheme: noauth
-    basicAuth:
-      type: http
-      scheme: basic
+    SlackOAuthExchangeFactor:
+      type: object
+      properties:
+        email_id:
+          type: string
+      required:
+        - email_id
+
+    SlackOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    SnapchatOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    SpotifyOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    SteamOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    TikTokOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    TwitchOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    TwitterOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    WebAuthnFactor:
+      type: object
+      properties:
+        webauthn_registration_id:
+          type: string
+        domain:
+          type: string
+        user_agent:
+          type: string
+      required:
+        - webauthn_registration_id
+        - domain
+
+    YahooOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+securitySchemes:
+  noauthAuth:
+    type: http
+    scheme: noauth
+  basicAuth:
+    type: http
+    scheme: basic
 security:
   - basicAuth: []
 paths:
