@@ -12,15 +12,15 @@ defmodule Stytch.Client do
     |> put_req_opts(details.opts[:req_opts])
     |> put_telemetry(details.call)
     |> Req.request()
-    |> handle_response(details.call)
+    |> handle_response(details)
   end
 
-  @spec handle_response({:ok, Req.Response.t()}, {module, atom}) :: {:ok, term} | {:error | term}
-  @spec handle_response({:error, Exception.t()}, {module, atom}) :: {:error, term}
-  defp handle_response({:ok, %Req.Response{} = response}, call) do
+  @spec handle_response({:ok, Req.Response.t()}, map) :: {:ok, term} | {:error | term}
+  @spec handle_response({:error, Exception.t()}, map) :: {:error, term}
+  defp handle_response({:ok, %Req.Response{} = response}, details) do
     case response do
       %Req.Response{body: body, status: s} when s in 200..299 ->
-        {:ok, body}
+        {:ok, Stytch.Decoder.decode_response(body, details, s)}
 
       %Req.Response{body: body, status: status} ->
         {:current_stacktrace, stack} = Process.info(self(), :current_stacktrace)
@@ -32,7 +32,7 @@ defmodule Stytch.Client do
             [
               code: status,
               message: "Unknown Error",
-              operation: call,
+              operation: details.call,
               reason: :error,
               source: body,
               stacktrace: stacktrace
@@ -44,7 +44,7 @@ defmodule Stytch.Client do
     end
   end
 
-  defp handle_response({:error, error}, call) do
+  defp handle_response({:error, error}, details) do
     {:current_stacktrace, stack} = Process.info(self(), :current_stacktrace)
     # Drop `Process.info/2`, `handle_response/1`, and `request/1`.
     stacktrace = Enum.drop(stack, 3)
@@ -53,7 +53,7 @@ defmodule Stytch.Client do
       [
         code: nil,
         message: "Unknown Error",
-        operation: call,
+        operation: details.call,
         reason: :error,
         source: error,
         stacktrace: stacktrace
