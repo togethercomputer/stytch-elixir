@@ -2205,6 +2205,19 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  keys:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/JWK"
+                required:
+                  - request_id
+                  - status_code
+                  - keys
   /v1/b2b/sessions:
     get:
       operationId: session/get
@@ -2229,6 +2242,19 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  member_sessions:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MemberSession"
+                required:
+                  - request_id
+                  - status_code
+                  - member_sessions
   /v1/b2b/sessions/authenticate:
     post:
       operationId: session/authenticate
@@ -2254,6 +2280,37 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  member_session:
+                    $ref: "#/components/schemas/MemberSession"
+                  session_token:
+                    type: string
+                  session_jwt:
+                    type: string
+                  member:
+                    $ref: "#/components/schemas/Member"
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+                  authorized:
+                    type: boolean
+                  verdict:
+                    type: array
+                    items:
+                      type: string
+                required:
+                  - request_id
+                  - status_code
+                  - member_session
+                  - session_token
+                  - session_jwt
+                  - member
+                  - organization
+                  - authorized
+                  - verdict
   /v1/b2b/sessions/exchange:
     post:
       operationId: session/exchange
@@ -2280,6 +2337,44 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  member_id:
+                    type: string
+                  session_token:
+                    type: string
+                  session_jwt:
+                    type: string
+                  intermediate_session_token:
+                    type: string
+                  member_authenticated:
+                    type: boolean
+                  mfa_required:
+                    type: boolean
+                  primary_required:
+                    type: boolean
+                  member_session:
+                    $ref: "#/components/schemas/MemberSession"
+                  member:
+                    $ref: "#/components/schemas/Member"
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+                required:
+                  - request_id
+                  - status_code
+                  - member_id
+                  - session_token
+                  - session_jwt
+                  - intermediate_session_token
+                  - member_authenticated
+                  - mfa_required
+                  - primary_required
+                  - member_session
+                  - member
+                  - organization
   /v1/b2b/sessions/revoke:
     post:
       operationId: session/revoke
@@ -2305,6 +2400,55 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                required:
+                  - request_id
+                  - status_code
+  /v1/b2b/sessions/migrate:
+    post:
+      operationId: session/migrate
+      tags:
+        - session
+      summary: Migrate Session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  member_session:
+                    $ref: "#/components/schemas/MemberSession"
+                  session_token:
+                    type: string
+                  session_jwt:
+                    type: string
+                  member:
+                    $ref: "#/components/schemas/Member"
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+                required:
+                  - request_id
+                  - status_code
+                  - member_session
+                  - session_token
+                  - session_jwt
+                  - member
+                  - organization
   /v1/b2b/sso/saml/{organization_id}:
     post:
       operationId: sso/create_saml
