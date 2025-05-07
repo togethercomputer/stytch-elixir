@@ -1,21 +1,31 @@
-# Stytch
+# Stytch Client for Elixir
 
-**TODO: Add description**
+_Wrapper and interface for the Stytch B2B SaaS authentication API in Elixir_
+
+---
+
+This repository is a work in progress.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `stytch` to your list of dependencies in `mix.exs`:
+This library is not currently available on Hex.pm, so install it via GitHub and run mix deps.get:
 
 ```elixir
 def deps do
   [
-    {:stytch, "~> 0.1.0"}
+    {:stytch, github: "togethercomputer/stytch-elixir", branch: "main"}
   ]
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/stytch>.
+## Code Generation
 
+At the time of writing, Stytch does not publish an OpenAPI description for their API.
+A hand-crafted description [is available](vendor/stytch-openapi.yml) in this repository.
+It was generated based on a public Postman collection and enhanced by hand — so don't expect full coverage of the API.
+
+Code generation provided by the [OpenAPI Generator for Elixir](https://github.com/aj-foster/open-api-generator).
+
+## License
+
+Please see [LICENSE](LICENSE) for licensing details.
