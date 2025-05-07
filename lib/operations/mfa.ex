@@ -8,7 +8,7 @@ defmodule Stytch.Mfa do
   @doc """
   Authenticate
   """
-  @spec authenticate(body :: map, opts :: keyword) :: {:ok, any} | :error
+  @spec authenticate(body :: map, opts :: keyword) :: {:ok, map} | :error
   def authenticate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -19,7 +19,7 @@ defmodule Stytch.Mfa do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -27,7 +27,7 @@ defmodule Stytch.Mfa do
   @doc """
   Recover
   """
-  @spec recover(body :: map, opts :: keyword) :: {:ok, any} | :error
+  @spec recover(body :: map, opts :: keyword) :: {:ok, map} | :error
   def recover(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -38,7 +38,7 @@ defmodule Stytch.Mfa do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -46,7 +46,7 @@ defmodule Stytch.Mfa do
   @doc """
   Rotate recovery codes
   """
-  @spec rotate_recovery_codes(body :: map, opts :: keyword) :: {:ok, any} | :error
+  @spec rotate_recovery_codes(body :: map, opts :: keyword) :: {:ok, map} | :error
   def rotate_recovery_codes(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -57,7 +57,7 @@ defmodule Stytch.Mfa do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -65,7 +65,7 @@ defmodule Stytch.Mfa do
   @doc """
   OTP SMS Send
   """
-  @spec sms_send(body :: map, opts :: keyword) :: {:ok, any} | :error
+  @spec sms_send(body :: map, opts :: keyword) :: {:ok, map} | :error
   def sms_send(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -76,7 +76,7 @@ defmodule Stytch.Mfa do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end

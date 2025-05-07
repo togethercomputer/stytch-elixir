@@ -8,7 +8,7 @@ defmodule Stytch.Impersonation do
   @doc """
   Authenticate Impersonation Token
   """
-  @spec authenticate(body :: map, opts :: keyword) :: {:ok, any} | :error
+  @spec authenticate(body :: map, opts :: keyword) :: {:ok, map} | :error
   def authenticate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -19,7 +19,7 @@ defmodule Stytch.Impersonation do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end

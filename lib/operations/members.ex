@@ -8,7 +8,7 @@ defmodule Stytch.Members do
   @doc """
   Create a Member
   """
-  @spec create(organization_id :: String.t(), body :: map, opts :: keyword) :: {:ok, any} | :error
+  @spec create(organization_id :: String.t(), body :: map, opts :: keyword) :: {:ok, map} | :error
   def create(organization_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -19,7 +19,7 @@ defmodule Stytch.Members do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -27,7 +27,7 @@ defmodule Stytch.Members do
   @doc """
   Get a Member (Dangerous)
   """
-  @spec dangerously_get(member_id :: String.t(), opts :: keyword) :: {:ok, any} | :error
+  @spec dangerously_get(member_id :: String.t(), opts :: keyword) :: {:ok, map} | :error
   def dangerously_get(member_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -36,7 +36,7 @@ defmodule Stytch.Members do
       call: {Stytch.Members, :dangerously_get},
       url: "/v1/b2b/organizations/members/dangerously_get/#{member_id}",
       method: :get,
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -45,7 +45,7 @@ defmodule Stytch.Members do
   Delete a Member
   """
   @spec delete(organization_id :: String.t(), member_id :: String.t(), opts :: keyword) ::
-          {:ok, any} | :error
+          {:ok, map} | :error
   def delete(organization_id, member_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -54,7 +54,7 @@ defmodule Stytch.Members do
       call: {Stytch.Members, :delete},
       url: "/v1/b2b/organizations/#{organization_id}/members/#{member_id}",
       method: :delete,
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -66,7 +66,7 @@ defmodule Stytch.Members do
           organization_id :: String.t(),
           member_id :: String.t(),
           opts :: keyword
-        ) :: {:ok, any} | :error
+        ) :: {:ok, map} | :error
   def delete_mfa_phone_number(organization_id, member_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -75,7 +75,7 @@ defmodule Stytch.Members do
       call: {Stytch.Members, :delete_mfa_phone_number},
       url: "/v1/b2b/organizations/#{organization_id}/members/mfa_phone_numbers/#{member_id}",
       method: :delete,
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -87,7 +87,7 @@ defmodule Stytch.Members do
           organization_id :: String.t(),
           member_password_id :: String.t(),
           opts :: keyword
-        ) :: {:ok, any} | :error
+        ) :: {:ok, map} | :error
   def delete_password(organization_id, member_password_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -96,7 +96,7 @@ defmodule Stytch.Members do
       call: {Stytch.Members, :delete_password},
       url: "/v1/b2b/organizations/#{organization_id}/members/passwords/#{member_password_id}",
       method: :delete,
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -109,7 +109,7 @@ defmodule Stytch.Members do
     * `member_id`: Get member by ID
 
   """
-  @spec get(organization_id :: String.t(), opts :: keyword) :: {:ok, any} | :error
+  @spec get(organization_id :: String.t(), opts :: keyword) :: {:ok, map} | :error
   def get(organization_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:member_id])
@@ -120,7 +120,7 @@ defmodule Stytch.Members do
       url: "/v1/b2b/organizations/#{organization_id}/member",
       method: :get,
       query: query,
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -129,7 +129,7 @@ defmodule Stytch.Members do
   Reactivate a Member
   """
   @spec reactivate(organization_id :: String.t(), member_id :: String.t(), opts :: keyword) ::
-          {:ok, any} | :error
+          {:ok, map} | :error
   def reactivate(organization_id, member_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -138,7 +138,7 @@ defmodule Stytch.Members do
       call: {Stytch.Members, :reactivate},
       url: "/v1/b2b/organizations/#{organization_id}/members/#{member_id}/reactivate",
       method: :put,
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -146,7 +146,7 @@ defmodule Stytch.Members do
   @doc """
   Search for Members
   """
-  @spec search(body :: map, opts :: keyword) :: {:ok, any} | :error
+  @spec search(body :: map, opts :: keyword) :: {:ok, map} | :error
   def search(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -157,7 +157,7 @@ defmodule Stytch.Members do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -170,7 +170,7 @@ defmodule Stytch.Members do
           member_id :: String.t(),
           body :: map,
           opts :: keyword
-        ) :: {:ok, any} | :error
+        ) :: {:ok, map} | :error
   def update(organization_id, member_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -181,7 +181,7 @@ defmodule Stytch.Members do
       body: body,
       method: :put,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end

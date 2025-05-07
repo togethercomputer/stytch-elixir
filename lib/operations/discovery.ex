@@ -8,7 +8,7 @@ defmodule Stytch.Discovery do
   @doc """
   Create Organization via Discovery
   """
-  @spec create_organization(body :: map, opts :: keyword) :: {:ok, any} | :error
+  @spec create_organization(body :: map, opts :: keyword) :: {:ok, map} | :error
   def create_organization(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -19,7 +19,7 @@ defmodule Stytch.Discovery do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -27,7 +27,7 @@ defmodule Stytch.Discovery do
   @doc """
   Exchange intermediate session
   """
-  @spec exchange_intermediate_session(body :: map, opts :: keyword) :: {:ok, any} | :error
+  @spec exchange_intermediate_session(body :: map, opts :: keyword) :: {:ok, map} | :error
   def exchange_intermediate_session(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -38,7 +38,7 @@ defmodule Stytch.Discovery do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -46,7 +46,7 @@ defmodule Stytch.Discovery do
   @doc """
   List discovered Organizations
   """
-  @spec list(body :: map, opts :: keyword) :: {:ok, any} | :error
+  @spec list(body :: map, opts :: keyword) :: {:ok, map} | :error
   def list(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -57,7 +57,7 @@ defmodule Stytch.Discovery do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end

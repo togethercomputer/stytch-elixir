@@ -33,7 +33,7 @@ defmodule Stytch.Organizations do
   @doc """
   Delete an Organization
   """
-  @spec delete(organization_id :: String.t(), opts :: keyword) :: {:ok, any} | :error
+  @spec delete(organization_id :: String.t(), opts :: keyword) :: {:ok, map} | :error
   def delete(organization_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -42,7 +42,7 @@ defmodule Stytch.Organizations do
       call: {Stytch.Organizations, :delete},
       url: "/v1/b2b/organizations/#{organization_id}",
       method: :delete,
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -50,7 +50,7 @@ defmodule Stytch.Organizations do
   @doc """
   Get an Organization
   """
-  @spec get(organization_id :: String.t(), opts :: keyword) :: {:ok, any} | :error
+  @spec get(organization_id :: String.t(), opts :: keyword) :: {:ok, map} | :error
   def get(organization_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -59,7 +59,7 @@ defmodule Stytch.Organizations do
       call: {Stytch.Organizations, :get},
       url: "/v1/b2b/organizations/#{organization_id}",
       method: :get,
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -98,7 +98,7 @@ defmodule Stytch.Organizations do
   @doc """
   Update an Organization
   """
-  @spec update(organization_id :: String.t(), body :: map, opts :: keyword) :: {:ok, any} | :error
+  @spec update(organization_id :: String.t(), body :: map, opts :: keyword) :: {:ok, map} | :error
   def update(organization_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -109,7 +109,7 @@ defmodule Stytch.Organizations do
       body: body,
       method: :put,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end

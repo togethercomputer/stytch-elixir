@@ -315,7 +315,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
     put:
       operationId: organizations/update
       tags:
@@ -346,7 +348,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
     delete:
       operationId: organizations/delete
       tags:
@@ -363,7 +367,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/organizations/search:
     post:
       operationId: organizations/search
@@ -435,7 +441,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/organizations/{organization_id}/member:
     get:
       operationId: members/get
@@ -459,7 +467,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/organizations/members/dangerously_get/{member_id}:
     get:
       operationId: members/dangerously_get
@@ -477,7 +487,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/organizations/{organization_id}/members/{member_id}:
     put:
       operationId: members/update
@@ -513,7 +525,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
     delete:
       operationId: members/delete
       tags:
@@ -536,7 +550,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/organizations/{organization_id}/members/{member_id}/reactivate:
     put:
       operationId: members/reactivate
@@ -562,7 +578,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/organizations/members/search:
     post:
       operationId: members/search
@@ -587,7 +605,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/organizations/{organization_id}/members/passwords/{member_password_id}:
     delete:
       operationId: members/delete_password
@@ -611,7 +631,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/organizations/{organization_id}/members/mfa_phone_numbers/{member_id}:
     delete:
       operationId: members/delete_mfa_phone_number
@@ -635,7 +657,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/rbac/policy:
     get:
       operationId: rbac/get_policy
@@ -646,7 +670,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/magic_links/email/login_or_signup:
     post:
       operationId: magic_links/login_or_signup
@@ -670,7 +696,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/magic_links/email/invite:
     post:
       operationId: magic_links/invite
@@ -694,7 +722,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/magic_links/authenticate:
     post:
       operationId: magic_links/authenticate
@@ -718,7 +748,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/magic_links/email/discovery/send:
     post:
       operationId: magic_links/send_discovery
@@ -741,7 +773,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/magic_links/discovery/authenticate:
     post:
       operationId: magic_links/authenticate_discovery
@@ -764,7 +798,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/public/oauth/google/start:
     get:
       operationId: oauth/login_google
@@ -783,7 +819,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/public/oauth/microsoft/start:
     get:
       operationId: oauth/login_microsoft
@@ -802,7 +840,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/oauth/authenticate:
     post:
       operationId: oauth/authenticate
@@ -825,7 +865,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/public/oauth/google/discovery/start:
     get:
       operationId: oauth/discovery_google
@@ -844,7 +886,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/public/oauth/microsoft/discovery/start:
     get:
       operationId: oauth/discovery_microsoft
@@ -863,7 +907,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/oauth/discovery/authenticate:
     post:
       operationId: oauth/authenticate_discovery
@@ -881,7 +927,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/sessions/jwks/{project_id}:
     get:
       operationId: session/get_jwks
@@ -898,7 +946,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/sessions:
     get:
       operationId: session/get
@@ -920,7 +970,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/sessions/authenticate:
     post:
       operationId: session/authenticate
@@ -943,7 +995,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/sessions/exchange:
     post:
       operationId: session/exchange
@@ -967,7 +1021,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/sessions/revoke:
     post:
       operationId: session/revoke
@@ -990,7 +1046,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/sso/saml/{organization_id}:
     post:
       operationId: sso/create_saml
@@ -1018,7 +1076,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/sso/saml/{organization_id}/connections/{connection_id}:
     put:
       operationId: sso/update_saml
@@ -1054,7 +1114,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/sso/saml/{organization_id}/connections/{connection_id}/url:
     put:
       operationId: sso/update_saml_by_metadata_url
@@ -1085,7 +1147,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/sso/oidc/{organization_id}:
     post:
       operationId: sso/create_oidc
@@ -1113,7 +1177,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/sso/oidc/{organization_id}/connections/{connection_id}:
     put:
       operationId: sso/update_oidc
@@ -1149,7 +1215,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/sso/{organization_id}:
     get:
       operationId: sso/get_connections
@@ -1167,7 +1235,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/sso/{organization_id}/connections/{connection_id}:
     delete:
       operationId: sso/delete_connection
@@ -1191,7 +1261,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/public/sso/start:
     get:
       operationId: sso/start
@@ -1213,7 +1285,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/sso/authenticate:
     post:
       operationId: sso/complete
@@ -1237,7 +1311,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/sso/saml/{organization_id}/connections/{connection_id}/verification_certificates/{certificate_id}:
     delete:
       operationId: sso/delete_saml_verification_certificate
@@ -1267,7 +1343,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/sso/external/{organization_id}:
     post:
       operationId: sso/create_external_connection
@@ -1302,7 +1380,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/sso/external/{organization_id}/connections/{connection_id}:
     put:
       operationId: sso/update_external_connection
@@ -1343,7 +1423,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/discovery/organizations:
     post:
       operationId: discovery/list
@@ -1366,7 +1448,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/discovery/organizations/create:
     post:
       operationId: discovery/create_organization
@@ -1392,7 +1476,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/discovery/intermediate_sessions/exchange:
     post:
       operationId: discovery/exchange_intermediate_session
@@ -1416,7 +1502,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/passwords/authenticate:
     post:
       operationId: passwords/authenticate
@@ -1441,7 +1529,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/passwords/email/reset/start:
     post:
       operationId: passwords/email_reset_start
@@ -1465,7 +1555,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/passwords/email/reset:
     post:
       operationId: passwords/email_reset
@@ -1489,7 +1581,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/passwords/existing_password/reset:
     post:
       operationId: passwords/existing_reset
@@ -1515,7 +1609,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/passwords/session/reset:
     post:
       operationId: passwords/session_reset
@@ -1540,7 +1636,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/passwords/strength_check:
     post:
       operationId: passwords/strength_check
@@ -1564,7 +1662,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/passwords/migrate:
     post:
       operationId: passwords/migrate
@@ -1590,7 +1690,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/otps/sms/send:
     post:
       operationId: mfa/sms_send
@@ -1614,7 +1716,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/totp/authenticate:
     post:
       operationId: mfa/authenticate
@@ -1639,7 +1743,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/otps/sms/authenticate:
     post:
       operationId: mfa/rotate_recovery_codes
@@ -1664,7 +1770,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/recovery_codes/rotate:
     post:
       operationId: mfa/recover
@@ -1688,7 +1796,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/public/{project_id}/oauth2/token:
     post:
       operationId: m2m/get_token
@@ -1715,7 +1825,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/m2m/clients:
     post:
       operationId: m2m/create_client
@@ -1732,7 +1844,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/m2m/clients/{client_id}:
     get:
       operationId: m2m/get_client
@@ -1750,7 +1864,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
     put:
       operationId: m2m/update_client
       tags:
@@ -1774,7 +1890,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
     delete:
       operationId: m2m/delete_client
       tags:
@@ -1791,7 +1909,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/m2m/clients/search:
     post:
       operationId: m2m/search_clients
@@ -1808,7 +1928,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/m2m/clients/{client_id}/secrets/rotate/start:
     post:
       operationId: m2m/start_secret_rotation
@@ -1828,7 +1950,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/m2m/clients/{client_id}/secrets/rotate:
     post:
       operationId: m2m/rotate_secret
@@ -1848,7 +1972,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/m2m/clients/{client_id}/secrets/rotate/cancel:
     post:
       operationId: m2m/cancel_secret_rotation
@@ -1868,7 +1994,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/otps/email/login_or_signup:
     post:
       operationId: email_otp/login_or_signup
@@ -1892,7 +2020,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/otps/email/authenticate:
     post:
       operationId: email_otp/authenticate
@@ -1909,7 +2039,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/otps/email/discovery/send:
     post:
       operationId: email_otp/send_discovery
@@ -1932,7 +2064,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/otps/email/discovery/authenticate:
     post:
       operationId: email_otp/authenticate_discovery
@@ -1956,7 +2090,9 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
   /v1/b2b/impersonation/authenticate:
     post:
       operationId: impersonation/authenticate
@@ -1979,4 +2115,6 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object

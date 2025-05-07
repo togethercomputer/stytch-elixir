@@ -8,7 +8,7 @@ defmodule Stytch.Session do
   @doc """
   Authenticate Session
   """
-  @spec authenticate(body :: map, opts :: keyword) :: {:ok, any} | :error
+  @spec authenticate(body :: map, opts :: keyword) :: {:ok, map} | :error
   def authenticate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -19,7 +19,7 @@ defmodule Stytch.Session do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -27,7 +27,7 @@ defmodule Stytch.Session do
   @doc """
   Exchange session
   """
-  @spec exchange(body :: map, opts :: keyword) :: {:ok, any} | :error
+  @spec exchange(body :: map, opts :: keyword) :: {:ok, map} | :error
   def exchange(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -38,7 +38,7 @@ defmodule Stytch.Session do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -52,7 +52,7 @@ defmodule Stytch.Session do
     * `member_id`
 
   """
-  @spec get(opts :: keyword) :: {:ok, any} | :error
+  @spec get(opts :: keyword) :: {:ok, map} | :error
   def get(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:member_id, :organization_id])
@@ -63,7 +63,7 @@ defmodule Stytch.Session do
       url: "/v1/b2b/sessions",
       method: :get,
       query: query,
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -71,7 +71,7 @@ defmodule Stytch.Session do
   @doc """
   Get JWKs
   """
-  @spec get_jwks(project_id :: String.t(), opts :: keyword) :: {:ok, any} | :error
+  @spec get_jwks(project_id :: String.t(), opts :: keyword) :: {:ok, map} | :error
   def get_jwks(project_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -80,7 +80,7 @@ defmodule Stytch.Session do
       call: {Stytch.Session, :get_jwks},
       url: "/v1/b2b/sessions/jwks/#{project_id}",
       method: :get,
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
@@ -88,7 +88,7 @@ defmodule Stytch.Session do
   @doc """
   Revoke Session
   """
-  @spec revoke(body :: map, opts :: keyword) :: {:ok, any} | :error
+  @spec revoke(body :: map, opts :: keyword) :: {:ok, map} | :error
   def revoke(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -99,7 +99,7 @@ defmodule Stytch.Session do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, :map}],
       opts: opts
     })
   end
