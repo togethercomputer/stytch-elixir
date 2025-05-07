@@ -9,7 +9,7 @@ config :oapi_generator,
     ],
     output: [
       base_module: Stytch,
-      location: "lib/stytch",
+      location: "lib",
       operation_subdirectory: "operations",
       schema_subdirectory: "schemas"
     ]
