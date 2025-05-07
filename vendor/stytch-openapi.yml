@@ -46,6 +46,555 @@ components:
         - display_name
         - identity_provider
 
+    AmazonOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    AppleOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    AuthenticationFactor:
+      type: object
+      properties:
+        type:
+          type: string
+          description: >
+            The type of authentication factor. Possible values include `magic_link`, `otp`, `oauth`, `password`, `email_otp`, `sso`, etc.
+        delivery_method:
+          type: string
+          description: >
+            The method used to deliver the authentication factor. Possible values depend on the `type`.
+        last_authenticated_at:
+          type: string
+          format: date-time
+          description: >
+            The timestamp when the factor was last authenticated.
+        created_at:
+          type: string
+          format: date-time
+          description: >
+            The timestamp when the factor was initially authenticated.
+        updated_at:
+          type: string
+          format: date-time
+          description: >
+            The timestamp when the factor was last updated.
+        email_factor:
+          $ref: "#/components/schemas/EmailFactor"
+        phone_number_factor:
+          $ref: "#/components/schemas/PhoneNumberFactor"
+        google_oauth_factor:
+          $ref: "#/components/schemas/GoogleOAuthFactor"
+        microsoft_oauth_factor:
+          $ref: "#/components/schemas/MicrosoftOAuthFactor"
+        apple_oauth_factor:
+          $ref: "#/components/schemas/AppleOAuthFactor"
+        amazon_oauth_factor:
+          $ref: "#/components/schemas/AmazonOAuthFactor"
+        webauthn_factor:
+          $ref: "#/components/schemas/WebAuthnFactor"
+        authenticator_app_factor:
+          $ref: "#/components/schemas/AuthenticatorAppFactor"
+        github_oauth_factor:
+          $ref: "#/components/schemas/GithubOAuthFactor"
+        recovery_code_factor:
+          $ref: "#/components/schemas/RecoveryCodeFactor"
+        facebook_oauth_factor:
+          $ref: "#/components/schemas/FacebookOAuthFactor"
+        crypto_wallet_factor:
+          $ref: "#/components/schemas/CryptoWalletFactor"
+        bitbucket_oauth_factor:
+          $ref: "#/components/schemas/BitbucketOAuthFactor"
+        coinbase_oauth_factor:
+          $ref: "#/components/schemas/CoinbaseOAuthFactor"
+        discord_oauth_factor:
+          $ref: "#/components/schemas/DiscordOAuthFactor"
+        figma_oauth_factor:
+          $ref: "#/components/schemas/FigmaOAuthFactor"
+        git_lab_oauth_factor:
+          $ref: "#/components/schemas/GitLabOAuthFactor"
+        instagram_oauth_factor:
+          $ref: "#/components/schemas/InstagramOAuthFactor"
+        linked_in_oauth_factor:
+          $ref: "#/components/schemas/LinkedInOAuthFactor"
+        shopify_oauth_factor:
+          $ref: "#/components/schemas/ShopifyOAuthFactor"
+        slack_oauth_factor:
+          $ref: "#/components/schemas/SlackOAuthFactor"
+        snapchat_oauth_factor:
+          $ref: "#/components/schemas/SnapchatOAuthFactor"
+        spotify_oauth_factor:
+          $ref: "#/components/schemas/SpotifyOAuthFactor"
+        steam_oauth_factor:
+          $ref: "#/components/schemas/SteamOAuthFactor"
+        tik_tok_oauth_factor:
+          $ref: "#/components/schemas/TikTokOAuthFactor"
+        twitch_oauth_factor:
+          $ref: "#/components/schemas/TwitchOAuthFactor"
+        twitter_oauth_factor:
+          $ref: "#/components/schemas/TwitterOAuthFactor"
+        embeddable_magic_link_factor:
+          $ref: "#/components/schemas/EmbeddableMagicLinkFactor"
+        biometric_factor:
+          $ref: "#/components/schemas/BiometricFactor"
+        saml_sso_factor:
+          $ref: "#/components/schemas/SAMLSSOFactor"
+        oidc_sso_factor:
+          $ref: "#/components/schemas/OIDCSSOFactor"
+        salesforce_oauth_factor:
+          $ref: "#/components/schemas/SalesforceOAuthFactor"
+        yahoo_oauth_factor:
+          $ref: "#/components/schemas/YahooOAuthFactor"
+        hubspot_oauth_factor:
+          $ref: "#/components/schemas/HubspotOAuthFactor"
+        slack_oauth_exchange_factor:
+          $ref: "#/components/schemas/SlackOAuthExchangeFactor"
+        hubspot_oauth_exchange_factor:
+          $ref: "#/components/schemas/HubspotOAuthExchangeFactor"
+        github_oauth_exchange_factor:
+          $ref: "#/components/schemas/GithubOAuthExchangeFactor"
+        google_oauth_exchange_factor:
+          $ref: "#/components/schemas/GoogleOAuthExchangeFactor"
+        impersonated_factor:
+          $ref: "#/components/schemas/ImpersonatedFactor"
+        oauth_access_token_exchange_factor:
+          $ref: "#/components/schemas/OAuthAccessTokenExchangeFactor"
+      required:
+        - type
+        - delivery_method
+
+    WebAuthnFactor:
+      type: object
+      properties:
+        webauthn_registration_id:
+          type: string
+        domain:
+          type: string
+        user_agent:
+          type: string
+      required:
+        - webauthn_registration_id
+        - domain
+
+    AuthenticatorAppFactor:
+      type: object
+      properties:
+        totp_id:
+          type: string
+      required:
+        - totp_id
+
+    GithubOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    RecoveryCodeFactor:
+      type: object
+      properties:
+        totp_recovery_code_id:
+          type: string
+      required:
+        - totp_recovery_code_id
+
+    FacebookOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    CryptoWalletFactor:
+      type: object
+      properties:
+        crypto_wallet_id:
+          type: string
+        crypto_wallet_address:
+          type: string
+        crypto_wallet_type:
+          type: string
+      required:
+        - crypto_wallet_id
+        - crypto_wallet_address
+        - crypto_wallet_type
+
+    BitbucketOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    CoinbaseOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    DiscordOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    FigmaOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    GitLabOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    InstagramOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    LinkedInOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    ShopifyOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    SlackOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    SnapchatOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    SpotifyOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    SteamOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    TikTokOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    TwitchOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    TwitterOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    EmbeddableMagicLinkFactor:
+      type: object
+      properties:
+        embedded_id:
+          type: string
+      required:
+        - embedded_id
+
+    BiometricFactor:
+      type: object
+      properties:
+        biometric_registration_id:
+          type: string
+      required:
+        - biometric_registration_id
+
+    SAMLSSOFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_id:
+          type: string
+        external_id:
+          type: string
+      required:
+        - id
+        - provider_id
+        - external_id
+
+    OIDCSSOFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_id:
+          type: string
+        external_id:
+          type: string
+      required:
+        - id
+        - provider_id
+        - external_id
+
+    SalesforceOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    YahooOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    HubspotOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+        provider_subject:
+          type: string
+        email_id:
+          type: string
+      required:
+        - id
+        - provider_subject
+
+    SlackOAuthExchangeFactor:
+      type: object
+      properties:
+        email_id:
+          type: string
+      required:
+        - email_id
+
+    HubspotOAuthExchangeFactor:
+      type: object
+      properties:
+        email_id:
+          type: string
+      required:
+        - email_id
+
+    GithubOAuthExchangeFactor:
+      type: object
+      properties:
+        email_id:
+          type: string
+      required:
+        - email_id
+
+    GoogleOAuthExchangeFactor:
+      type: object
+      properties:
+        email_id:
+          type: string
+      required:
+        - email_id
+
+    ImpersonatedFactor:
+      type: object
+      properties:
+        impersonator_id:
+          type: string
+        impersonator_email_address:
+          type: string
+      required:
+        - impersonator_id
+        - impersonator_email_address
+
+    OAuthAccessTokenExchangeFactor:
+      type: object
+      properties:
+        client_id:
+          type: string
+      required:
+        - client_id
+
+    EmailFactor:
+      type: object
+      properties:
+        email_id:
+          type: string
+          description: >
+            The globally unique UUID of the Member's email.
+        email_address:
+          type: string
+          description: >
+            The email address of the Member.
+      required:
+        - email_id
+        - email_address
+
     EmailImplicitRoleAssignment:
       type: object
       properties:
@@ -56,6 +605,60 @@ components:
       required:
         - domain
         - role_id
+
+    GoogleOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >
+            The unique ID of an OAuth registration.
+        provider_subject:
+          type: string
+          description: >
+            The unique identifier for the User within a given OAuth provider.
+        email_id:
+          type: string
+          description: >
+            The globally unique UUID of the Member's email.
+      required:
+        - id
+        - provider_subject
+
+    JWK:
+      type: object
+      properties:
+        kty:
+          type: string
+          description: Key type.
+        use:
+          type: string
+          description: Public key use.
+        key_ops:
+          type: array
+          items:
+            type: string
+          description: Key operations.
+        alg:
+          type: string
+          description: Algorithm.
+        kid:
+          type: string
+          description: Key ID.
+        x5c:
+          type: array
+          items:
+            type: string
+          description: X.509 certificate chain.
+        n:
+          type: string
+          description: RSA modulus.
+        e:
+          type: string
+          description: RSA public exponent.
+      required:
+        - kty
+        - kid
 
     Member:
       type: object
@@ -205,6 +808,78 @@ components:
             Additional metadata about the source assignment.
       required:
         - type
+
+    MemberSession:
+      type: object
+      properties:
+        member_session_id:
+          type: string
+          description: Globally unique UUID that identifies a specific Session.
+        member_id:
+          type: string
+          description: Globally unique UUID that identifies a specific Member.
+        started_at:
+          type: string
+          format: date-time
+          description: >
+            The timestamp when the Session was created. Values conform to the RFC 3339 standard and are expressed in UTC.
+        last_accessed_at:
+          type: string
+          format: date-time
+          description: >
+            The timestamp when the Session was last accessed. Values conform to the RFC 3339 standard and are expressed in UTC.
+        expires_at:
+          type: string
+          format: date-time
+          description: >
+            The timestamp when the Session expires. Values conform to the RFC 3339 standard and are expressed in UTC.
+        authentication_factors:
+          type: array
+          items:
+            $ref: "#/components/schemas/AuthenticationFactor"
+          description: An array of different authentication factors that comprise a Session.
+        organization_id:
+          type: string
+          description: >
+            Globally unique UUID that identifies a specific Organization. The `organization_id` is critical to perform operations on an Organization.
+        roles:
+          type: array
+          items:
+            type: string
+          description: A list of roles assigned to the Member in the Session.
+        custom_claims:
+          type: object
+          additionalProperties: true
+          description: >
+            The custom claims map for a Session. Claims can be added to a session during a Sessions authenticate call.
+      required:
+        - member_session_id
+        - member_id
+        - started_at
+        - last_accessed_at
+        - expires_at
+        - authentication_factors
+        - organization_id
+        - roles
+
+    MicrosoftOAuthFactor:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >
+            The unique ID of an OAuth registration.
+        provider_subject:
+          type: string
+          description: >
+            The unique identifier for the User within a given OAuth provider.
+        email_id:
+          type: string
+          description: >
+            The globally unique UUID of the Member's email.
+      required:
+        - id
+        - provider_subject
 
     OAuthRegistration:
       type: object
@@ -464,6 +1139,21 @@ components:
         - sso_active_connections
         - sso_jit_provisioning
         - sso_jit_provisioning_allowed_connections
+
+    PhoneNumberFactor:
+      type: object
+      properties:
+        phone_id:
+          type: string
+          description: >
+            The globally unique UUID of the Member's phone number.
+        phone_number:
+          type: string
+          description: >
+            The phone number of the Member.
+      required:
+        - phone_id
+        - phone_number
 
     RetiredEmail:
       type: object
