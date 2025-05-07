@@ -803,6 +803,23 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  member_id:
+                    type: string
+                  member:
+                    $ref: "#/components/schemas/Member"
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+                required:
+                  - request_id
+                  - status_code
+                  - member_id
+                  - member
+                  - organization
   /v1/b2b/organizations/members/dangerously_get/{member_id}:
     get:
       operationId: members/dangerously_get
@@ -823,6 +840,23 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  member_id:
+                    type: string
+                  member:
+                    $ref: "#/components/schemas/Member"
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+                required:
+                  - request_id
+                  - status_code
+                  - member_id
+                  - member
+                  - organization
   /v1/b2b/organizations/{organization_id}/members/{member_id}:
     put:
       operationId: members/update
@@ -861,6 +895,74 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  member_id:
+                    type: string
+                  member:
+                    $ref: "#/components/schemas/Member"
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+                required:
+                  - request_id
+                  - status_code
+                  - member_id
+                  - member
+                  - organization
+  /v1/b2b/organizations/{organization_id}/members/{member_id}/unlink_retired_email:
+    post:
+      operationId: members/unlink_retired_email
+      tags:
+        - members
+      summary: Unlink Retired Email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+        - name: member_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: member-test-a5a2f9f7-d150-49fb-94b0-adacbae82a70
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  member_id:
+                    type: string
+                  organization_id:
+                    type: string
+                  member:
+                    $ref: "#/components/schemas/Member"
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+                required:
+                  - request_id
+                  - status_code
+                  - member_id
+                  - organization_id
+                  - member
+                  - organization
     delete:
       operationId: members/delete
       tags:
@@ -886,6 +988,17 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  member_id:
+                    type: string
+                required:
+                  - request_id
+                  - status_code
+                  - member_id
   /v1/b2b/organizations/{organization_id}/members/{member_id}/reactivate:
     put:
       operationId: members/reactivate
@@ -914,6 +1027,23 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  member_id:
+                    type: string
+                  member:
+                    $ref: "#/components/schemas/Member"
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+                required:
+                  - request_id
+                  - status_code
+                  - member_id
+                  - member
+                  - organization
   /v1/b2b/organizations/members/search:
     post:
       operationId: members/search
@@ -941,6 +1071,32 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  results_metadata:
+                    type: object
+                    properties:
+                      next_cursor:
+                        type: string
+                      total:
+                        type: integer
+                  members:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Member"
+                  organizations:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Organization"
+                required:
+                  - request_id
+                  - status_code
+                  - results_metadata
+                  - members
+                  - organizations
   /v1/b2b/organizations/{organization_id}/members/passwords/{member_password_id}:
     delete:
       operationId: members/delete_password
@@ -967,6 +1123,23 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  member_id:
+                    type: string
+                  member:
+                    $ref: "#/components/schemas/Member"
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+                required:
+                  - request_id
+                  - status_code
+                  - member_id
+                  - member
+                  - organization
   /v1/b2b/organizations/{organization_id}/members/mfa_phone_numbers/{member_id}:
     delete:
       operationId: members/delete_mfa_phone_number
@@ -993,6 +1166,66 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  member_id:
+                    type: string
+                  member:
+                    $ref: "#/components/schemas/Member"
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+                required:
+                  - request_id
+                  - status_code
+                  - member_id
+                  - member
+                  - organization
+  /v1/b2b/organizations/{organization_id}/members/{member_id}/totp:
+    delete:
+      operationId: members/delete_mfa_totp
+      tags:
+        - members
+      summary: Delete Member MFA TOTP
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+        - name: member_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: member-test-a5a2f9f7-d150-49fb-94b0-adacbae82a70
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  member_id:
+                    type: string
+                  member:
+                    $ref: "#/components/schemas/Member"
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+                required:
+                  - request_id
+                  - status_code
+                  - member_id
+                  - member
+                  - organization
   /v1/b2b/rbac/policy:
     get:
       operationId: rbac/get_policy
