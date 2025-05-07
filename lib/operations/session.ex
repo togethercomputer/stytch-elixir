@@ -8,7 +8,7 @@ defmodule Stytch.Session do
   @doc """
   Authenticate Session
   """
-  @spec authenticate(map, keyword) :: {:ok, any} | :error
+  @spec authenticate(body :: map, opts :: keyword) :: {:ok, any} | :error
   def authenticate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -27,7 +27,7 @@ defmodule Stytch.Session do
   @doc """
   Exchange session
   """
-  @spec exchange(map, keyword) :: {:ok, any} | :error
+  @spec exchange(body :: map, opts :: keyword) :: {:ok, any} | :error
   def exchange(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -52,7 +52,7 @@ defmodule Stytch.Session do
     * `member_id`
 
   """
-  @spec get(keyword) :: {:ok, any} | :error
+  @spec get(opts :: keyword) :: {:ok, any} | :error
   def get(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:member_id, :organization_id])
@@ -71,7 +71,7 @@ defmodule Stytch.Session do
   @doc """
   Get JWKs
   """
-  @spec get_jwks(String.t(), keyword) :: {:ok, any} | :error
+  @spec get_jwks(project_id :: String.t(), opts :: keyword) :: {:ok, any} | :error
   def get_jwks(project_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -88,7 +88,7 @@ defmodule Stytch.Session do
   @doc """
   Revoke Session
   """
-  @spec revoke(map, keyword) :: {:ok, any} | :error
+  @spec revoke(body :: map, opts :: keyword) :: {:ok, any} | :error
   def revoke(body, opts \\ []) do
     client = opts[:client] || @default_client
 

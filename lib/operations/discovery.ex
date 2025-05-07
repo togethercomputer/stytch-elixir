@@ -8,7 +8,7 @@ defmodule Stytch.Discovery do
   @doc """
   Create Organization via Discovery
   """
-  @spec create_organization(map, keyword) :: {:ok, any} | :error
+  @spec create_organization(body :: map, opts :: keyword) :: {:ok, any} | :error
   def create_organization(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -27,7 +27,7 @@ defmodule Stytch.Discovery do
   @doc """
   Exchange intermediate session
   """
-  @spec exchange_intermediate_session(map, keyword) :: {:ok, any} | :error
+  @spec exchange_intermediate_session(body :: map, opts :: keyword) :: {:ok, any} | :error
   def exchange_intermediate_session(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -46,7 +46,7 @@ defmodule Stytch.Discovery do
   @doc """
   List discovered Organizations
   """
-  @spec list(map, keyword) :: {:ok, any} | :error
+  @spec list(body :: map, opts :: keyword) :: {:ok, any} | :error
   def list(body, opts \\ []) do
     client = opts[:client] || @default_client
 

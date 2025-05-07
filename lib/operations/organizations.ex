@@ -14,7 +14,7 @@ defmodule Stytch.Organizations do
   @doc """
   Create an Organization
   """
-  @spec create(map, keyword) :: {:ok, map} | :error
+  @spec create(body :: map, opts :: keyword) :: {:ok, map} | :error
   def create(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -33,7 +33,7 @@ defmodule Stytch.Organizations do
   @doc """
   Delete an Organization
   """
-  @spec delete(String.t(), keyword) :: {:ok, any} | :error
+  @spec delete(organization_id :: String.t(), opts :: keyword) :: {:ok, any} | :error
   def delete(organization_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -50,7 +50,7 @@ defmodule Stytch.Organizations do
   @doc """
   Get an Organization
   """
-  @spec get(String.t(), keyword) :: {:ok, any} | :error
+  @spec get(organization_id :: String.t(), opts :: keyword) :: {:ok, any} | :error
   def get(organization_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -67,7 +67,7 @@ defmodule Stytch.Organizations do
   @doc """
   Search for Organizations
   """
-  @spec search(map, keyword) :: {:ok, any} | :error
+  @spec search(body :: map, opts :: keyword) :: {:ok, map} | :error
   def search(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -86,7 +86,7 @@ defmodule Stytch.Organizations do
   @doc """
   Update an Organization
   """
-  @spec update(String.t(), map, keyword) :: {:ok, any} | :error
+  @spec update(organization_id :: String.t(), body :: map, opts :: keyword) :: {:ok, any} | :error
   def update(organization_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 

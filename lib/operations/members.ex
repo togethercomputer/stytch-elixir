@@ -8,7 +8,7 @@ defmodule Stytch.Members do
   @doc """
   Create a Member
   """
-  @spec create(String.t(), map, keyword) :: {:ok, any} | :error
+  @spec create(organization_id :: String.t(), body :: map, opts :: keyword) :: {:ok, any} | :error
   def create(organization_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -27,7 +27,7 @@ defmodule Stytch.Members do
   @doc """
   Get a Member (Dangerous)
   """
-  @spec dangerously_get(String.t(), keyword) :: {:ok, any} | :error
+  @spec dangerously_get(member_id :: String.t(), opts :: keyword) :: {:ok, any} | :error
   def dangerously_get(member_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -44,7 +44,8 @@ defmodule Stytch.Members do
   @doc """
   Delete a Member
   """
-  @spec delete(String.t(), String.t(), keyword) :: {:ok, any} | :error
+  @spec delete(organization_id :: String.t(), member_id :: String.t(), opts :: keyword) ::
+          {:ok, any} | :error
   def delete(organization_id, member_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -61,7 +62,11 @@ defmodule Stytch.Members do
   @doc """
   Delete Member MFA phone number
   """
-  @spec delete_mfa_phone_number(String.t(), String.t(), keyword) :: {:ok, any} | :error
+  @spec delete_mfa_phone_number(
+          organization_id :: String.t(),
+          member_id :: String.t(),
+          opts :: keyword
+        ) :: {:ok, any} | :error
   def delete_mfa_phone_number(organization_id, member_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -78,7 +83,11 @@ defmodule Stytch.Members do
   @doc """
   Delete Member password
   """
-  @spec delete_password(String.t(), String.t(), keyword) :: {:ok, any} | :error
+  @spec delete_password(
+          organization_id :: String.t(),
+          member_password_id :: String.t(),
+          opts :: keyword
+        ) :: {:ok, any} | :error
   def delete_password(organization_id, member_password_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -100,7 +109,7 @@ defmodule Stytch.Members do
     * `member_id`: Get member by ID
 
   """
-  @spec get(String.t(), keyword) :: {:ok, any} | :error
+  @spec get(organization_id :: String.t(), opts :: keyword) :: {:ok, any} | :error
   def get(organization_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:member_id])
@@ -119,7 +128,8 @@ defmodule Stytch.Members do
   @doc """
   Reactivate a Member
   """
-  @spec reactivate(String.t(), String.t(), keyword) :: {:ok, any} | :error
+  @spec reactivate(organization_id :: String.t(), member_id :: String.t(), opts :: keyword) ::
+          {:ok, any} | :error
   def reactivate(organization_id, member_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -136,7 +146,7 @@ defmodule Stytch.Members do
   @doc """
   Search for Members
   """
-  @spec search(map, keyword) :: {:ok, any} | :error
+  @spec search(body :: map, opts :: keyword) :: {:ok, any} | :error
   def search(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -155,7 +165,12 @@ defmodule Stytch.Members do
   @doc """
   Update a Member
   """
-  @spec update(String.t(), String.t(), map, keyword) :: {:ok, any} | :error
+  @spec update(
+          organization_id :: String.t(),
+          member_id :: String.t(),
+          body :: map,
+          opts :: keyword
+        ) :: {:ok, any} | :error
   def update(organization_id, member_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 

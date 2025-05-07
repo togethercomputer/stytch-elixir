@@ -8,7 +8,7 @@ defmodule Stytch.Mfa do
   @doc """
   Authenticate
   """
-  @spec authenticate(map, keyword) :: {:ok, any} | :error
+  @spec authenticate(body :: map, opts :: keyword) :: {:ok, any} | :error
   def authenticate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -27,7 +27,7 @@ defmodule Stytch.Mfa do
   @doc """
   Recover
   """
-  @spec recover(map, keyword) :: {:ok, any} | :error
+  @spec recover(body :: map, opts :: keyword) :: {:ok, any} | :error
   def recover(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -46,7 +46,7 @@ defmodule Stytch.Mfa do
   @doc """
   Rotate recovery codes
   """
-  @spec rotate_recovery_codes(map, keyword) :: {:ok, any} | :error
+  @spec rotate_recovery_codes(body :: map, opts :: keyword) :: {:ok, any} | :error
   def rotate_recovery_codes(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -65,7 +65,7 @@ defmodule Stytch.Mfa do
   @doc """
   OTP SMS Send
   """
-  @spec sms_send(map, keyword) :: {:ok, any} | :error
+  @spec sms_send(body :: map, opts :: keyword) :: {:ok, any} | :error
   def sms_send(body, opts \\ []) do
     client = opts[:client] || @default_client
 
