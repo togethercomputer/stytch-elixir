@@ -387,7 +387,25 @@ paths:
         "200":
           description: Successful response
           content:
-            application/json: {}
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                  statusCode:
+                    type: integer
+                  results_metadata:
+                    type: object
+                    properties:
+                      next_cursor:
+                        type: string
+                      total:
+                        type: integer
+                  organizations:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Organization"
   /v1/b2b/organizations/{organization_id}/members:
     post:
       operationId: members/create

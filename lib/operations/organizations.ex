@@ -64,6 +64,18 @@ defmodule Stytch.Organizations do
     })
   end
 
+  @type search_200_json_resp_results_metadata :: %{
+          next_cursor: String.t() | nil,
+          total: integer | nil
+        }
+
+  @type search_200_json_resp :: %{
+          organizations: [Stytch.Organization.t()] | nil,
+          request_id: String.t() | nil,
+          results_metadata: Stytch.Organizations.search_200_json_resp_results_metadata() | nil,
+          statusCode: integer | nil
+        }
+
   @doc """
   Search for Organizations
   """
@@ -78,7 +90,7 @@ defmodule Stytch.Organizations do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :unknown}],
+      response: [{200, {Stytch.Organizations, :search_200_json_resp}}],
       opts: opts
     })
   end
@@ -110,5 +122,18 @@ defmodule Stytch.Organizations do
       request_id: {:string, :generic},
       statusCode: :integer
     ]
+  end
+
+  def __fields__(:search_200_json_resp) do
+    [
+      organizations: [{Stytch.Organization, :t}],
+      request_id: {:string, :generic},
+      results_metadata: {Stytch.Organizations, :search_200_json_resp_results_metadata},
+      statusCode: :integer
+    ]
+  end
+
+  def __fields__(:search_200_json_resp_results_metadata) do
+    [next_cursor: {:string, :generic}, total: :integer]
   end
 end
