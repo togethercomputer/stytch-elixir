@@ -5,9 +5,9 @@ defmodule Stytch.ActiveSCIMConnection do
 
   @type t :: %__MODULE__{
           bearer_token_expires_at: DateTime.t() | nil,
-          bearer_token_last_four: String.t() | nil,
-          connection_id: String.t() | nil,
-          display_name: String.t() | nil
+          bearer_token_last_four: String.t(),
+          connection_id: String.t(),
+          display_name: String.t()
         }
 
   defstruct [:bearer_token_expires_at, :bearer_token_last_four, :connection_id, :display_name]

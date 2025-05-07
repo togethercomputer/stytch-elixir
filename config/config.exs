@@ -3,6 +3,9 @@ import Config
 config :oapi_generator,
   default: [
     naming: [
+      group: [
+        Member
+      ],
       rename: [
         {~r/MultiFactorAuthenticationMFAOneTimePasscodesOTPsForMFA/, "OTP"}
       ]

@@ -27,6 +27,10 @@ components:
         bearer_token_expires_at:
           type: string
           format: date-time
+      required:
+        - connection_id
+        - display_name
+        - bearer_token_last_four
 
     ActiveSSOConnection:
       type: object
@@ -35,14 +39,200 @@ components:
           type: string
         display_name:
           type: string
+        identity_provider:
+          type: string
+      required:
+        - connection_id
+        - display_name
+        - identity_provider
 
     EmailImplicitRoleAssignment:
       type: object
       properties:
         domain:
           type: string
-        role:
+        role_id:
           type: string
+      required:
+        - domain
+        - role_id
+
+    Member:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          description: >-
+            Globally unique UUID that identifies a specific Organization.
+        member_id:
+          type: string
+          description: >-
+            Globally unique UUID that identifies a specific Member.
+        email_address:
+          type: string
+          description: The email address of the Member.
+        status:
+          type: string
+          description: >-
+            The status of the Member. The possible values are: `pending`, `invited`, `active`, or `deleted`.
+        name:
+          type: string
+          description: The name of the Member.
+        sso_registrations:
+          type: array
+          items:
+            $ref: "#/components/schemas/SSORegistration"
+        is_breakglass:
+          type: boolean
+          description: >-
+            Identifies the Member as a break glass user for emergency access.
+        member_password_id:
+          type: string
+          description: >-
+            Globally unique UUID that identifies a Member's password.
+        oauth_registrations:
+          type: array
+          items:
+            $ref: "#/components/schemas/OAuthRegistration"
+        email_address_verified:
+          type: boolean
+          description: >-
+            Whether or not the Member's email address is verified.
+        mfa_phone_number_verified:
+          type: boolean
+          description: >-
+            Whether or not the Member's phone number is verified.
+        is_admin:
+          type: boolean
+          description: >-
+            Whether or not the Member has the `stytch_admin` Role.
+        totp_registration_id:
+          type: string
+          description: >-
+            Globally unique UUID that identifies a Member's TOTP registration.
+        retired_email_addresses:
+          type: array
+          items:
+            $ref: "#/components/schemas/RetiredEmail"
+        mfa_enrolled:
+          type: boolean
+          description: >-
+            Whether the Member is enrolled in MFA.
+        mfa_phone_number:
+          type: string
+          description: >-
+            The Member's phone number. A Member may only have one phone number.
+        default_mfa_method:
+          type: string
+          description: >-
+            The default MFA method for the Member.
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/MemberRole"
+        trusted_metadata:
+          type: object
+          additionalProperties: true
+          description: >-
+            An arbitrary JSON object for storing application-specific data or identity-provider-specific data.
+        untrusted_metadata:
+          type: object
+          additionalProperties: true
+          description: >-
+            An arbitrary JSON object of application-specific data.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp of the Member's creation.
+        updated_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp of when the Member was last updated.
+        scim_registration:
+          $ref: "#/components/schemas/SCIMRegistration"
+        external_id:
+          type: string
+          description: >-
+            The ID of the member given by the identity provider.
+      required:
+        - organization_id
+        - member_id
+        - email_address
+        - status
+        - name
+        - sso_registrations
+        - is_breakglass
+        - member_password_id
+        - oauth_registrations
+        - email_address_verified
+        - mfa_phone_number_verified
+        - is_admin
+        - totp_registration_id
+        - retired_email_addresses
+        - mfa_enrolled
+        - mfa_phone_number
+        - default_mfa_method
+        - roles
+
+    MemberRole:
+      type: object
+      properties:
+        role_id:
+          type: string
+          description: >-
+            The unique identifier of the RBAC Role.
+        sources:
+          type: array
+          items:
+            $ref: "#/components/schemas/MemberRoleSource"
+      required:
+        - role_id
+        - sources
+
+    MemberRoleSource:
+      type: object
+      properties:
+        type:
+          type: string
+          description: >-
+            The type of role assignment.
+        details:
+          type: object
+          additionalProperties: true
+          description: >-
+            Additional metadata about the source assignment.
+      required:
+        - type
+
+    OAuthRegistration:
+      type: object
+      properties:
+        provider_type:
+          type: string
+          description: >-
+            Denotes the OAuth identity provider the user has authenticated with.
+        provider_subject:
+          type: string
+          description: >-
+            The unique identifier for the User within a given OAuth provider.
+        member_oauth_registration_id:
+          type: string
+          description: >-
+            The unique ID of an OAuth registration.
+        profile_picture_url:
+          type: string
+          description: >-
+            If available, the URL of the User's profile picture set in the OAuth provider.
+        locale:
+          type: string
+          description: >-
+            If available, the Member's locale set in the OAuth provider.
+      required:
+        - provider_type
+        - provider_subject
+        - member_oauth_registration_id
 
     Organization:
       type: object
@@ -275,6 +465,70 @@ components:
         - sso_jit_provisioning
         - sso_jit_provisioning_allowed_connections
 
+    RetiredEmail:
+      type: object
+      properties:
+        email_id:
+          type: string
+          description: >-
+            The globally unique UUID of a Member's email.
+        email_address:
+          type: string
+          description: >-
+            The email address of the Member.
+      required:
+        - email_id
+        - email_address
+
+    SCIMRegistration:
+      type: object
+      properties:
+        connection_id:
+          type: string
+          description: >-
+            The ID of the SCIM connection.
+        registration_id:
+          type: string
+          description: >-
+            The unique ID of a SCIM Registration.
+        external_id:
+          type: string
+          description: >-
+            The ID of the member given by the identity provider.
+        scim_attributes:
+          type: object
+          additionalProperties: true
+          description: >-
+            An object for storing SCIM attributes brought over from the identity provider.
+      required:
+        - connection_id
+        - registration_id
+
+    SSORegistration:
+      type: object
+      properties:
+        connection_id:
+          type: string
+          description: >-
+            Globally unique UUID that identifies a specific SSO `connection_id` for a Member.
+        external_id:
+          type: string
+          description: >-
+            The ID of the member given by the identity provider.
+        registration_id:
+          type: string
+          description: >-
+            The unique ID of an SSO Registration.
+        sso_attributes:
+          type: object
+          additionalProperties: true
+          description: >-
+            An object for storing SSO attributes brought over from the identity provider.
+      required:
+        - connection_id
+        - external_id
+        - registration_id
+
   securitySchemes:
     noauthAuth:
       type: http
@@ -506,6 +760,23 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  member_id:
+                    type: string
+                  member:
+                    $ref: "#/components/schemas/Member"
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+                required:
+                  - request_id
+                  - status_code
+                  - member_id
+                  - member
+                  - organization
   /v1/b2b/organizations/{organization_id}/member:
     get:
       operationId: members/get

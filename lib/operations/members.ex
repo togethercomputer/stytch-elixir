@@ -5,6 +5,14 @@ defmodule Stytch.Members do
 
   @default_client Stytch.Client
 
+  @type create_200_json_resp :: %{
+          member: Stytch.Member.t(),
+          member_id: String.t(),
+          organization: Stytch.Organization.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
+
   @doc """
   Create a Member
   """
@@ -19,7 +27,7 @@ defmodule Stytch.Members do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, {Stytch.Members, :create_200_json_resp}}],
       opts: opts
     })
   end
@@ -184,5 +192,17 @@ defmodule Stytch.Members do
       response: [{200, :map}],
       opts: opts
     })
+  end
+
+  @doc false
+  @spec __fields__(atom) :: keyword
+  def __fields__(:create_200_json_resp) do
+    [
+      member: {Stytch.Member, :t},
+      member_id: {:string, :generic},
+      organization: {Stytch.Organization, :t},
+      request_id: {:string, :generic},
+      status_code: :integer
+    ]
   end
 end

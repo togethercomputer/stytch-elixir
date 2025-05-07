@@ -3,15 +3,15 @@ defmodule Stytch.EmailImplicitRoleAssignment do
   Provides struct and type for a EmailImplicitRoleAssignment
   """
 
-  @type t :: %__MODULE__{domain: String.t() | nil, role: String.t() | nil}
+  @type t :: %__MODULE__{domain: String.t(), role_id: String.t()}
 
-  defstruct [:domain, :role]
+  defstruct [:domain, :role_id]
 
   @doc false
   @spec __fields__(atom) :: keyword
   def __fields__(type \\ :t)
 
   def __fields__(:t) do
-    [domain: {:string, :generic}, role: {:string, :generic}]
+    [domain: {:string, :generic}, role_id: {:string, :generic}]
   end
 end
