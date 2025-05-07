@@ -255,6 +255,26 @@ components:
           description: >-
             The timestamp of when the Organization was last updated.
             Values conform to the RFC 3339 standard and are expressed in UTC, e.g. 2021-12-29T12:33:09Z.
+      required:
+        - allowed_auth_methods
+        - allowed_mfa_methods
+        - auth_methods
+        - claimed_email_domains
+        - email_allowed_domains
+        - email_invites
+        - email_jit_provisioning
+        - mfa_methods
+        - mfa_policy
+        - oauth_tenant_jit_provisioning
+        - organization_id
+        - organization_logo_url
+        - organization_name
+        - organization_slug
+        - rbac_email_implicit_role_assignments
+        - sso_active_connections
+        - sso_jit_provisioning
+        - sso_jit_provisioning_allowed_connections
+
   securitySchemes:
     noauthAuth:
       type: http
@@ -294,10 +314,14 @@ paths:
                 properties:
                   request_id:
                     type: string
-                  statusCode:
+                  status_code:
                     type: integer
                   organization:
                     $ref: "#/components/schemas/Organization"
+                required:
+                  - request_id
+                  - status_code
+                  - organization
   /v1/b2b/organizations/{organization_id}:
     get:
       operationId: organizations/get
@@ -318,6 +342,17 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+                required:
+                  - request_id
+                  - status_code
+                  - organization
     put:
       operationId: organizations/update
       tags:
@@ -351,6 +386,17 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+                required:
+                  - request_id
+                  - status_code
+                  - organization
     delete:
       operationId: organizations/delete
       tags:
@@ -370,6 +416,17 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  organization_id:
+                    type: string
+                required:
+                  - request_id
+                  - status_code
+                  - organization_id
   /v1/b2b/organizations/search:
     post:
       operationId: organizations/search
@@ -399,7 +456,7 @@ paths:
                 properties:
                   request_id:
                     type: string
-                  statusCode:
+                  status_code:
                     type: integer
                   results_metadata:
                     type: object
@@ -412,6 +469,11 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Organization"
+                required:
+                  - request_id
+                  - status_code
+                  - results_metadata
+                  - organizations
   /v1/b2b/organizations/{organization_id}/members:
     post:
       operationId: members/create

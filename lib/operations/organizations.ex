@@ -6,9 +6,9 @@ defmodule Stytch.Organizations do
   @default_client Stytch.Client
 
   @type create_200_json_resp :: %{
-          organization: Stytch.Organization.t() | nil,
-          request_id: String.t() | nil,
-          statusCode: integer | nil
+          organization: Stytch.Organization.t(),
+          request_id: String.t(),
+          status_code: integer
         }
 
   @doc """
@@ -30,6 +30,12 @@ defmodule Stytch.Organizations do
     })
   end
 
+  @type delete_200_json_resp :: %{
+          organization_id: String.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
+
   @doc """
   Delete an Organization
   """
@@ -42,10 +48,16 @@ defmodule Stytch.Organizations do
       call: {Stytch.Organizations, :delete},
       url: "/v1/b2b/organizations/#{organization_id}",
       method: :delete,
-      response: [{200, :map}],
+      response: [{200, {Stytch.Organizations, :delete_200_json_resp}}],
       opts: opts
     })
   end
+
+  @type get_200_json_resp :: %{
+          organization: Stytch.Organization.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
 
   @doc """
   Get an Organization
@@ -59,7 +71,7 @@ defmodule Stytch.Organizations do
       call: {Stytch.Organizations, :get},
       url: "/v1/b2b/organizations/#{organization_id}",
       method: :get,
-      response: [{200, :map}],
+      response: [{200, {Stytch.Organizations, :get_200_json_resp}}],
       opts: opts
     })
   end
@@ -70,10 +82,10 @@ defmodule Stytch.Organizations do
         }
 
   @type search_200_json_resp :: %{
-          organizations: [Stytch.Organization.t()] | nil,
-          request_id: String.t() | nil,
-          results_metadata: Stytch.Organizations.search_200_json_resp_results_metadata() | nil,
-          statusCode: integer | nil
+          organizations: [Stytch.Organization.t()],
+          request_id: String.t(),
+          results_metadata: Stytch.Organizations.search_200_json_resp_results_metadata(),
+          status_code: integer
         }
 
   @doc """
@@ -95,6 +107,12 @@ defmodule Stytch.Organizations do
     })
   end
 
+  @type update_200_json_resp :: %{
+          organization: Stytch.Organization.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
+
   @doc """
   Update an Organization
   """
@@ -109,7 +127,7 @@ defmodule Stytch.Organizations do
       body: body,
       method: :put,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, {Stytch.Organizations, :update_200_json_resp}}],
       opts: opts
     })
   end
@@ -120,7 +138,19 @@ defmodule Stytch.Organizations do
     [
       organization: {Stytch.Organization, :t},
       request_id: {:string, :generic},
-      statusCode: :integer
+      status_code: :integer
+    ]
+  end
+
+  def __fields__(:delete_200_json_resp) do
+    [organization_id: {:string, :generic}, request_id: {:string, :generic}, status_code: :integer]
+  end
+
+  def __fields__(:get_200_json_resp) do
+    [
+      organization: {Stytch.Organization, :t},
+      request_id: {:string, :generic},
+      status_code: :integer
     ]
   end
 
@@ -129,11 +159,19 @@ defmodule Stytch.Organizations do
       organizations: [{Stytch.Organization, :t}],
       request_id: {:string, :generic},
       results_metadata: {Stytch.Organizations, :search_200_json_resp_results_metadata},
-      statusCode: :integer
+      status_code: :integer
     ]
   end
 
   def __fields__(:search_200_json_resp_results_metadata) do
     [next_cursor: {:string, :generic}, total: :integer]
+  end
+
+  def __fields__(:update_200_json_resp) do
+    [
+      organization: {Stytch.Organization, :t},
+      request_id: {:string, :generic},
+      status_code: :integer
+    ]
   end
 end
