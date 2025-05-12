@@ -76,16 +76,16 @@ defmodule Stytch.Organizations do
     })
   end
 
-  @type search_200_json_resp_results_metadata :: %{
-          next_cursor: String.t() | nil,
-          total: integer | nil
-        }
-
   @type search_200_json_resp :: %{
           organizations: [Stytch.Organization.t()],
           request_id: String.t(),
           results_metadata: Stytch.Organizations.search_200_json_resp_results_metadata(),
           status_code: integer
+        }
+
+  @type search_200_json_resp_results_metadata :: %{
+          next_cursor: String.t() | nil,
+          total: integer | nil
         }
 
   @doc """

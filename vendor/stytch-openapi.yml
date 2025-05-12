@@ -224,6 +224,49 @@ components:
         - id
         - provider_subject
 
+    Connection:
+      type: object
+      properties:
+        organization_id:
+          type: string
+        connection_id:
+          type: string
+        external_organization_id:
+          type: string
+        external_connection_id:
+          type: string
+        display_name:
+          type: string
+        status:
+          type: string
+        external_connection_implicit_role_assignments:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConnectionImplicitRoleAssignment"
+        external_group_implicit_role_assignments:
+          type: array
+          items:
+            $ref: "#/components/schemas/GroupImplicitRoleAssignment"
+      required:
+        - organization_id
+        - connection_id
+        - external_organization_id
+        - external_connection_id
+        - display_name
+        - status
+        - external_connection_implicit_role_assignments
+        - external_group_implicit_role_assignments
+
+    ConnectionImplicitRoleAssignment:
+      type: object
+      properties:
+        role_id:
+          type: string
+          description: >
+            The unique identifier of the RBAC Role, provided by the developer and intended to be human-readable.
+      required:
+        - role_id
+
     CryptoWalletFactor:
       type: object
       properties:
@@ -371,6 +414,21 @@ components:
       required:
         - id
         - provider_subject
+
+    GroupImplicitRoleAssignment:
+      type: object
+      properties:
+        role_id:
+          type: string
+          description: >
+            The unique identifier of the RBAC Role, provided by the developer and intended to be human-readable.
+        group:
+          type: string
+          description: >
+            The name of the group that grants the specified role assignment.
+      required:
+        - role_id
+        - group
 
     HubspotOAuthExchangeFactor:
       type: object
@@ -722,6 +780,84 @@ components:
         - provider_subject
         - member_oauth_registration_id
 
+    OIDCConnection:
+      type: object
+      properties:
+        organization_id:
+          type: string
+        connection_id:
+          type: string
+        status:
+          type: string
+        display_name:
+          type: string
+        redirect_url:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        issuer:
+          type: string
+        authorization_url:
+          type: string
+        token_url:
+          type: string
+        userinfo_url:
+          type: string
+        jwks_url:
+          type: string
+        identity_provider:
+          type: string
+        custom_scopes:
+          type: string
+        attribute_mapping:
+          type: object
+          additionalProperties: true
+      required:
+        - organization_id
+        - connection_id
+        - status
+        - display_name
+        - redirect_url
+        - client_id
+        - client_secret
+        - issuer
+        - authorization_url
+        - token_url
+        - userinfo_url
+        - jwks_url
+        - identity_provider
+        - custom_scopes
+
+    OIDCProviderInfo:
+      type: object
+      properties:
+        provider_subject:
+          type: string
+        id_token:
+          type: string
+        access_token:
+          type: string
+        access_token_expires_at:
+          type: string
+          format: date-time
+        scopes:
+          type: array
+          items:
+            type: string
+        connection_id:
+          type: string
+        refresh_token:
+          type: string
+      required:
+        - provider_subject
+        - id_token
+        - access_token
+        - access_token_expires_at
+        - scopes
+        - connection_id
+
     OIDCSSOFactor:
       type: object
       properties:
@@ -1005,6 +1141,98 @@ components:
         - email_id
         - email_address
 
+    SAMLConnection:
+      type: object
+      properties:
+        organization_id:
+          type: string
+        connection_id:
+          type: string
+        status:
+          type: string
+        idp_entity_id:
+          type: string
+        display_name:
+          type: string
+        idp_sso_url:
+          type: string
+        acs_url:
+          type: string
+        audience_uri:
+          type: string
+        signing_certificates:
+          type: array
+          items:
+            $ref: "#/components/schemas/X509Certificate"
+        verification_certificates:
+          type: array
+          items:
+            $ref: "#/components/schemas/X509Certificate"
+        saml_connection_implicit_role_assignments:
+          type: array
+          items:
+            $ref: "#/components/schemas/SAMLConnectionImplicitRoleAssignment"
+        saml_group_implicit_role_assignments:
+          type: array
+          items:
+            $ref: "#/components/schemas/SAMLGroupImplicitRoleAssignment"
+        alternative_audience_uri:
+          type: string
+        identity_provider:
+          type: string
+        nameid_format:
+          type: string
+        alternative_acs_url:
+          type: string
+        idp_initiated_auth_disabled:
+          type: boolean
+        attribute_mapping:
+          type: object
+          additionalProperties: true
+      required:
+        - organization_id
+        - connection_id
+        - status
+        - idp_entity_id
+        - display_name
+        - idp_sso_url
+        - acs_url
+        - audience_uri
+        - signing_certificates
+        - verification_certificates
+        - saml_connection_implicit_role_assignments
+        - saml_group_implicit_role_assignments
+        - alternative_audience_uri
+        - identity_provider
+        - nameid_format
+        - alternative_acs_url
+        - idp_initiated_auth_disabled
+
+    SAMLConnectionImplicitRoleAssignment:
+      type: object
+      properties:
+        role_id:
+          type: string
+          description: >
+            The unique identifier of the RBAC Role, provided by the developer and intended to be human-readable.
+      required:
+        - role_id
+
+    SAMLGroupImplicitRoleAssignment:
+      type: object
+      properties:
+        role_id:
+          type: string
+          description: >
+            The unique identifier of the RBAC Role, provided by the developer and intended to be human-readable.
+        group:
+          type: string
+          description: >
+            The name of the group that grants the specified role assignment.
+      required:
+        - role_id
+        - group
+
     SAMLSSOFactor:
       type: object
       properties:
@@ -1205,6 +1433,29 @@ components:
       required:
         - webauthn_registration_id
         - domain
+
+    X509Certificate:
+      type: object
+      properties:
+        certificate_id:
+          type: string
+        certificate:
+          type: string
+        issuer:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - certificate_id
+        - certificate
+        - issuer
 
     YahooOAuthFactor:
       type: object
@@ -2479,6 +2730,17 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  connection:
+                    $ref: "#/components/schemas/SAMLConnection"
+                required:
+                  - request_id
+                  - status_code
+                  - connection
   /v1/b2b/sso/saml/{organization_id}/connections/{connection_id}:
     put:
       operationId: sso/update_saml
@@ -2517,6 +2779,17 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  connection:
+                    $ref: "#/components/schemas/SAMLConnection"
+                required:
+                  - request_id
+                  - status_code
+                  - connection
   /v1/b2b/sso/saml/{organization_id}/connections/{connection_id}/url:
     put:
       operationId: sso/update_saml_by_metadata_url
@@ -2550,6 +2823,17 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  connection:
+                    $ref: "#/components/schemas/SAMLConnection"
+                required:
+                  - request_id
+                  - status_code
+                  - connection
   /v1/b2b/sso/oidc/{organization_id}:
     post:
       operationId: sso/create_oidc
@@ -2580,6 +2864,17 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  connection:
+                    $ref: "#/components/schemas/OIDCConnection"
+                required:
+                  - request_id
+                  - status_code
+                  - connection
   /v1/b2b/sso/oidc/{organization_id}/connections/{connection_id}:
     put:
       operationId: sso/update_oidc
@@ -2618,6 +2913,59 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  connection:
+                    $ref: "#/components/schemas/OIDCConnection"
+                  warning:
+                    type: string
+                required:
+                  - request_id
+                  - status_code
+                  - connection
+                  - warning
+  /v1/b2b/organizations/{organization_id}/members/{member_id}/oidc_providers:
+    get:
+      operationId: sso/get_oidc_access_token
+      tags:
+        - sso
+      summary: Get OIDC Access Token
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+        - name: member_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: member-test-a5a2f9f7-d150-49fb-94b0-adacbae82a70
+        - name: include_refresh_token
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  registrations:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/OIDCProviderInfo"
   /v1/b2b/sso/{organization_id}:
     get:
       operationId: sso/get_connections
@@ -2638,6 +2986,29 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  saml_connections:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SAMLConnection"
+                  oidc_connections:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/OIDCConnection"
+                  external_connections:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Connection"
+                required:
+                  - request_id
+                  - status_code
+                  - saml_connections
+                  - oidc_connections
+                  - external_connections
   /v1/b2b/sso/{organization_id}/connections/{connection_id}:
     delete:
       operationId: sso/delete_connection
@@ -2664,6 +3035,17 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  connection_id:
+                    type: string
+                required:
+                  - request_id
+                  - status_code
+                  - connection_id
   /v1/public/sso/start:
     get:
       operationId: sso/start
@@ -2688,6 +3070,17 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  redirect_url:
+                    type: string
+                required:
+                  - request_id
+                  - status_code
+                  - redirect_url
   /v1/b2b/sso/authenticate:
     post:
       operationId: sso/complete
@@ -2714,6 +3107,45 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  member_id:
+                    type: string
+                  organization_id:
+                    type: string
+                  member:
+                    $ref: "#/components/schemas/Member"
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+                  session_token:
+                    type: string
+                  session_jwt:
+                    type: string
+                  intermediate_session_token:
+                    type: string
+                  member_authenticated:
+                    type: boolean
+                  mfa_required:
+                    type: boolean
+                  member_session:
+                    $ref: "#/components/schemas/MemberSession"
+                  reset_session:
+                    type: boolean
+                required:
+                  - request_id
+                  - status_code
+                  - member_id
+                  - organization_id
+                  - member
+                  - organization
+                  - session_token
+                  - session_jwt
+                  - intermediate_session_token
+                  - member_authenticated
+                  - reset_session
   /v1/b2b/sso/saml/{organization_id}/connections/{connection_id}/verification_certificates/{certificate_id}:
     delete:
       operationId: sso/delete_saml_verification_certificate
@@ -2746,6 +3178,17 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  connection:
+                    $ref: "#/components/schemas/SAMLConnection"
+                required:
+                  - request_id
+                  - status_code
+                  - connection
   /v1/b2b/sso/external/{organization_id}:
     post:
       operationId: sso/create_external_connection
@@ -2783,6 +3226,17 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  connection:
+                    $ref: "#/components/schemas/Connection"
+                required:
+                  - request_id
+                  - status_code
+                  - connection
   /v1/b2b/sso/external/{organization_id}/connections/{connection_id}:
     put:
       operationId: sso/update_external_connection
@@ -2826,6 +3280,17 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  connection:
+                    $ref: "#/components/schemas/Connection"
+                required:
+                  - request_id
+                  - status_code
+                  - connection
   /v1/b2b/discovery/organizations:
     post:
       operationId: discovery/list
