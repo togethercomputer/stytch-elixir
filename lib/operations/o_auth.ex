@@ -1,6 +1,6 @@
-defmodule Stytch.Oauth do
+defmodule Stytch.OAuth do
   @moduledoc """
-  Provides API endpoints related to oauth
+  Provides API endpoints related to o auth
   """
 
   @default_client Stytch.Client
@@ -14,7 +14,7 @@ defmodule Stytch.Oauth do
 
     client.request(%{
       args: [body: body],
-      call: {Stytch.Oauth, :authenticate},
+      call: {Stytch.OAuth, :authenticate},
       url: "/v1/b2b/oauth/authenticate",
       body: body,
       method: :post,
@@ -33,7 +33,7 @@ defmodule Stytch.Oauth do
 
     client.request(%{
       args: [body: body],
-      call: {Stytch.Oauth, :authenticate_discovery},
+      call: {Stytch.OAuth, :authenticate_discovery},
       url: "/v1/b2b/oauth/discovery/authenticate",
       body: body,
       method: :post,
@@ -58,7 +58,7 @@ defmodule Stytch.Oauth do
 
     client.request(%{
       args: [],
-      call: {Stytch.Oauth, :discovery_google},
+      call: {Stytch.OAuth, :discovery_google},
       url: "/v1/b2b/public/oauth/google/discovery/start",
       method: :get,
       query: query,
@@ -82,7 +82,7 @@ defmodule Stytch.Oauth do
 
     client.request(%{
       args: [],
-      call: {Stytch.Oauth, :discovery_microsoft},
+      call: {Stytch.OAuth, :discovery_microsoft},
       url: "/v1/b2b/public/oauth/microsoft/discovery/start",
       method: :get,
       query: query,
@@ -106,7 +106,7 @@ defmodule Stytch.Oauth do
 
     client.request(%{
       args: [],
-      call: {Stytch.Oauth, :login_google},
+      call: {Stytch.OAuth, :login_google},
       url: "/v1/b2b/public/oauth/google/start",
       method: :get,
       query: query,
@@ -130,7 +130,7 @@ defmodule Stytch.Oauth do
 
     client.request(%{
       args: [],
-      call: {Stytch.Oauth, :login_microsoft},
+      call: {Stytch.OAuth, :login_microsoft},
       url: "/v1/b2b/public/oauth/microsoft/start",
       method: :get,
       query: query,

@@ -5,11 +5,18 @@ config :oapi_generator,
     naming: [
       group: [
         AuthenticationFactor,
-        Member
+        Member,
+        OIDC,
+        SAML
       ],
       rename: [
         {~r/MultiFactorAuthenticationMFAOneTimePasscodesOTPsForMFA/, "OTP"},
-        {~r/^((?!Authentication)[A-Za-z]+)Factor$/, "AuthenticationFactor.\\1"}
+        {~r/^((?!Authentication)[A-Za-z]+)Factor$/, "AuthenticationFactor.\\1"},
+        {"EmailOtp", "EmailOTP"},
+        {"Mfa", "MFA"},
+        {"Oauth", "OAuth"},
+        {"Rbac", "RBAC"},
+        {"Sso", "SSO"}
       ]
     ],
     output: [

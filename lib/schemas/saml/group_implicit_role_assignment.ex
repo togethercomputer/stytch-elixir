@@ -1,6 +1,6 @@
-defmodule Stytch.SAMLGroupImplicitRoleAssignment do
+defmodule Stytch.SAML.GroupImplicitRoleAssignment do
   @moduledoc """
-  Provides struct and type for a SAMLGroupImplicitRoleAssignment
+  Provides struct and type for a SAML.GroupImplicitRoleAssignment
   """
 
   @type t :: %__MODULE__{group: String.t(), role_id: String.t()}

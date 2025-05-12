@@ -1,4 +1,4 @@
-defmodule Stytch.Rbac do
+defmodule Stytch.RBAC do
   @moduledoc """
   Provides API endpoint related to rbac
   """
@@ -14,7 +14,7 @@ defmodule Stytch.Rbac do
 
     client.request(%{
       args: [],
-      call: {Stytch.Rbac, :get_policy},
+      call: {Stytch.RBAC, :get_policy},
       url: "/v1/b2b/rbac/policy",
       method: :get,
       response: [{200, :map}],

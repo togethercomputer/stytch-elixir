@@ -1,6 +1,6 @@
-defmodule Stytch.OIDCProviderInfo do
+defmodule Stytch.OIDC.ProviderInfo do
   @moduledoc """
-  Provides struct and type for a OIDCProviderInfo
+  Provides struct and type for a OIDC.ProviderInfo
   """
 
   @type t :: %__MODULE__{

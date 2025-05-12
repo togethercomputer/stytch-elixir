@@ -1,6 +1,6 @@
-defmodule Stytch.SAMLConnectionImplicitRoleAssignment do
+defmodule Stytch.SAML.ConnectionImplicitRoleAssignment do
   @moduledoc """
-  Provides struct and type for a SAMLConnectionImplicitRoleAssignment
+  Provides struct and type for a SAML.ConnectionImplicitRoleAssignment
   """
 
   @type t :: %__MODULE__{role_id: String.t()}

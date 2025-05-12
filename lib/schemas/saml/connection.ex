@@ -1,6 +1,6 @@
-defmodule Stytch.SAMLConnection do
+defmodule Stytch.SAML.Connection do
   @moduledoc """
-  Provides struct and type for a SAMLConnection
+  Provides struct and type for a SAML.Connection
   """
 
   @type t :: %__MODULE__{
@@ -18,9 +18,9 @@ defmodule Stytch.SAMLConnection do
           nameid_format: String.t(),
           organization_id: String.t(),
           saml_connection_implicit_role_assignments: [
-            Stytch.SAMLConnectionImplicitRoleAssignment.t()
+            Stytch.SAML.ConnectionImplicitRoleAssignment.t()
           ],
-          saml_group_implicit_role_assignments: [Stytch.SAMLGroupImplicitRoleAssignment.t()],
+          saml_group_implicit_role_assignments: [Stytch.SAML.GroupImplicitRoleAssignment.t()],
           signing_certificates: [Stytch.X509Certificate.t()],
           status: String.t(),
           verification_certificates: [Stytch.X509Certificate.t()]
@@ -67,9 +67,9 @@ defmodule Stytch.SAMLConnection do
       nameid_format: {:string, :generic},
       organization_id: {:string, :generic},
       saml_connection_implicit_role_assignments: [
-        {Stytch.SAMLConnectionImplicitRoleAssignment, :t}
+        {Stytch.SAML.ConnectionImplicitRoleAssignment, :t}
       ],
-      saml_group_implicit_role_assignments: [{Stytch.SAMLGroupImplicitRoleAssignment, :t}],
+      saml_group_implicit_role_assignments: [{Stytch.SAML.GroupImplicitRoleAssignment, :t}],
       signing_certificates: [{Stytch.X509Certificate, :t}],
       status: {:string, :generic},
       verification_certificates: [{Stytch.X509Certificate, :t}]

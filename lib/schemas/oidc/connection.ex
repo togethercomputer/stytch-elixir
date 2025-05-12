@@ -1,6 +1,6 @@
-defmodule Stytch.OIDCConnection do
+defmodule Stytch.OIDC.Connection do
   @moduledoc """
-  Provides struct and type for a OIDCConnection
+  Provides struct and type for a OIDC.Connection
   """
 
   @type t :: %__MODULE__{
