@@ -1,4 +1,4 @@
-defmodule Stytch.EmailOtp do
+defmodule Stytch.EmailOTP do
   @moduledoc """
   Provides API endpoints related to email otp
   """
@@ -14,7 +14,7 @@ defmodule Stytch.EmailOtp do
 
     client.request(%{
       args: [body: body],
-      call: {Stytch.EmailOtp, :authenticate},
+      call: {Stytch.EmailOTP, :authenticate},
       url: "/v1/b2b/otps/email/authenticate",
       body: body,
       method: :post,
@@ -33,7 +33,7 @@ defmodule Stytch.EmailOtp do
 
     client.request(%{
       args: [body: body],
-      call: {Stytch.EmailOtp, :authenticate_discovery},
+      call: {Stytch.EmailOTP, :authenticate_discovery},
       url: "/v1/b2b/otps/email/discovery/authenticate",
       body: body,
       method: :post,
@@ -52,7 +52,7 @@ defmodule Stytch.EmailOtp do
 
     client.request(%{
       args: [body: body],
-      call: {Stytch.EmailOtp, :login_or_signup},
+      call: {Stytch.EmailOTP, :login_or_signup},
       url: "/v1/b2b/otps/email/login_or_signup",
       body: body,
       method: :post,
@@ -71,7 +71,7 @@ defmodule Stytch.EmailOtp do
 
     client.request(%{
       args: [body: body],
-      call: {Stytch.EmailOtp, :send_discovery},
+      call: {Stytch.EmailOTP, :send_discovery},
       url: "/v1/b2b/otps/email/discovery/send",
       body: body,
       method: :post,

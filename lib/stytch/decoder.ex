@@ -3,7 +3,7 @@ defmodule Stytch.Decoder do
 
   @spec decode_response(term, map, integer) :: term
   def decode_response(response, details, code) do
-    case get_type(details.response, code) |> IO.inspect() do
+    case get_type(details.response, code) do
       {:ok, response_type} ->
         do_decode(response, response_type)
 

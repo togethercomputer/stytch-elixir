@@ -1,9 +1,25 @@
-defmodule Stytch.Sso do
+defmodule Stytch.SSO do
   @moduledoc """
   Provides API endpoints related to sso
   """
 
   @default_client Stytch.Client
+
+  @type complete_200_json_resp :: %{
+          intermediate_session_token: String.t(),
+          member: Stytch.Member.t(),
+          member_authenticated: boolean,
+          member_id: String.t(),
+          member_session: Stytch.Member.Session.t() | nil,
+          mfa_required: boolean | nil,
+          organization: Stytch.Organization.t(),
+          organization_id: String.t(),
+          request_id: String.t(),
+          reset_session: boolean,
+          session_jwt: String.t(),
+          session_token: String.t(),
+          status_code: integer
+        }
 
   @doc """
   Complete SSO Authentication
@@ -14,15 +30,21 @@ defmodule Stytch.Sso do
 
     client.request(%{
       args: [body: body],
-      call: {Stytch.Sso, :complete},
+      call: {Stytch.SSO, :complete},
       url: "/v1/b2b/sso/authenticate",
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, {Stytch.SSO, :complete_200_json_resp}}],
       opts: opts
     })
   end
+
+  @type create_external_connection_200_json_resp :: %{
+          connection: Stytch.Connection.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
 
   @doc """
   Create External Connection
@@ -34,15 +56,21 @@ defmodule Stytch.Sso do
 
     client.request(%{
       args: [organization_id: organization_id, body: body],
-      call: {Stytch.Sso, :create_external_connection},
+      call: {Stytch.SSO, :create_external_connection},
       url: "/v1/b2b/sso/external/#{organization_id}",
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, {Stytch.SSO, :create_external_connection_200_json_resp}}],
       opts: opts
     })
   end
+
+  @type create_oidc_200_json_resp :: %{
+          connection: Stytch.OIDC.Connection.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
 
   @doc """
   Create OIDC Connection
@@ -54,15 +82,21 @@ defmodule Stytch.Sso do
 
     client.request(%{
       args: [organization_id: organization_id, body: body],
-      call: {Stytch.Sso, :create_oidc},
+      call: {Stytch.SSO, :create_oidc},
       url: "/v1/b2b/sso/oidc/#{organization_id}",
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, {Stytch.SSO, :create_oidc_200_json_resp}}],
       opts: opts
     })
   end
+
+  @type create_saml_200_json_resp :: %{
+          connection: Stytch.SAML.Connection.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
 
   @doc """
   Create SAML Connection
@@ -74,15 +108,21 @@ defmodule Stytch.Sso do
 
     client.request(%{
       args: [organization_id: organization_id, body: body],
-      call: {Stytch.Sso, :create_saml},
+      call: {Stytch.SSO, :create_saml},
       url: "/v1/b2b/sso/saml/#{organization_id}",
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, {Stytch.SSO, :create_saml_200_json_resp}}],
       opts: opts
     })
   end
+
+  @type delete_connection_200_json_resp :: %{
+          connection_id: String.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
 
   @doc """
   Delete SSO Connection
@@ -97,13 +137,19 @@ defmodule Stytch.Sso do
 
     client.request(%{
       args: [organization_id: organization_id, connection_id: connection_id],
-      call: {Stytch.Sso, :delete_connection},
+      call: {Stytch.SSO, :delete_connection},
       url: "/v1/b2b/sso/#{organization_id}/connections/#{connection_id}",
       method: :delete,
-      response: [{200, :map}],
+      response: [{200, {Stytch.SSO, :delete_connection_200_json_resp}}],
       opts: opts
     })
   end
+
+  @type delete_saml_verification_certificate_200_json_resp :: %{
+          connection: Stytch.SAML.Connection.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
 
   @doc """
   Delete SAML Verification Certificate
@@ -128,14 +174,22 @@ defmodule Stytch.Sso do
         connection_id: connection_id,
         certificate_id: certificate_id
       ],
-      call: {Stytch.Sso, :delete_saml_verification_certificate},
+      call: {Stytch.SSO, :delete_saml_verification_certificate},
       url:
         "/v1/b2b/sso/saml/#{organization_id}/connections/#{connection_id}/verification_certificates/#{certificate_id}",
       method: :delete,
-      response: [{200, :map}],
+      response: [{200, {Stytch.SSO, :delete_saml_verification_certificate_200_json_resp}}],
       opts: opts
     })
   end
+
+  @type get_connections_200_json_resp :: %{
+          external_connections: [Stytch.Connection.t()],
+          oidc_connections: [Stytch.OIDC.Connection.t()],
+          request_id: String.t(),
+          saml_connections: [Stytch.SAML.Connection.t()],
+          status_code: integer
+        }
 
   @doc """
   Get SSO Connections
@@ -146,13 +200,53 @@ defmodule Stytch.Sso do
 
     client.request(%{
       args: [organization_id: organization_id],
-      call: {Stytch.Sso, :get_connections},
+      call: {Stytch.SSO, :get_connections},
       url: "/v1/b2b/sso/#{organization_id}",
       method: :get,
-      response: [{200, :map}],
+      response: [{200, {Stytch.SSO, :get_connections_200_json_resp}}],
       opts: opts
     })
   end
+
+  @type get_oidc_access_token_200_json_resp :: %{
+          registrations: [Stytch.OIDC.ProviderInfo.t()] | nil,
+          request_id: String.t() | nil,
+          status_code: integer | nil
+        }
+
+  @doc """
+  Get OIDC Access Token
+
+  ## Options
+
+    * `include_refresh_token`
+
+  """
+  @spec get_oidc_access_token(
+          organization_id :: String.t(),
+          member_id :: String.t(),
+          opts :: keyword
+        ) :: {:ok, map} | :error
+  def get_oidc_access_token(organization_id, member_id, opts \\ []) do
+    client = opts[:client] || @default_client
+    query = Keyword.take(opts, [:include_refresh_token])
+
+    client.request(%{
+      args: [organization_id: organization_id, member_id: member_id],
+      call: {Stytch.SSO, :get_oidc_access_token},
+      url: "/v1/b2b/organizations/#{organization_id}/members/#{member_id}/oidc_providers",
+      method: :get,
+      query: query,
+      response: [{200, {Stytch.SSO, :get_oidc_access_token_200_json_resp}}],
+      opts: opts
+    })
+  end
+
+  @type start_200_json_resp :: %{
+          redirect_url: String.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
 
   @doc """
   Start SSO Authentication
@@ -170,14 +264,20 @@ defmodule Stytch.Sso do
 
     client.request(%{
       args: [],
-      call: {Stytch.Sso, :start},
+      call: {Stytch.SSO, :start},
       url: "/v1/public/sso/start",
       method: :get,
       query: query,
-      response: [{200, :map}],
+      response: [{200, {Stytch.SSO, :start_200_json_resp}}],
       opts: opts
     })
   end
+
+  @type update_external_connection_200_json_resp :: %{
+          connection: Stytch.Connection.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
 
   @doc """
   Update External Connection
@@ -193,15 +293,22 @@ defmodule Stytch.Sso do
 
     client.request(%{
       args: [organization_id: organization_id, connection_id: connection_id, body: body],
-      call: {Stytch.Sso, :update_external_connection},
+      call: {Stytch.SSO, :update_external_connection},
       url: "/v1/b2b/sso/external/#{organization_id}/connections/#{connection_id}",
       body: body,
       method: :put,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, {Stytch.SSO, :update_external_connection_200_json_resp}}],
       opts: opts
     })
   end
+
+  @type update_oidc_200_json_resp :: %{
+          connection: Stytch.OIDC.Connection.t(),
+          request_id: String.t(),
+          status_code: integer,
+          warning: String.t()
+        }
 
   @doc """
   Update OIDC Connection
@@ -217,15 +324,21 @@ defmodule Stytch.Sso do
 
     client.request(%{
       args: [organization_id: organization_id, connection_id: connection_id, body: body],
-      call: {Stytch.Sso, :update_oidc},
+      call: {Stytch.SSO, :update_oidc},
       url: "/v1/b2b/sso/oidc/#{organization_id}/connections/#{connection_id}",
       body: body,
       method: :put,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, {Stytch.SSO, :update_oidc_200_json_resp}}],
       opts: opts
     })
   end
+
+  @type update_saml_200_json_resp :: %{
+          connection: Stytch.SAML.Connection.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
 
   @doc """
   Update SAML Connection
@@ -241,15 +354,21 @@ defmodule Stytch.Sso do
 
     client.request(%{
       args: [organization_id: organization_id, connection_id: connection_id, body: body],
-      call: {Stytch.Sso, :update_saml},
+      call: {Stytch.SSO, :update_saml},
       url: "/v1/b2b/sso/saml/#{organization_id}/connections/#{connection_id}",
       body: body,
       method: :put,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, {Stytch.SSO, :update_saml_200_json_resp}}],
       opts: opts
     })
   end
+
+  @type update_saml_by_metadata_url_200_json_resp :: %{
+          connection: Stytch.SAML.Connection.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
 
   @doc """
   Update SAML Connection by metadata URL
@@ -265,13 +384,116 @@ defmodule Stytch.Sso do
 
     client.request(%{
       args: [organization_id: organization_id, connection_id: connection_id, body: body],
-      call: {Stytch.Sso, :update_saml_by_metadata_url},
+      call: {Stytch.SSO, :update_saml_by_metadata_url},
       url: "/v1/b2b/sso/saml/#{organization_id}/connections/#{connection_id}/url",
       body: body,
       method: :put,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, {Stytch.SSO, :update_saml_by_metadata_url_200_json_resp}}],
       opts: opts
     })
+  end
+
+  @doc false
+  @spec __fields__(atom) :: keyword
+  def __fields__(:complete_200_json_resp) do
+    [
+      intermediate_session_token: {:string, :generic},
+      member: {Stytch.Member, :t},
+      member_authenticated: :boolean,
+      member_id: {:string, :generic},
+      member_session: {Stytch.Member.Session, :t},
+      mfa_required: :boolean,
+      organization: {Stytch.Organization, :t},
+      organization_id: {:string, :generic},
+      request_id: {:string, :generic},
+      reset_session: :boolean,
+      session_jwt: {:string, :generic},
+      session_token: {:string, :generic},
+      status_code: :integer
+    ]
+  end
+
+  def __fields__(:create_external_connection_200_json_resp) do
+    [connection: {Stytch.Connection, :t}, request_id: {:string, :generic}, status_code: :integer]
+  end
+
+  def __fields__(:create_oidc_200_json_resp) do
+    [
+      connection: {Stytch.OIDC.Connection, :t},
+      request_id: {:string, :generic},
+      status_code: :integer
+    ]
+  end
+
+  def __fields__(:create_saml_200_json_resp) do
+    [
+      connection: {Stytch.SAML.Connection, :t},
+      request_id: {:string, :generic},
+      status_code: :integer
+    ]
+  end
+
+  def __fields__(:delete_connection_200_json_resp) do
+    [connection_id: {:string, :generic}, request_id: {:string, :generic}, status_code: :integer]
+  end
+
+  def __fields__(:delete_saml_verification_certificate_200_json_resp) do
+    [
+      connection: {Stytch.SAML.Connection, :t},
+      request_id: {:string, :generic},
+      status_code: :integer
+    ]
+  end
+
+  def __fields__(:get_connections_200_json_resp) do
+    [
+      external_connections: [{Stytch.Connection, :t}],
+      oidc_connections: [{Stytch.OIDC.Connection, :t}],
+      request_id: {:string, :generic},
+      saml_connections: [{Stytch.SAML.Connection, :t}],
+      status_code: :integer
+    ]
+  end
+
+  def __fields__(:get_oidc_access_token_200_json_resp) do
+    [
+      registrations: [{Stytch.OIDC.ProviderInfo, :t}],
+      request_id: {:string, :generic},
+      status_code: :integer
+    ]
+  end
+
+  def __fields__(:start_200_json_resp) do
+    [redirect_url: {:string, :generic}, request_id: {:string, :generic}, status_code: :integer]
+  end
+
+  def __fields__(:update_external_connection_200_json_resp) do
+    [connection: {Stytch.Connection, :t}, request_id: {:string, :generic}, status_code: :integer]
+  end
+
+  def __fields__(:update_oidc_200_json_resp) do
+    [
+      connection: {Stytch.OIDC.Connection, :t},
+      request_id: {:string, :generic},
+      status_code: :integer,
+      warning: {:string, :generic}
+    ]
+  end
+
+  def __fields__(:update_saml_200_json_resp) do
+    [
+      connection: {Stytch.SAML.Connection, :t},
+      request_id: {:string, :generic},
+      status_code: :integer
+    ]
+  end
+
+  def __fields__(:update_saml_by_metadata_url_200_json_resp) do
+    [
+      connection: {Stytch.SAML.Connection, :t},
+      request_id: {:string, :generic},
+      status_code: :integer
+    ]
   end
 end
