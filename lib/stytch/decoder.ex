@@ -20,6 +20,11 @@ defmodule Stytch.Decoder do
     end
   end
 
+  @spec decode_direct(term, term) :: term
+  def decode_direct(value, type) do
+    do_decode(value, type)
+  end
+
   defp do_decode(nil, _), do: nil
   defp do_decode("", :null), do: nil
   defp do_decode(value, {:string, :date}), do: Date.from_iso8601!(value)
