@@ -35,6 +35,8 @@ defmodule Stytch.Decoder do
   defp do_decode(value, [type]), do: Enum.map(value, &do_decode(&1, type))
 
   defp do_decode(%{} = value, {module, type}) do
+    Code.ensure_loaded(module)
+
     base = if function_exported?(module, :__struct__, 0), do: struct(module), else: %{}
     fields = module.__fields__(type)
 
