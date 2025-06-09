@@ -1434,6 +1434,61 @@ components:
         - webauthn_registration_id
         - domain
 
+    WebhookPayload:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+            - CREATE
+            - UPDATE
+            - DELETE
+        event_id:
+          type: string
+        id:
+          type: string
+        object_type:
+          type: string
+        project_id:
+          type: string
+        source:
+          type: string
+          enum:
+            - DASHBOARD
+            - DIRECT
+            - SCIM
+        timestamp:
+          type: string
+          format: date-time
+        # Optional fields that may be included depending on the event
+        member:
+          $ref: "#/components/schemas/Member"
+        oidc_connection:
+          $ref: "#/components/schemas/OIDCConnection"
+        organization:
+          $ref: "#/components/schemas/Organization"
+        saml_connection:
+          $ref: "#/components/schemas/SAMLConnection"
+        scim_group:
+          type: object
+          properties:
+            connection_id:
+              type: string
+            group_id:
+              type: string
+            group_name:
+              type: string
+            organization_id:
+              type: string
+      required:
+        - action
+        - event_id
+        - id
+        - object_type
+        - project_id
+        - source
+        - timestamp
+
     X509Certificate:
       type: object
       properties:
