@@ -11,6 +11,6 @@ defmodule Stytch do
   """
   @spec decode_webhook(map) :: Stytch.WebhookPayload.t()
   def decode_webhook(payload) do
-    Stytch.Decoder.decode_direct(payload, Stytch.WebhookPayload)
+    Stytch.Decoder.decode_direct(payload, {Stytch.WebhookPayload, :t})
   end
 end
