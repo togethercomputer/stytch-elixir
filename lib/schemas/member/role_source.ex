@@ -2,6 +2,7 @@ defmodule Stytch.Member.RoleSource do
   @moduledoc """
   Provides struct and type for a Member.RoleSource
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{details: map | nil, type: String.t()}
 

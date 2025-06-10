@@ -2,6 +2,7 @@ defmodule Stytch.GroupImplicitRoleAssignment do
   @moduledoc """
   Provides struct and type for a GroupImplicitRoleAssignment
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{group: String.t(), role_id: String.t()}
 

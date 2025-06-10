@@ -2,6 +2,7 @@ defmodule Stytch.ActiveSSOConnection do
   @moduledoc """
   Provides struct and type for a ActiveSSOConnection
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{
           connection_id: String.t(),

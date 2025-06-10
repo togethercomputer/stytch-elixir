@@ -2,6 +2,7 @@ defmodule Stytch.Member do
   @moduledoc """
   Provides struct and type for a Member
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{
           created_at: DateTime.t() | nil,

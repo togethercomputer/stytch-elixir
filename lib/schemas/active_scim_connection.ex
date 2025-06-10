@@ -2,6 +2,7 @@ defmodule Stytch.ActiveSCIMConnection do
   @moduledoc """
   Provides struct and type for a ActiveSCIMConnection
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{
           bearer_token_expires_at: DateTime.t() | nil,

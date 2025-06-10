@@ -2,6 +2,7 @@ defmodule Stytch.RetiredEmail do
   @moduledoc """
   Provides struct and type for a RetiredEmail
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{email_address: String.t(), email_id: String.t()}
 

@@ -2,6 +2,7 @@ defmodule Stytch.SAML.GroupImplicitRoleAssignment do
   @moduledoc """
   Provides struct and type for a SAML.GroupImplicitRoleAssignment
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{group: String.t(), role_id: String.t()}
 

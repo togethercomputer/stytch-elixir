@@ -2,6 +2,7 @@ defmodule Stytch.OIDC.Connection do
   @moduledoc """
   Provides struct and type for a OIDC.Connection
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{
           attribute_mapping: map | nil,

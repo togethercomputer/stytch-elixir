@@ -2,6 +2,7 @@ defmodule Stytch.AuthenticationFactor.EmbeddableMagicLink do
   @moduledoc """
   Provides struct and type for a AuthenticationFactor.EmbeddableMagicLink
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{embedded_id: String.t()}
 

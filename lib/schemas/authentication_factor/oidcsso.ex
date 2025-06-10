@@ -2,6 +2,7 @@ defmodule Stytch.AuthenticationFactor.OIDCSSO do
   @moduledoc """
   Provides struct and type for a AuthenticationFactor.OIDCSSO
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{external_id: String.t(), id: String.t(), provider_id: String.t()}
 

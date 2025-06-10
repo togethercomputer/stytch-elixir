@@ -2,6 +2,7 @@ defmodule Stytch.JWK do
   @moduledoc """
   Provides struct and type for a JWK
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{
           alg: String.t() | nil,

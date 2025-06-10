@@ -2,6 +2,7 @@ defmodule Stytch.AuthenticationFactor.WebAuthn do
   @moduledoc """
   Provides struct and type for a AuthenticationFactor.WebAuthn
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{
           domain: String.t(),

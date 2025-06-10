@@ -2,6 +2,7 @@ defmodule Stytch.AuthenticationFactor.SAMLSSO do
   @moduledoc """
   Provides struct and type for a AuthenticationFactor.SAMLSSO
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{external_id: String.t(), id: String.t(), provider_id: String.t()}
 

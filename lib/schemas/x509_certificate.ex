@@ -2,6 +2,7 @@ defmodule Stytch.X509Certificate do
   @moduledoc """
   Provides struct and type for a X509Certificate
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{
           certificate: String.t(),

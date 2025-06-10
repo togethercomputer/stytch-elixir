@@ -2,6 +2,7 @@ defmodule Stytch.AuthenticationFactor do
   @moduledoc """
   Provides struct and type for a AuthenticationFactor
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{
           amazon_oauth_factor: Stytch.AuthenticationFactor.AmazonOAuth.t() | nil,

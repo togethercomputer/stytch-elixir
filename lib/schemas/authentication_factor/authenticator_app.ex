@@ -2,6 +2,7 @@ defmodule Stytch.AuthenticationFactor.AuthenticatorApp do
   @moduledoc """
   Provides struct and type for a AuthenticationFactor.AuthenticatorApp
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{totp_id: String.t()}
 

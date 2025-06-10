@@ -2,6 +2,7 @@ defmodule Stytch.Member.Session do
   @moduledoc """
   Provides struct and type for a Member.Session
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{
           authentication_factors: [Stytch.AuthenticationFactor.t()],
