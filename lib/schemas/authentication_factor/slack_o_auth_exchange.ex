@@ -2,6 +2,7 @@ defmodule Stytch.AuthenticationFactor.SlackOAuthExchange do
   @moduledoc """
   Provides struct and type for a AuthenticationFactor.SlackOAuthExchange
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{email_id: String.t()}
 

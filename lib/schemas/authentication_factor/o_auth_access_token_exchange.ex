@@ -2,6 +2,7 @@ defmodule Stytch.AuthenticationFactor.OAuthAccessTokenExchange do
   @moduledoc """
   Provides struct and type for a AuthenticationFactor.OAuthAccessTokenExchange
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{client_id: String.t()}
 

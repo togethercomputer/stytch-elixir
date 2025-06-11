@@ -2,6 +2,7 @@ defmodule Stytch.OIDC.ProviderInfo do
   @moduledoc """
   Provides struct and type for a OIDC.ProviderInfo
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{
           access_token: String.t(),

@@ -2,6 +2,7 @@ defmodule Stytch.AuthenticationFactor.CryptoWallet do
   @moduledoc """
   Provides struct and type for a AuthenticationFactor.CryptoWallet
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{
           crypto_wallet_address: String.t(),

@@ -2,6 +2,7 @@ defmodule Stytch.SSORegistration do
   @moduledoc """
   Provides struct and type for a SSORegistration
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{
           connection_id: String.t(),

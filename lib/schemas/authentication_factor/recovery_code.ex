@@ -2,6 +2,7 @@ defmodule Stytch.AuthenticationFactor.RecoveryCode do
   @moduledoc """
   Provides struct and type for a AuthenticationFactor.RecoveryCode
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{totp_recovery_code_id: String.t()}
 

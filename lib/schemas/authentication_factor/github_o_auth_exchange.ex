@@ -2,6 +2,7 @@ defmodule Stytch.AuthenticationFactor.GithubOAuthExchange do
   @moduledoc """
   Provides struct and type for a AuthenticationFactor.GithubOAuthExchange
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{email_id: String.t()}
 

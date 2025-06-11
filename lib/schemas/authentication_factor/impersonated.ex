@@ -2,6 +2,7 @@ defmodule Stytch.AuthenticationFactor.Impersonated do
   @moduledoc """
   Provides struct and type for a AuthenticationFactor.Impersonated
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{impersonator_email_address: String.t(), impersonator_id: String.t()}
 

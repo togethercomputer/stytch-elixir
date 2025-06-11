@@ -2,6 +2,7 @@ defmodule Stytch.SCIMRegistration do
   @moduledoc """
   Provides struct and type for a SCIMRegistration
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{
           connection_id: String.t(),

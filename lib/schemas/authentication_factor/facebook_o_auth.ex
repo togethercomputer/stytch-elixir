@@ -2,6 +2,7 @@ defmodule Stytch.AuthenticationFactor.FacebookOAuth do
   @moduledoc """
   Provides struct and type for a AuthenticationFactor.FacebookOAuth
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{email_id: String.t() | nil, id: String.t(), provider_subject: String.t()}
 

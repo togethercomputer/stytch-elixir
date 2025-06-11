@@ -2,6 +2,7 @@ defmodule Stytch.AuthenticationFactor.PhoneNumber do
   @moduledoc """
   Provides struct and type for a AuthenticationFactor.PhoneNumber
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{phone_id: String.t(), phone_number: String.t()}
 

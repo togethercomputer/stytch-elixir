@@ -2,6 +2,7 @@ defmodule Stytch.EmailImplicitRoleAssignment do
   @moduledoc """
   Provides struct and type for a EmailImplicitRoleAssignment
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{domain: String.t(), role_id: String.t()}
 

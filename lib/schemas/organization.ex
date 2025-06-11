@@ -2,6 +2,7 @@ defmodule Stytch.Organization do
   @moduledoc """
   Provides struct and type for a Organization
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{
           allowed_auth_methods: [String.t()],

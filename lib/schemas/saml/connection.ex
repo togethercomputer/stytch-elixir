@@ -2,6 +2,7 @@ defmodule Stytch.SAML.Connection do
   @moduledoc """
   Provides struct and type for a SAML.Connection
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{
           acs_url: String.t(),

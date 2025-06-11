@@ -2,6 +2,7 @@ defmodule Stytch.AuthenticationFactor.Biometric do
   @moduledoc """
   Provides struct and type for a AuthenticationFactor.Biometric
   """
+  use Stytch.Schema
 
   @type t :: %__MODULE__{biometric_registration_id: String.t()}
 
