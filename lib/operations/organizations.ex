@@ -14,7 +14,7 @@ defmodule Stytch.Organizations do
   @doc """
   Create an Organization
   """
-  @spec create(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec create(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def create(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -25,7 +25,10 @@ defmodule Stytch.Organizations do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, {Stytch.Organizations, :create_200_json_resp}}],
+      response: [
+        {200, {Stytch.Organizations, :create_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -39,7 +42,8 @@ defmodule Stytch.Organizations do
   @doc """
   Delete an Organization
   """
-  @spec delete(organization_id :: String.t(), opts :: keyword) :: {:ok, map} | :error
+  @spec delete(organization_id :: String.t(), opts :: keyword) ::
+          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def delete(organization_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -48,7 +52,10 @@ defmodule Stytch.Organizations do
       call: {Stytch.Organizations, :delete},
       url: "/v1/b2b/organizations/#{organization_id}",
       method: :delete,
-      response: [{200, {Stytch.Organizations, :delete_200_json_resp}}],
+      response: [
+        {200, {Stytch.Organizations, :delete_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -62,7 +69,8 @@ defmodule Stytch.Organizations do
   @doc """
   Get an Organization
   """
-  @spec get(organization_id :: String.t(), opts :: keyword) :: {:ok, map} | :error
+  @spec get(organization_id :: String.t(), opts :: keyword) ::
+          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def get(organization_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -71,7 +79,10 @@ defmodule Stytch.Organizations do
       call: {Stytch.Organizations, :get},
       url: "/v1/b2b/organizations/#{organization_id}",
       method: :get,
-      response: [{200, {Stytch.Organizations, :get_200_json_resp}}],
+      response: [
+        {200, {Stytch.Organizations, :get_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -91,7 +102,7 @@ defmodule Stytch.Organizations do
   @doc """
   Search for Organizations
   """
-  @spec search(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec search(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def search(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -102,7 +113,10 @@ defmodule Stytch.Organizations do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, {Stytch.Organizations, :search_200_json_resp}}],
+      response: [
+        {200, {Stytch.Organizations, :search_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -116,7 +130,8 @@ defmodule Stytch.Organizations do
   @doc """
   Update an Organization
   """
-  @spec update(organization_id :: String.t(), body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec update(organization_id :: String.t(), body :: map, opts :: keyword) ::
+          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def update(organization_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -127,7 +142,10 @@ defmodule Stytch.Organizations do
       body: body,
       method: :put,
       request: [{"application/json", :map}],
-      response: [{200, {Stytch.Organizations, :update_200_json_resp}}],
+      response: [
+        {200, {Stytch.Organizations, :update_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end

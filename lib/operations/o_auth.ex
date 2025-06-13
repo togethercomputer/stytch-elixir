@@ -8,7 +8,8 @@ defmodule Stytch.OAuth do
   @doc """
   Authenticate OAuth
   """
-  @spec authenticate(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec authenticate(body :: map, opts :: keyword) ::
+          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def authenticate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -19,7 +20,7 @@ defmodule Stytch.OAuth do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -27,7 +28,8 @@ defmodule Stytch.OAuth do
   @doc """
   Authenticate discovery OAuth
   """
-  @spec authenticate_discovery(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec authenticate_discovery(body :: map, opts :: keyword) ::
+          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def authenticate_discovery(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -38,7 +40,7 @@ defmodule Stytch.OAuth do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -51,7 +53,7 @@ defmodule Stytch.OAuth do
     * `public_token`
 
   """
-  @spec discovery_google(opts :: keyword) :: {:ok, map} | :error
+  @spec discovery_google(opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def discovery_google(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:public_token])
@@ -62,7 +64,7 @@ defmodule Stytch.OAuth do
       url: "/v1/b2b/public/oauth/google/discovery/start",
       method: :get,
       query: query,
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -75,7 +77,7 @@ defmodule Stytch.OAuth do
     * `public_token`
 
   """
-  @spec discovery_microsoft(opts :: keyword) :: {:ok, map} | :error
+  @spec discovery_microsoft(opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def discovery_microsoft(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:public_token])
@@ -86,7 +88,7 @@ defmodule Stytch.OAuth do
       url: "/v1/b2b/public/oauth/microsoft/discovery/start",
       method: :get,
       query: query,
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -99,7 +101,7 @@ defmodule Stytch.OAuth do
     * `public_token`
 
   """
-  @spec login_google(opts :: keyword) :: {:ok, map} | :error
+  @spec login_google(opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def login_google(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:public_token])
@@ -110,7 +112,7 @@ defmodule Stytch.OAuth do
       url: "/v1/b2b/public/oauth/google/start",
       method: :get,
       query: query,
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -123,7 +125,7 @@ defmodule Stytch.OAuth do
     * `public_token`
 
   """
-  @spec login_microsoft(opts :: keyword) :: {:ok, map} | :error
+  @spec login_microsoft(opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def login_microsoft(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:public_token])
@@ -134,7 +136,7 @@ defmodule Stytch.OAuth do
       url: "/v1/b2b/public/oauth/microsoft/start",
       method: :get,
       query: query,
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end

@@ -20,7 +20,8 @@ defmodule Stytch.Session do
   @doc """
   Authenticate Session
   """
-  @spec authenticate(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec authenticate(body :: map, opts :: keyword) ::
+          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def authenticate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -31,7 +32,10 @@ defmodule Stytch.Session do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, {Stytch.Session, :authenticate_200_json_resp}}],
+      response: [
+        {200, {Stytch.Session, :authenticate_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -54,7 +58,7 @@ defmodule Stytch.Session do
   @doc """
   Exchange session
   """
-  @spec exchange(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec exchange(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def exchange(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -65,7 +69,10 @@ defmodule Stytch.Session do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, {Stytch.Session, :exchange_200_json_resp}}],
+      response: [
+        {200, {Stytch.Session, :exchange_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -85,7 +92,7 @@ defmodule Stytch.Session do
     * `member_id`
 
   """
-  @spec get(opts :: keyword) :: {:ok, map} | :error
+  @spec get(opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def get(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:member_id, :organization_id])
@@ -96,7 +103,7 @@ defmodule Stytch.Session do
       url: "/v1/b2b/sessions",
       method: :get,
       query: query,
-      response: [{200, {Stytch.Session, :get_200_json_resp}}],
+      response: [{200, {Stytch.Session, :get_200_json_resp}}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -110,7 +117,8 @@ defmodule Stytch.Session do
   @doc """
   Get JWKs
   """
-  @spec get_jwks(project_id :: String.t(), opts :: keyword) :: {:ok, map} | :error
+  @spec get_jwks(project_id :: String.t(), opts :: keyword) ::
+          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def get_jwks(project_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -119,7 +127,10 @@ defmodule Stytch.Session do
       call: {Stytch.Session, :get_jwks},
       url: "/v1/b2b/sessions/jwks/#{project_id}",
       method: :get,
-      response: [{200, {Stytch.Session, :get_jwks_200_json_resp}}],
+      response: [
+        {200, {Stytch.Session, :get_jwks_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -137,7 +148,7 @@ defmodule Stytch.Session do
   @doc """
   Migrate Session
   """
-  @spec migrate(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec migrate(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def migrate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -148,7 +159,10 @@ defmodule Stytch.Session do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, {Stytch.Session, :migrate_200_json_resp}}],
+      response: [
+        {200, {Stytch.Session, :migrate_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -158,7 +172,7 @@ defmodule Stytch.Session do
   @doc """
   Revoke Session
   """
-  @spec revoke(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec revoke(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def revoke(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -169,7 +183,10 @@ defmodule Stytch.Session do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, {Stytch.Session, :revoke_200_json_resp}}],
+      response: [
+        {200, {Stytch.Session, :revoke_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end

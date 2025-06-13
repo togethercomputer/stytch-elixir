@@ -8,7 +8,8 @@ defmodule Stytch.EmailOTP do
   @doc """
   Authenticate One-time Passcode (OTP)
   """
-  @spec authenticate(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec authenticate(body :: map, opts :: keyword) ::
+          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def authenticate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -19,7 +20,7 @@ defmodule Stytch.EmailOTP do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -27,7 +28,8 @@ defmodule Stytch.EmailOTP do
   @doc """
   Authenticate Discovery One-Time Passcode (OTP)
   """
-  @spec authenticate_discovery(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec authenticate_discovery(body :: map, opts :: keyword) ::
+          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def authenticate_discovery(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -38,7 +40,7 @@ defmodule Stytch.EmailOTP do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -46,7 +48,8 @@ defmodule Stytch.EmailOTP do
   @doc """
   Send login or signup email
   """
-  @spec login_or_signup(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec login_or_signup(body :: map, opts :: keyword) ::
+          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def login_or_signup(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -57,7 +60,7 @@ defmodule Stytch.EmailOTP do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -65,7 +68,8 @@ defmodule Stytch.EmailOTP do
   @doc """
   Send Discovery Email OTP
   """
-  @spec send_discovery(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec send_discovery(body :: map, opts :: keyword) ::
+          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
   def send_discovery(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -76,7 +80,7 @@ defmodule Stytch.EmailOTP do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
