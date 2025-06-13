@@ -9,7 +9,7 @@ defmodule Stytch.Discovery do
   Create Organization via Discovery
   """
   @spec create_organization(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def create_organization(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -29,7 +29,7 @@ defmodule Stytch.Discovery do
   Exchange intermediate session
   """
   @spec exchange_intermediate_session(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def exchange_intermediate_session(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -48,7 +48,7 @@ defmodule Stytch.Discovery do
   @doc """
   List discovered Organizations
   """
-  @spec list(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec list(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def list(body, opts \\ []) do
     client = opts[:client] || @default_client
 

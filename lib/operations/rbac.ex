@@ -8,7 +8,7 @@ defmodule Stytch.RBAC do
   @doc """
   Get RBAC Policy
   """
-  @spec get_policy(opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec get_policy(opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def get_policy(opts \\ []) do
     client = opts[:client] || @default_client
 

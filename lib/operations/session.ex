@@ -20,8 +20,7 @@ defmodule Stytch.Session do
   @doc """
   Authenticate Session
   """
-  @spec authenticate(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec authenticate(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def authenticate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -58,7 +57,7 @@ defmodule Stytch.Session do
   @doc """
   Exchange session
   """
-  @spec exchange(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec exchange(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def exchange(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -92,7 +91,7 @@ defmodule Stytch.Session do
     * `member_id`
 
   """
-  @spec get(opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec get(opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def get(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:member_id, :organization_id])
@@ -118,7 +117,7 @@ defmodule Stytch.Session do
   Get JWKs
   """
   @spec get_jwks(project_id :: String.t(), opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def get_jwks(project_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -148,7 +147,7 @@ defmodule Stytch.Session do
   @doc """
   Migrate Session
   """
-  @spec migrate(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec migrate(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def migrate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -172,7 +171,7 @@ defmodule Stytch.Session do
   @doc """
   Revoke Session
   """
-  @spec revoke(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec revoke(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def revoke(body, opts \\ []) do
     client = opts[:client] || @default_client
 

@@ -8,8 +8,7 @@ defmodule Stytch.EmailOTP do
   @doc """
   Authenticate One-time Passcode (OTP)
   """
-  @spec authenticate(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec authenticate(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def authenticate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -29,7 +28,7 @@ defmodule Stytch.EmailOTP do
   Authenticate Discovery One-Time Passcode (OTP)
   """
   @spec authenticate_discovery(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def authenticate_discovery(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -48,8 +47,7 @@ defmodule Stytch.EmailOTP do
   @doc """
   Send login or signup email
   """
-  @spec login_or_signup(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec login_or_signup(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def login_or_signup(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -68,8 +66,7 @@ defmodule Stytch.EmailOTP do
   @doc """
   Send Discovery Email OTP
   """
-  @spec send_discovery(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec send_discovery(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def send_discovery(body, opts \\ []) do
     client = opts[:client] || @default_client
 

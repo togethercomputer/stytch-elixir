@@ -9,7 +9,7 @@ defmodule Stytch.M2M do
   Cancel secret rotation
   """
   @spec cancel_secret_rotation(client_id :: String.t(), opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def cancel_secret_rotation(client_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -26,8 +26,7 @@ defmodule Stytch.M2M do
   @doc """
   Create M2M client
   """
-  @spec create_client(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec create_client(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def create_client(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -47,7 +46,7 @@ defmodule Stytch.M2M do
   Delete M2M client
   """
   @spec delete_client(client_id :: String.t(), opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def delete_client(client_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -65,7 +64,7 @@ defmodule Stytch.M2M do
   Get M2M client
   """
   @spec get_client(client_id :: String.t(), opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def get_client(client_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -83,7 +82,7 @@ defmodule Stytch.M2M do
   Get access token
   """
   @spec get_token(project_id :: String.t(), body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def get_token(project_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -103,7 +102,7 @@ defmodule Stytch.M2M do
   Rotate secret
   """
   @spec rotate_secret(client_id :: String.t(), opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def rotate_secret(client_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -120,8 +119,7 @@ defmodule Stytch.M2M do
   @doc """
   Search M2M clients
   """
-  @spec search_clients(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec search_clients(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def search_clients(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -141,7 +139,7 @@ defmodule Stytch.M2M do
   Start secret rotation
   """
   @spec start_secret_rotation(client_id :: String.t(), opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def start_secret_rotation(client_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -159,7 +157,7 @@ defmodule Stytch.M2M do
   Update M2M client
   """
   @spec update_client(client_id :: String.t(), body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def update_client(client_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 

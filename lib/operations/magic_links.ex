@@ -8,8 +8,7 @@ defmodule Stytch.MagicLinks do
   @doc """
   Authenticate Magic Link
   """
-  @spec authenticate(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec authenticate(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def authenticate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -29,7 +28,7 @@ defmodule Stytch.MagicLinks do
   Authenticate discovery Magic Link
   """
   @spec authenticate_discovery(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def authenticate_discovery(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -48,7 +47,7 @@ defmodule Stytch.MagicLinks do
   @doc """
   Send invite email
   """
-  @spec invite(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec invite(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def invite(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -67,8 +66,7 @@ defmodule Stytch.MagicLinks do
   @doc """
   Send login or signup email
   """
-  @spec login_or_signup(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec login_or_signup(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def login_or_signup(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -87,8 +85,7 @@ defmodule Stytch.MagicLinks do
   @doc """
   Send discovery email
   """
-  @spec send_discovery(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec send_discovery(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def send_discovery(body, opts \\ []) do
     client = opts[:client] || @default_client
 

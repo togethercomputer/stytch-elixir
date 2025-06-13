@@ -8,8 +8,7 @@ defmodule Stytch.OAuth do
   @doc """
   Authenticate OAuth
   """
-  @spec authenticate(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec authenticate(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def authenticate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -29,7 +28,7 @@ defmodule Stytch.OAuth do
   Authenticate discovery OAuth
   """
   @spec authenticate_discovery(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def authenticate_discovery(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -53,7 +52,7 @@ defmodule Stytch.OAuth do
     * `public_token`
 
   """
-  @spec discovery_google(opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec discovery_google(opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def discovery_google(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:public_token])
@@ -77,7 +76,7 @@ defmodule Stytch.OAuth do
     * `public_token`
 
   """
-  @spec discovery_microsoft(opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec discovery_microsoft(opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def discovery_microsoft(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:public_token])
@@ -101,7 +100,7 @@ defmodule Stytch.OAuth do
     * `public_token`
 
   """
-  @spec login_google(opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec login_google(opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def login_google(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:public_token])
@@ -125,7 +124,7 @@ defmodule Stytch.OAuth do
     * `public_token`
 
   """
-  @spec login_microsoft(opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec login_microsoft(opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def login_microsoft(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:public_token])

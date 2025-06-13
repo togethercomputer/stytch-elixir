@@ -24,6 +24,9 @@ config :oapi_generator,
       location: "lib",
       operation_subdirectory: "operations",
       schema_subdirectory: "schemas",
-      schema_use: Stytch.Schema
+      schema_use: Stytch.Schema,
+      types: [
+        error: {Stytch.Error, :t}
+      ]
     ]
   ]

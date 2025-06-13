@@ -24,7 +24,7 @@ defmodule Stytch.SSO do
   @doc """
   Complete SSO Authentication
   """
-  @spec complete(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec complete(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def complete(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -53,7 +53,7 @@ defmodule Stytch.SSO do
   Create External Connection
   """
   @spec create_external_connection(organization_id :: String.t(), body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def create_external_connection(organization_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -82,7 +82,7 @@ defmodule Stytch.SSO do
   Create OIDC Connection
   """
   @spec create_oidc(organization_id :: String.t(), body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def create_oidc(organization_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -111,7 +111,7 @@ defmodule Stytch.SSO do
   Create SAML Connection
   """
   @spec create_saml(organization_id :: String.t(), body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def create_saml(organization_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -143,7 +143,7 @@ defmodule Stytch.SSO do
           organization_id :: String.t(),
           connection_id :: String.t(),
           opts :: keyword
-        ) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+        ) :: {:ok, map} | {:error, Stytch.Error.t()}
   def delete_connection(organization_id, connection_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -174,7 +174,7 @@ defmodule Stytch.SSO do
           connection_id :: String.t(),
           certificate_id :: String.t(),
           opts :: keyword
-        ) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+        ) :: {:ok, map} | {:error, Stytch.Error.t()}
   def delete_saml_verification_certificate(
         organization_id,
         connection_id,
@@ -213,7 +213,7 @@ defmodule Stytch.SSO do
   Get SSO Connections
   """
   @spec get_connections(organization_id :: String.t(), opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def get_connections(organization_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -248,7 +248,7 @@ defmodule Stytch.SSO do
           organization_id :: String.t(),
           member_id :: String.t(),
           opts :: keyword
-        ) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+        ) :: {:ok, map} | {:error, Stytch.Error.t()}
   def get_oidc_access_token(organization_id, member_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:include_refresh_token])
@@ -282,7 +282,7 @@ defmodule Stytch.SSO do
     * `public_token`
 
   """
-  @spec start(opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec start(opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def start(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:connection_id, :public_token])
@@ -312,7 +312,7 @@ defmodule Stytch.SSO do
           connection_id :: String.t(),
           body :: map,
           opts :: keyword
-        ) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+        ) :: {:ok, map} | {:error, Stytch.Error.t()}
   def update_external_connection(organization_id, connection_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -346,7 +346,7 @@ defmodule Stytch.SSO do
           connection_id :: String.t(),
           body :: map,
           opts :: keyword
-        ) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+        ) :: {:ok, map} | {:error, Stytch.Error.t()}
   def update_oidc(organization_id, connection_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -379,7 +379,7 @@ defmodule Stytch.SSO do
           connection_id :: String.t(),
           body :: map,
           opts :: keyword
-        ) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+        ) :: {:ok, map} | {:error, Stytch.Error.t()}
   def update_saml(organization_id, connection_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -412,7 +412,7 @@ defmodule Stytch.SSO do
           connection_id :: String.t(),
           body :: map,
           opts :: keyword
-        ) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+        ) :: {:ok, map} | {:error, Stytch.Error.t()}
   def update_saml_by_metadata_url(organization_id, connection_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 

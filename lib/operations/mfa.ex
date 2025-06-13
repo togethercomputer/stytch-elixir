@@ -8,8 +8,7 @@ defmodule Stytch.MFA do
   @doc """
   Authenticate
   """
-  @spec authenticate(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec authenticate(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def authenticate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -28,7 +27,7 @@ defmodule Stytch.MFA do
   @doc """
   Recover
   """
-  @spec recover(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec recover(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def recover(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -48,7 +47,7 @@ defmodule Stytch.MFA do
   Rotate recovery codes
   """
   @spec rotate_recovery_codes(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+          {:ok, map} | {:error, Stytch.Error.t()}
   def rotate_recovery_codes(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -67,7 +66,7 @@ defmodule Stytch.MFA do
   @doc """
   OTP SMS Send
   """
-  @spec sms_send(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.ErrorResponse.t()}
+  @spec sms_send(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def sms_send(body, opts \\ []) do
     client = opts[:client] || @default_client
 
