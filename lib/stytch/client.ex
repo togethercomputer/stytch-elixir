@@ -63,8 +63,11 @@ defmodule Stytch.Client do
   end
 
   @spec extract_error(term) :: keyword
-  defp extract_error(%{"error_message" => error_message}) do
-    [message: error_message]
+  defp extract_error(%{"error_message" => error_message} = body) do
+    [
+      message: error_message,
+      source: Stytch.Decoder.decode_direct(body, {Stytch.ErrorResponse, :t})
+    ]
   end
 
   @spec put_auth_and_base_url(Req.Request.t(), {String.t(), String.t()} | nil) :: Req.Request.t()
