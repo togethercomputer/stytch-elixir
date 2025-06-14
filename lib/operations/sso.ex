@@ -24,7 +24,7 @@ defmodule Stytch.SSO do
   @doc """
   Complete SSO Authentication
   """
-  @spec complete(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec complete(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def complete(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -35,7 +35,10 @@ defmodule Stytch.SSO do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, {Stytch.SSO, :complete_200_json_resp}}],
+      response: [
+        {200, {Stytch.SSO, :complete_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -50,7 +53,7 @@ defmodule Stytch.SSO do
   Create External Connection
   """
   @spec create_external_connection(organization_id :: String.t(), body :: map, opts :: keyword) ::
-          {:ok, map} | :error
+          {:ok, map} | {:error, Stytch.Error.t()}
   def create_external_connection(organization_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -61,7 +64,10 @@ defmodule Stytch.SSO do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, {Stytch.SSO, :create_external_connection_200_json_resp}}],
+      response: [
+        {200, {Stytch.SSO, :create_external_connection_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -76,7 +82,7 @@ defmodule Stytch.SSO do
   Create OIDC Connection
   """
   @spec create_oidc(organization_id :: String.t(), body :: map, opts :: keyword) ::
-          {:ok, map} | :error
+          {:ok, map} | {:error, Stytch.Error.t()}
   def create_oidc(organization_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -87,7 +93,10 @@ defmodule Stytch.SSO do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, {Stytch.SSO, :create_oidc_200_json_resp}}],
+      response: [
+        {200, {Stytch.SSO, :create_oidc_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -102,7 +111,7 @@ defmodule Stytch.SSO do
   Create SAML Connection
   """
   @spec create_saml(organization_id :: String.t(), body :: map, opts :: keyword) ::
-          {:ok, map} | :error
+          {:ok, map} | {:error, Stytch.Error.t()}
   def create_saml(organization_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -113,7 +122,10 @@ defmodule Stytch.SSO do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, {Stytch.SSO, :create_saml_200_json_resp}}],
+      response: [
+        {200, {Stytch.SSO, :create_saml_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -131,7 +143,7 @@ defmodule Stytch.SSO do
           organization_id :: String.t(),
           connection_id :: String.t(),
           opts :: keyword
-        ) :: {:ok, map} | :error
+        ) :: {:ok, map} | {:error, Stytch.Error.t()}
   def delete_connection(organization_id, connection_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -140,7 +152,10 @@ defmodule Stytch.SSO do
       call: {Stytch.SSO, :delete_connection},
       url: "/v1/b2b/sso/#{organization_id}/connections/#{connection_id}",
       method: :delete,
-      response: [{200, {Stytch.SSO, :delete_connection_200_json_resp}}],
+      response: [
+        {200, {Stytch.SSO, :delete_connection_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -159,7 +174,7 @@ defmodule Stytch.SSO do
           connection_id :: String.t(),
           certificate_id :: String.t(),
           opts :: keyword
-        ) :: {:ok, map} | :error
+        ) :: {:ok, map} | {:error, Stytch.Error.t()}
   def delete_saml_verification_certificate(
         organization_id,
         connection_id,
@@ -178,7 +193,10 @@ defmodule Stytch.SSO do
       url:
         "/v1/b2b/sso/saml/#{organization_id}/connections/#{connection_id}/verification_certificates/#{certificate_id}",
       method: :delete,
-      response: [{200, {Stytch.SSO, :delete_saml_verification_certificate_200_json_resp}}],
+      response: [
+        {200, {Stytch.SSO, :delete_saml_verification_certificate_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -194,7 +212,8 @@ defmodule Stytch.SSO do
   @doc """
   Get SSO Connections
   """
-  @spec get_connections(organization_id :: String.t(), opts :: keyword) :: {:ok, map} | :error
+  @spec get_connections(organization_id :: String.t(), opts :: keyword) ::
+          {:ok, map} | {:error, Stytch.Error.t()}
   def get_connections(organization_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -203,7 +222,10 @@ defmodule Stytch.SSO do
       call: {Stytch.SSO, :get_connections},
       url: "/v1/b2b/sso/#{organization_id}",
       method: :get,
-      response: [{200, {Stytch.SSO, :get_connections_200_json_resp}}],
+      response: [
+        {200, {Stytch.SSO, :get_connections_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -226,7 +248,7 @@ defmodule Stytch.SSO do
           organization_id :: String.t(),
           member_id :: String.t(),
           opts :: keyword
-        ) :: {:ok, map} | :error
+        ) :: {:ok, map} | {:error, Stytch.Error.t()}
   def get_oidc_access_token(organization_id, member_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:include_refresh_token])
@@ -237,7 +259,10 @@ defmodule Stytch.SSO do
       url: "/v1/b2b/organizations/#{organization_id}/members/#{member_id}/oidc_providers",
       method: :get,
       query: query,
-      response: [{200, {Stytch.SSO, :get_oidc_access_token_200_json_resp}}],
+      response: [
+        {200, {Stytch.SSO, :get_oidc_access_token_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -257,7 +282,7 @@ defmodule Stytch.SSO do
     * `public_token`
 
   """
-  @spec start(opts :: keyword) :: {:ok, map} | :error
+  @spec start(opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def start(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:connection_id, :public_token])
@@ -268,7 +293,7 @@ defmodule Stytch.SSO do
       url: "/v1/public/sso/start",
       method: :get,
       query: query,
-      response: [{200, {Stytch.SSO, :start_200_json_resp}}],
+      response: [{200, {Stytch.SSO, :start_200_json_resp}}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -287,7 +312,7 @@ defmodule Stytch.SSO do
           connection_id :: String.t(),
           body :: map,
           opts :: keyword
-        ) :: {:ok, map} | :error
+        ) :: {:ok, map} | {:error, Stytch.Error.t()}
   def update_external_connection(organization_id, connection_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -298,7 +323,10 @@ defmodule Stytch.SSO do
       body: body,
       method: :put,
       request: [{"application/json", :map}],
-      response: [{200, {Stytch.SSO, :update_external_connection_200_json_resp}}],
+      response: [
+        {200, {Stytch.SSO, :update_external_connection_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -318,7 +346,7 @@ defmodule Stytch.SSO do
           connection_id :: String.t(),
           body :: map,
           opts :: keyword
-        ) :: {:ok, map} | :error
+        ) :: {:ok, map} | {:error, Stytch.Error.t()}
   def update_oidc(organization_id, connection_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -329,7 +357,10 @@ defmodule Stytch.SSO do
       body: body,
       method: :put,
       request: [{"application/json", :map}],
-      response: [{200, {Stytch.SSO, :update_oidc_200_json_resp}}],
+      response: [
+        {200, {Stytch.SSO, :update_oidc_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -348,7 +379,7 @@ defmodule Stytch.SSO do
           connection_id :: String.t(),
           body :: map,
           opts :: keyword
-        ) :: {:ok, map} | :error
+        ) :: {:ok, map} | {:error, Stytch.Error.t()}
   def update_saml(organization_id, connection_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -359,7 +390,10 @@ defmodule Stytch.SSO do
       body: body,
       method: :put,
       request: [{"application/json", :map}],
-      response: [{200, {Stytch.SSO, :update_saml_200_json_resp}}],
+      response: [
+        {200, {Stytch.SSO, :update_saml_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -378,7 +412,7 @@ defmodule Stytch.SSO do
           connection_id :: String.t(),
           body :: map,
           opts :: keyword
-        ) :: {:ok, map} | :error
+        ) :: {:ok, map} | {:error, Stytch.Error.t()}
   def update_saml_by_metadata_url(organization_id, connection_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -389,7 +423,10 @@ defmodule Stytch.SSO do
       body: body,
       method: :put,
       request: [{"application/json", :map}],
-      response: [{200, {Stytch.SSO, :update_saml_by_metadata_url_200_json_resp}}],
+      response: [
+        {200, {Stytch.SSO, :update_saml_by_metadata_url_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end

@@ -8,7 +8,7 @@ defmodule Stytch.Passwords do
   @doc """
   Authenticate
   """
-  @spec authenticate(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec authenticate(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def authenticate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -19,7 +19,7 @@ defmodule Stytch.Passwords do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -27,7 +27,7 @@ defmodule Stytch.Passwords do
   @doc """
   Password reset by email
   """
-  @spec email_reset(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec email_reset(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def email_reset(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -38,7 +38,7 @@ defmodule Stytch.Passwords do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -46,7 +46,7 @@ defmodule Stytch.Passwords do
   @doc """
   Password reset by email start
   """
-  @spec email_reset_start(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec email_reset_start(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def email_reset_start(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -57,7 +57,7 @@ defmodule Stytch.Passwords do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -65,7 +65,7 @@ defmodule Stytch.Passwords do
   @doc """
   Password reset by existing password
   """
-  @spec existing_reset(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec existing_reset(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def existing_reset(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -76,7 +76,7 @@ defmodule Stytch.Passwords do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -84,7 +84,7 @@ defmodule Stytch.Passwords do
   @doc """
   Migrate
   """
-  @spec migrate(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec migrate(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def migrate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -95,7 +95,7 @@ defmodule Stytch.Passwords do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -103,7 +103,7 @@ defmodule Stytch.Passwords do
   @doc """
   Password reset by session
   """
-  @spec session_reset(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec session_reset(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def session_reset(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -114,7 +114,7 @@ defmodule Stytch.Passwords do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -122,7 +122,7 @@ defmodule Stytch.Passwords do
   @doc """
   Strength check
   """
-  @spec strength_check(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec strength_check(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def strength_check(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -133,7 +133,7 @@ defmodule Stytch.Passwords do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end

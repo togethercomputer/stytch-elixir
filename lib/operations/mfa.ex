@@ -8,7 +8,7 @@ defmodule Stytch.MFA do
   @doc """
   Authenticate
   """
-  @spec authenticate(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec authenticate(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def authenticate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -19,7 +19,7 @@ defmodule Stytch.MFA do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -27,7 +27,7 @@ defmodule Stytch.MFA do
   @doc """
   Recover
   """
-  @spec recover(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec recover(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def recover(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -38,7 +38,7 @@ defmodule Stytch.MFA do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -46,7 +46,8 @@ defmodule Stytch.MFA do
   @doc """
   Rotate recovery codes
   """
-  @spec rotate_recovery_codes(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec rotate_recovery_codes(body :: map, opts :: keyword) ::
+          {:ok, map} | {:error, Stytch.Error.t()}
   def rotate_recovery_codes(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -57,7 +58,7 @@ defmodule Stytch.MFA do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
@@ -65,7 +66,7 @@ defmodule Stytch.MFA do
   @doc """
   OTP SMS Send
   """
-  @spec sms_send(body :: map, opts :: keyword) :: {:ok, map} | :error
+  @spec sms_send(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
   def sms_send(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -76,7 +77,7 @@ defmodule Stytch.MFA do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}],
+      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
   end
