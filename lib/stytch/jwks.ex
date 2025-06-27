@@ -78,22 +78,46 @@ defmodule Stytch.JWKS do
     * `name`: The name of the key set to use (defaults to `Stytch.JWKS`)
 
   """
-  @spec verify(String.t(), keyword) :: {:ok, map} | {:error, %RuntimeError{}}
+  @spec verify(String.t(), keyword) :: {:ok, map} | {:error, Exception.t()}
   def verify(jwt, opts \\ []) do
+    with {:ok, jwks} <- get_jwks(opts),
+         {:ok, payload} <- verify_signature(jwks, jwt) do
+      decode_payload(payload)
+    end
+  end
+
+  @spec get_jwks(keyword) :: {:ok, [JOSE.JWK.t()]} | {:error, Exception.t()}
+  def get_jwks(opts) do
     key_set_name = Keyword.get(opts, :name, __MODULE__)
     jwks = Application.get_env(:stytch, key_set_name)[:jwks]
 
     if is_list(jwks) and length(jwks) > 0 do
-      Enum.find_value(jwks, {:error, %RuntimeError{message: "Failed to verify JWT"}}, fn jwk ->
-        %JOSE.JWK{fields: %{"alg" => algorithm}} = jwk
-
-        case JOSE.JWS.verify_strict(jwk, [algorithm], jwt) do
-          {true, payload, _header} -> JSON.decode(payload)
-          _ -> nil
-        end
-      end)
+      {:ok, jwks}
     else
       {:error, %RuntimeError{message: "No JWKs available for #{inspect(key_set_name)}"}}
+    end
+  end
+
+  @spec verify_signature([JOSE.JWK.t()], String.t()) :: {:ok, binary} | {:error, Exception.t()}
+  defp verify_signature(jwks, jwt) do
+    Enum.find_value(jwks, {:error, %RuntimeError{message: "Failed to verify JWT"}}, fn jwk ->
+      %JOSE.JWK{fields: %{"alg" => algorithm}} = jwk
+
+      case JOSE.JWS.verify_strict(jwk, [algorithm], jwt) do
+        {true, payload, _header} -> {:ok, payload}
+        _ -> nil
+      end
+    end)
+  end
+
+  @spec decode_payload(binary) :: {:ok, map} | {:error, Exception.t()}
+  defp decode_payload(payload) do
+    case JSON.decode(payload) do
+      {:ok, decoded} ->
+        {:ok, decoded}
+
+      {:error, reason} ->
+        {:error, %RuntimeError{message: "Failed to decode JWT payload: #{inspect(reason)}"}}
     end
   end
 
@@ -112,7 +136,7 @@ defmodule Stytch.JWKS do
          }
 
   @doc false
-  @spec init(keyword) :: {:ok, state, {:continue, :fetch_jwks}} | {:stop, %ArgumentError{}}
+  @spec init(keyword) :: {:ok, state, {:continue, :fetch_jwks}} | {:stop, Exception.t()}
   def init(opts) do
     state = new_state(opts)
 

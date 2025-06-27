@@ -31,8 +31,8 @@ defmodule Stytch do
       name of the `Stytch.JWKS` process in your application supervision tree.
 
   """
-  @spec verify_jwt(String.t()) :: {:ok, map} | {:error, %RuntimeError{}}
-  @spec verify_jwt(String.t(), keyword) :: {:ok, map} | {:error, %RuntimeError{}}
+  @spec verify_jwt(String.t()) :: {:ok, map} | {:error, Exception.t()}
+  @spec verify_jwt(String.t(), keyword) :: {:ok, map} | {:error, Exception.t()}
   def verify_jwt(jwt, opts \\ []) do
     Stytch.JWKS.verify(jwt, opts)
   end
