@@ -17,7 +17,7 @@ defmodule Stytch.Members do
   Create a Member
   """
   @spec create(organization_id :: String.t(), body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.Error.t()}
+          {:ok, Stytch.Members.create_200_json_resp()} | {:error, Stytch.Error.t()}
   def create(organization_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -48,7 +48,7 @@ defmodule Stytch.Members do
   Get a Member (Dangerous)
   """
   @spec dangerously_get(member_id :: String.t(), opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.Error.t()}
+          {:ok, Stytch.Members.dangerously_get_200_json_resp()} | {:error, Stytch.Error.t()}
   def dangerously_get(member_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -75,7 +75,7 @@ defmodule Stytch.Members do
   Delete a Member
   """
   @spec delete(organization_id :: String.t(), member_id :: String.t(), opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.Error.t()}
+          {:ok, Stytch.Members.delete_200_json_resp()} | {:error, Stytch.Error.t()}
   def delete(organization_id, member_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -107,7 +107,9 @@ defmodule Stytch.Members do
           organization_id :: String.t(),
           member_id :: String.t(),
           opts :: keyword
-        ) :: {:ok, map} | {:error, Stytch.Error.t()}
+        ) ::
+          {:ok, Stytch.Members.delete_mfa_phone_number_200_json_resp()}
+          | {:error, Stytch.Error.t()}
   def delete_mfa_phone_number(organization_id, member_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -136,7 +138,7 @@ defmodule Stytch.Members do
   Delete Member MFA TOTP
   """
   @spec delete_mfa_totp(organization_id :: String.t(), member_id :: String.t(), opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.Error.t()}
+          {:ok, Stytch.Members.delete_mfa_totp_200_json_resp()} | {:error, Stytch.Error.t()}
   def delete_mfa_totp(organization_id, member_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -168,7 +170,7 @@ defmodule Stytch.Members do
           organization_id :: String.t(),
           member_password_id :: String.t(),
           opts :: keyword
-        ) :: {:ok, map} | {:error, Stytch.Error.t()}
+        ) :: {:ok, Stytch.Members.delete_password_200_json_resp()} | {:error, Stytch.Error.t()}
   def delete_password(organization_id, member_password_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -202,7 +204,7 @@ defmodule Stytch.Members do
 
   """
   @spec get(organization_id :: String.t(), opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.Error.t()}
+          {:ok, Stytch.Members.get_200_json_resp()} | {:error, Stytch.Error.t()}
   def get(organization_id, opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:member_id])
@@ -230,7 +232,7 @@ defmodule Stytch.Members do
   Reactivate a Member
   """
   @spec reactivate(organization_id :: String.t(), member_id :: String.t(), opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.Error.t()}
+          {:ok, Stytch.Members.reactivate_200_json_resp()} | {:error, Stytch.Error.t()}
   def reactivate(organization_id, member_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -263,7 +265,8 @@ defmodule Stytch.Members do
   @doc """
   Search for Members
   """
-  @spec search(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
+  @spec search(body :: map, opts :: keyword) ::
+          {:ok, Stytch.Members.search_200_json_resp()} | {:error, Stytch.Error.t()}
   def search(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -299,7 +302,8 @@ defmodule Stytch.Members do
           member_id :: String.t(),
           body :: map,
           opts :: keyword
-        ) :: {:ok, map} | {:error, Stytch.Error.t()}
+        ) ::
+          {:ok, Stytch.Members.unlink_retired_email_200_json_resp()} | {:error, Stytch.Error.t()}
   def unlink_retired_email(organization_id, member_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -334,7 +338,7 @@ defmodule Stytch.Members do
           member_id :: String.t(),
           body :: map,
           opts :: keyword
-        ) :: {:ok, map} | {:error, Stytch.Error.t()}
+        ) :: {:ok, Stytch.Members.update_200_json_resp()} | {:error, Stytch.Error.t()}
   def update(organization_id, member_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 
