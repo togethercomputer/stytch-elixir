@@ -14,7 +14,8 @@ defmodule Stytch.Organizations do
   @doc """
   Create an Organization
   """
-  @spec create(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
+  @spec create(body :: map, opts :: keyword) ::
+          {:ok, Stytch.Organizations.create_200_json_resp()} | {:error, Stytch.Error.t()}
   def create(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -43,7 +44,7 @@ defmodule Stytch.Organizations do
   Delete an Organization
   """
   @spec delete(organization_id :: String.t(), opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.Error.t()}
+          {:ok, Stytch.Organizations.delete_200_json_resp()} | {:error, Stytch.Error.t()}
   def delete(organization_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -70,7 +71,7 @@ defmodule Stytch.Organizations do
   Get an Organization
   """
   @spec get(organization_id :: String.t(), opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.Error.t()}
+          {:ok, Stytch.Organizations.get_200_json_resp()} | {:error, Stytch.Error.t()}
   def get(organization_id, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -102,7 +103,8 @@ defmodule Stytch.Organizations do
   @doc """
   Search for Organizations
   """
-  @spec search(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
+  @spec search(body :: map, opts :: keyword) ::
+          {:ok, Stytch.Organizations.search_200_json_resp()} | {:error, Stytch.Error.t()}
   def search(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -131,7 +133,7 @@ defmodule Stytch.Organizations do
   Update an Organization
   """
   @spec update(organization_id :: String.t(), body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.Error.t()}
+          {:ok, Stytch.Organizations.update_200_json_resp()} | {:error, Stytch.Error.t()}
   def update(organization_id, body, opts \\ []) do
     client = opts[:client] || @default_client
 

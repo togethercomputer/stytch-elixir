@@ -8,7 +8,8 @@ defmodule Stytch.Client do
   def request(details) do
     Req.new(method: details.method, url: details.url)
     |> put_auth_and_base_url(details.opts[:auth])
-    |> put_body(details.body)
+    |> put_body(details[:body])
+    |> put_query(details[:query])
     |> put_req_opts(details.opts[:req_opts])
     |> put_telemetry(details.call)
     |> Req.request()
@@ -159,6 +160,10 @@ defmodule Stytch.Client do
   @spec put_body(Req.Request.t(), map | nil) :: Req.Request.t()
   defp put_body(req, nil), do: req
   defp put_body(req, body), do: Req.merge(req, json: body)
+
+  @spec put_query(Req.Request.t(), keyword | nil) :: Req.Request.t()
+  defp put_query(req, nil), do: req
+  defp put_query(req, query), do: Req.merge(req, params: Map.new(query))
 
   @spec put_req_opts(Req.Request.t(), keyword | nil) :: Req.Request.t()
   defp put_req_opts(request, nil) do

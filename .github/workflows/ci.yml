@@ -1,0 +1,90 @@
+name: CI
+on: pull_request
+
+permissions:
+  contents: read
+  issues: read
+  checks: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    container: hexpm/elixir:1.18.3-erlang-27.3.3-debian-bookworm-20250407-slim
+    steps:
+      - name: Install Tools
+        run: apt update && apt install --no-install-recommends --yes build-essential git
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch Hex Cache
+        uses: actions/cache@v4
+        id: hex-cache
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
+
+      - name: Run Tests
+        run: |
+          mix local.hex --force
+          mix local.rebar --force
+          git config --global --add safe.directory '*'
+          mix deps.get
+          MIX_ENV=test mix compile --warnings-as-errors
+          mix test
+
+      - name: Publish Results
+        uses: mikepenz/action-junit-report@v5
+        if: ${{ failure() }}
+        with:
+          check_name: Test Results
+          report_paths: _build/test/lib/together/*.xml
+
+  style:
+    name: Style
+    runs-on: ubuntu-latest
+    container: hexpm/elixir:1.18.3-erlang-27.3.3-debian-bookworm-20250407-slim
+    steps:
+      - name: Install Tools
+        run: apt update && apt install --no-install-recommends --yes build-essential git
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch Hex Cache
+        uses: actions/cache/restore@v4
+        id: hex-cache
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
+
+      - name: Install
+        run: |
+          mix local.hex --force
+          mix local.rebar --force
+          git config --global --add safe.directory '*'
+          mix deps.get
+
+      - name: Check Unused Dependencies
+        run: mix deps.unlock --check-unused
+
+      - name: Check Formatting
+        run: mix format --check-formatted
+        if: always()
+
+      - name: Check Credo
+        run: mix credo
+        if: always()
