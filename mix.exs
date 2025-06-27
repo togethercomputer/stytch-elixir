@@ -19,6 +19,7 @@ defmodule Stytch.MixProject do
 
   defp deps do
     [
+      {:jose, "~> 1.11"},
       {:oapi_generator, github: "aj-foster/open-api-generator", branch: "main"},
       {:req, "~> 0.5"},
       {:req_telemetry, "~> 0.1"}
