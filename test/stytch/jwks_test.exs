@@ -20,13 +20,33 @@ defmodule Stytch.JWKSTest do
   }
 
   describe "verify/2" do
-    test "verifies a signed JWT" do
-      module = Module.concat([Stytch.JWKS, "Test#{System.unique_integer([:positive])}"])
+    setup do
+      %{name: Module.concat([Stytch.JWKS, "Test#{System.unique_integer([:positive])}"])}
+    end
+
+    test "verifies a signed JWT", %{name: name} do
       jwk = JOSE.JWK.from(@valid_jwk)
-      Application.put_env(:stytch, module, jwks: [jwk])
+      Application.put_env(:stytch, name, jwks: [jwk])
 
       assert {:ok, %{"sub" => "member-test-5de01109-bae1-4a4d-908f-f7a26720f4f2"}} =
-               JWKS.verify(@valid_jwt, name: module)
+               JWKS.verify(@valid_jwt, name: name)
+    end
+
+    test "returns error when no JWKs are available", %{name: name} do
+      Application.put_env(:stytch, name, jwks: [])
+
+      assert {:error, %RuntimeError{message: "No JWKs available for " <> _}} =
+               JWKS.verify(@valid_jwt, name: name)
+    end
+
+    test "returns error when JWT verification fails", %{name: name} do
+      jwk = JOSE.JWK.from(@valid_jwk)
+      Application.put_env(:stytch, name, jwks: [jwk])
+
+      invalid_jwt = @valid_jwt <> "invalid"
+
+      assert {:error, %RuntimeError{message: "Failed to verify JWT"}} =
+               JWKS.verify(invalid_jwt, name: name)
     end
   end
 end
