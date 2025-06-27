@@ -1,0 +1,67 @@
+name: Cache & Docs
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cache:
+    name: "Cache"
+    outputs:
+      page_url: ${{ steps.docs.outputs.page_url }}
+    runs-on: ubuntu-latest
+    container: hexpm/elixir:1.18.3-erlang-27.3.3-debian-bookworm-20250407-slim
+    steps:
+      - name: Install Tools
+        run: apt update && apt install --no-install-recommends --yes build-essential git
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch Hex Cache
+        uses: actions/cache@v4
+        id: hex-cache
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
+
+      - name: Precompile
+        run: |
+          mix local.hex --force
+          mix local.rebar --force
+          mix deps.get
+          MIX_ENV=dev mix compile
+          MIX_ENV=test mix compile
+          MIX_ENV=prod mix compile
+          MIX_ENV=dev mix docs
+
+      - name: Upload Docs
+        id: docs
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: doc/
+
+  docs:
+    name: "Docs"
+    needs: cache
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ needs.cache.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
