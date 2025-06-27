@@ -143,7 +143,9 @@ defmodule Stytch.JWKS do
     if state.project_id && state.secret do
       {:ok, state, {:continue, :fetch_jwks}}
     else
-      {:stop, %ArgumentError{message: "Invalid project ID or secret for Stytch JWKS GenServer"}}
+      Logger.info("Invalid project ID or secret for Stytch.JWKS; JWT verification unavailable")
+      Application.put_env(:stytch, state.name, jwks: [])
+      :ignore
     end
   end
 
