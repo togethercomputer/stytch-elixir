@@ -1,14 +1,20 @@
 # Stytch Client for Elixir
 
+[![Documentation](https://img.shields.io/badge/-Documentation-4B275F?logo=elixir&logoColor=white)](https://togethercomputer.github.io/stytch-elixir)
+
 _Wrapper and interface for the Stytch B2B SaaS authentication API in Elixir_
 
----
+## What is this?
 
-This repository is a work in progress.
+Together uses the [Elixir programming language](https://elixir-lang.org/) for several of its services.
+It also uses [Stytch](https://stytch.com/) to serve some of its authentication and authorization needs.
+This repository provides a wrapper around the Stytch B2B SaaS Authentication API in Elixir.
+
+This repository is a work in progress and not necessarily meant for public consumption.
 
 ## Installation
 
-This library is not currently available on Hex.pm, so install it via GitHub and run mix deps.get:
+This library is not currently available on Hex.pm, so install it via GitHub and run `mix deps.get`:
 
 ```elixir
 def deps do
