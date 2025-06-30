@@ -36,4 +36,23 @@ defmodule Stytch do
   def verify_jwt(jwt, opts \\ []) do
     Stytch.JWKS.verify(jwt, opts)
   end
+
+  @doc """
+  Dangerously decode a signed JWT without verifying its signature
+
+  Returns the payload of the signed JWT if successful, or an error if the JWT is malformed.
+  This function should only be called on JWTs that are independently verified by the caller
+  (such as those received directly from Stytch's API). User-provided JWTs could be changed in
+  an unsigned way, and this function will not perform any verification.
+  """
+  @spec dangerously_decode_jwt(String.t()) :: {:ok, map} | {:error, Exception.t()}
+  def dangerously_decode_jwt(jwt) do
+    result =
+      JOSE.JWS.peek_payload(jwt)
+      |> JSON.decode!()
+
+    {:ok, result}
+  rescue
+    e -> {:error, %RuntimeError{message: "Failed to decode JWT payload: #{inspect(e)}"}}
+  end
 end
