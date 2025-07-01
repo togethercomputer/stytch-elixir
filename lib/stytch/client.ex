@@ -71,6 +71,8 @@ defmodule Stytch.Client do
     ]
   end
 
+  defp extract_error(_unknown_format), do: []
+
   @spec put_auth_and_base_url(Req.Request.t(), {String.t(), String.t()} | nil) :: Req.Request.t()
   defp put_auth_and_base_url(req, nil) do
     opts =

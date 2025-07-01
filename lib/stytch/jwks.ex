@@ -52,6 +52,8 @@ defmodule Stytch.JWKS do
         {Stytch.JWKS, auth: {"your_project_id", "your_secret"}}
       ]
 
+  Use the special value `auth: false` to disable retrieval of the JWKS entirely. This can be
+  useful in a testing environment where the default auth might be set.
   """
   use GenServer
   require Logger
@@ -196,7 +198,9 @@ defmodule Stytch.JWKS do
     put_auth(%{name: opts[:name], project_id: nil, secret: nil, jwks: []}, opts[:auth])
   end
 
-  @spec put_auth(state, {String.t(), String.t()} | nil) :: state
+  @spec put_auth(state, {String.t(), String.t()} | false | nil) :: state
+  defp put_auth(state, false), do: state
+
   defp put_auth(state, nil) do
     case Application.get_env(:stytch, :default_auth) do
       nil ->
