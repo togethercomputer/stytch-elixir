@@ -58,6 +58,8 @@ It was generated based on a public Postman collection and enhanced by hand — s
 
 Code generation provided by the [OpenAPI Generator for Elixir](https://github.com/aj-foster/open-api-generator).
 
+To regenerate the code after modifying the OpenAPI spec run `mix api.gen default vendor/stytch-openapi.yml`.
+
 ## License
 
 Please see [LICENSE](LICENSE) for licensing details.
