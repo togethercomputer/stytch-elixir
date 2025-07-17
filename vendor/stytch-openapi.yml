@@ -1976,6 +1976,48 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: members/delete
+      tags:
+        - members
+      summary: Delete a Member
+      parameters:
+        - name: organization_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
+        - name: member_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: member-test-a5a2f9f7-d150-49fb-94b0-adacbae82a70
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_code:
+                    type: integer
+                  member_id:
+                    type: string
+                required:
+                  - request_id
+                  - status_code
+                  - member_id
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /v1/b2b/organizations/{organization_id}/members/{member_id}/unlink_retired_email:
     post:
       operationId: members/unlink_retired_email
@@ -2027,48 +2069,6 @@ paths:
                   - organization_id
                   - member
                   - organization
-        default:
-          description: Error response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-    delete:
-      operationId: members/delete
-      tags:
-        - members
-      summary: Delete a Member
-      parameters:
-        - name: organization_id
-          in: path
-          schema:
-            type: string
-          required: true
-          example: organization-test-309192b4-b07d-454d-ac2c-690125f6ea96
-        - name: member_id
-          in: path
-          schema:
-            type: string
-          required: true
-          example: member-test-a5a2f9f7-d150-49fb-94b0-adacbae82a70
-      responses:
-        "200":
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  request_id:
-                    type: string
-                  status_code:
-                    type: integer
-                  member_id:
-                    type: string
-                required:
-                  - request_id
-                  - status_code
-                  - member_id
         default:
           description: Error response
           content:

@@ -82,7 +82,7 @@ defmodule Stytch.Members do
     client.request(%{
       args: [organization_id: organization_id, member_id: member_id],
       call: {Stytch.Members, :delete},
-      url: "/v1/b2b/organizations/#{organization_id}/members/#{member_id}/unlink_retired_email",
+      url: "/v1/b2b/organizations/#{organization_id}/members/#{member_id}",
       method: :delete,
       response: [
         {200, {Stytch.Members, :delete_200_json_resp}},
