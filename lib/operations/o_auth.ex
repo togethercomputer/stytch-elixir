@@ -56,11 +56,23 @@ defmodule Stytch.OAuth do
     })
   end
 
+  @type authenticate_discovery_200_json_resp :: %{
+          discovered_organizations: [Stytch.DiscoveredOrganization.t()],
+          email_address: String.t(),
+          full_name: String.t(),
+          intermediate_session_token: String.t(),
+          provider_tenant_id: String.t(),
+          provider_tenant_ids: [String.t()],
+          provider_type: String.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
+
   @doc """
   Authenticate discovery OAuth
   """
   @spec authenticate_discovery(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.Error.t()}
+          {:ok, Stytch.OAuth.authenticate_discovery_200_json_resp()} | {:error, Stytch.Error.t()}
   def authenticate_discovery(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -71,7 +83,10 @@ defmodule Stytch.OAuth do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
+      response: [
+        {200, {Stytch.OAuth, :authenticate_discovery_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -434,6 +449,20 @@ defmodule Stytch.OAuth do
       id_token: {:string, :generic},
       refresh_token: {:string, :generic},
       scopes: [string: :generic]
+    ]
+  end
+
+  def __fields__(:authenticate_discovery_200_json_resp) do
+    [
+      discovered_organizations: [{Stytch.DiscoveredOrganization, :t}],
+      email_address: {:string, :generic},
+      full_name: {:string, :generic},
+      intermediate_session_token: {:string, :generic},
+      provider_tenant_id: {:string, :generic},
+      provider_tenant_ids: [string: :generic],
+      provider_type: {:string, :generic},
+      request_id: {:string, :generic},
+      status_code: :integer
     ]
   end
 
