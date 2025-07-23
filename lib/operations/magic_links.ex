@@ -46,11 +46,20 @@ defmodule Stytch.MagicLinks do
     })
   end
 
+  @type authenticate_discovery_200_json_resp :: %{
+          discovered_organizations: [Stytch.DiscoveredOrganization.t()],
+          email_address: String.t(),
+          intermediate_session_token: String.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
+
   @doc """
   Authenticate discovery Magic Link
   """
   @spec authenticate_discovery(body :: map, opts :: keyword) ::
-          {:ok, map} | {:error, Stytch.Error.t()}
+          {:ok, Stytch.MagicLinks.authenticate_discovery_200_json_resp()}
+          | {:error, Stytch.Error.t()}
   def authenticate_discovery(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -61,7 +70,10 @@ defmodule Stytch.MagicLinks do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
+      response: [
+        {200, {Stytch.MagicLinks, :authenticate_discovery_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -172,6 +184,16 @@ defmodule Stytch.MagicLinks do
       reset_sessions: :boolean,
       session_jwt: {:string, :generic},
       session_token: {:string, :generic},
+      status_code: :integer
+    ]
+  end
+
+  def __fields__(:authenticate_discovery_200_json_resp) do
+    [
+      discovered_organizations: [{Stytch.DiscoveredOrganization, :t}],
+      email_address: {:string, :generic},
+      intermediate_session_token: {:string, :generic},
+      request_id: {:string, :generic},
       status_code: :integer
     ]
   end
