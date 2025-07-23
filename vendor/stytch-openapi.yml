@@ -656,6 +656,19 @@ components:
         - default_mfa_method
         - roles
 
+    MemberOptions:
+      type: object
+      properties:
+        mfa_phone_number:
+          type: string
+          description: The Member's MFA phone number.
+        totp_registration_id:
+          type: string
+          description: The Member's MFA TOTP registration ID.
+      required:
+        - mfa_phone_number
+        - totp_registration_id
+
     MemberRole:
       type: object
       properties:
@@ -738,6 +751,20 @@ components:
         - authentication_factors
         - organization_id
         - roles
+
+    MfaRequired:
+      type: object
+      properties:
+        member_options:
+          $ref: "#/components/schemas/MemberOptions"
+          description: Information about the Member's options for completing MFA.
+        secondary_auth_initiated:
+          type: string
+          description: >
+            If null, indicates that no secondary authentication has been initiated. If equal to "sms_otp", indicates
+            that the Member has a phone number, and a one time passcode has been sent to the Member's phone number.
+            No secondary authentication will be initiated during calls to the discovery authenticate or list
+            organizations endpoints, even if the Member has a phone number.
 
     MicrosoftOAuthFactor:
       type: object
@@ -1131,6 +1158,21 @@ components:
       required:
         - phone_id
         - phone_number
+
+    PrimaryRequired:
+      type: object
+      properties:
+        allowed_auth_methods:
+          type: array
+          items:
+            type: string
+          description: >
+            Details the auth method that the member must also complete to fulfill the primary authentication
+            requirements of the Organization. For example, a value of `[magic_link]` indicates that the Member must
+            also complete a magic link authentication step. If you have an intermediate session token, you must pass
+            it into that primary authentication step.
+      required:
+        - allowed_auth_methods
 
     RecoveryCodeFactor:
       type: object
@@ -2499,6 +2541,85 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                    description: >
+                      Globally unique UUID that is returned with every API call. This value is important to log for debugging
+                      purposes; we may ask for this value to help identify a specific API call when helping you debug an issue.
+                  member_id:
+                    type: string
+                    description: Globally unique UUID that identifies a specific Member.
+                  method_id:
+                    type: string
+                    description: The email or device involved in the authentication.
+                  reset_sessions:
+                    type: boolean
+                    description: This field is deprecated.
+                  organization_id:
+                    type: string
+                    description: >
+                      Globally unique UUID that identifies a specific Organization. The `organization_id` is critical to
+                      perform operations on an Organization, so be sure to preserve this value.
+                  member:
+                    $ref: "#/components/schemas/Member"
+                    description: The [Member object](https://stytch.com/docs/b2b/api/member-object)
+                  session_token:
+                    type: string
+                    description: A secret token for a given Stytch Session.
+                  session_jwt:
+                    type: string
+                    description: The JSON Web Token (JWT) for a given Stytch Session.
+                  organization:
+                    $ref: "#/components/schemas/Organization"
+                    description: The [Organization object](https://stytch.com/docs/b2b/api/organization-object).
+                  intermediate_session_token:
+                    type: string
+                    description: >
+                      The returned Intermediate Session Token contains an Email Magic Link factor associated with the Member's
+                      email address. If this value is non-empty, the member must complete an MFA step to finish logging in to
+                      the Organization. The token can be used with the
+                      [OTP SMS Authenticate endpoint](https://stytch.com/docs/b2b/api/authenticate-otp-sms),
+                      [TOTP Authenticate endpoint](https://stytch.com/docs/b2b/api/authenticate-totp), or
+                      [Recovery Codes Recover endpoint](https://stytch.com/docs/b2b/api/recovery-codes-recover) to complete an
+                      MFA flow and log in to the Organization. The token has a default expiry of 10 minutes. It can also be
+                      used with the
+                      [Exchange Intermediate Session endpoint](https://stytch.com/docs/b2b/api/exchange-intermediate-session)
+                      to join a specific Organization that allows the factors represented by the intermediate session token;
+                      or the
+                      [Create Organization via Discovery endpoint](https://stytch.com/docs/b2b/api/create-organization-via-discovery) to create a new Organization and Member. Intermediate Session Tokens have a default expiry of 10 minutes.
+                  member_authenticated:
+                    type: boolean
+                    description: >
+                      Indicates whether the Member is fully authenticated. If false, the Member needs to complete an MFA step
+                      to log in to the Organization.
+                  status_code:
+                    type: integer
+                    description: >
+                      The HTTP status code of the response. Stytch follows standard HTTP response status code patterns, e.g.
+                      2XX values equate to success, 3XX values are redirects, 4XX are client errors, and 5XX are server errors.
+                  member_session:
+                    $ref: "#/components/schemas/MemberSession"
+                    description: The [Session object](https://stytch.com/docs/b2b/api/session-object).
+                  mfa_required:
+                    $ref: "#/components/schemas/MfaRequired"
+                    description: Information about the MFA requirements of the Organization and the Member's options for fulfilling MFA.
+                  primary_required:
+                    $ref: "#/components/schemas/PrimaryRequired"
+                    description: Information about the primary authentication requirements of the Organization.
+                required:
+                  - request_id
+                  - member_id
+                  - method_id
+                  - reset_sessions
+                  - organization_id
+                  - member
+                  - session_token
+                  - session_jwt
+                  - organization
+                  - intermediate_session_token
+                  - member_authenticated
+                  - status_code
         default:
           description: Error response
           content:
