@@ -5,10 +5,29 @@ defmodule Stytch.MagicLinks do
 
   @default_client Stytch.Client
 
+  @type authenticate_200_json_resp :: %{
+          intermediate_session_token: String.t(),
+          member: Stytch.Member.t(),
+          member_authenticated: boolean,
+          member_id: String.t(),
+          member_session: Stytch.Member.Session.t() | nil,
+          method_id: String.t(),
+          mfa_required: Stytch.MFARequired.t() | nil,
+          organization: Stytch.Organization.t(),
+          organization_id: String.t(),
+          primary_required: Stytch.PrimaryRequired.t() | nil,
+          request_id: String.t(),
+          reset_sessions: boolean,
+          session_jwt: String.t(),
+          session_token: String.t(),
+          status_code: integer
+        }
+
   @doc """
   Authenticate Magic Link
   """
-  @spec authenticate(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
+  @spec authenticate(body :: map, opts :: keyword) ::
+          {:ok, Stytch.MagicLinks.authenticate_200_json_resp()} | {:error, Stytch.Error.t()}
   def authenticate(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -19,7 +38,10 @@ defmodule Stytch.MagicLinks do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
+      response: [
+        {200, {Stytch.MagicLinks, :authenticate_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -134,6 +156,26 @@ defmodule Stytch.MagicLinks do
 
   @doc false
   @spec __fields__(atom) :: keyword
+  def __fields__(:authenticate_200_json_resp) do
+    [
+      intermediate_session_token: {:string, :generic},
+      member: {Stytch.Member, :t},
+      member_authenticated: :boolean,
+      member_id: {:string, :generic},
+      member_session: {Stytch.Member.Session, :t},
+      method_id: {:string, :generic},
+      mfa_required: {Stytch.MFARequired, :t},
+      organization: {Stytch.Organization, :t},
+      organization_id: {:string, :generic},
+      primary_required: {Stytch.PrimaryRequired, :t},
+      request_id: {:string, :generic},
+      reset_sessions: :boolean,
+      session_jwt: {:string, :generic},
+      session_token: {:string, :generic},
+      status_code: :integer
+    ]
+  end
+
   def __fields__(:invite_200_json_resp) do
     [
       member: {Stytch.Member, :t},
