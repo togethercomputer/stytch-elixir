@@ -7,6 +7,7 @@ config :oapi_generator,
         AuthenticationFactor,
         Member,
         OIDC,
+        RBAC,
         SAML
       ],
       rename: [
