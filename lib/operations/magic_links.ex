@@ -44,10 +44,19 @@ defmodule Stytch.MagicLinks do
     })
   end
 
+  @type invite_200_json_resp :: %{
+          member: Stytch.Member.t(),
+          member_id: String.t(),
+          organization: Stytch.Organization.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
+
   @doc """
   Send invite email
   """
-  @spec invite(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
+  @spec invite(body :: map, opts :: keyword) ::
+          {:ok, Stytch.MagicLinks.invite_200_json_resp()} | {:error, Stytch.Error.t()}
   def invite(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -58,15 +67,28 @@ defmodule Stytch.MagicLinks do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
+      response: [
+        {200, {Stytch.MagicLinks, :invite_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
 
+  @type login_or_signup_200_json_resp :: %{
+          member: Stytch.Member.t(),
+          member_created: boolean,
+          member_id: String.t(),
+          organization: Stytch.Organization.t(),
+          request_id: String.t(),
+          status_code: integer
+        }
+
   @doc """
   Send login or signup email
   """
-  @spec login_or_signup(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
+  @spec login_or_signup(body :: map, opts :: keyword) ::
+          {:ok, Stytch.MagicLinks.login_or_signup_200_json_resp()} | {:error, Stytch.Error.t()}
   def login_or_signup(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -77,7 +99,10 @@ defmodule Stytch.MagicLinks do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
+      response: [
+        {200, {Stytch.MagicLinks, :login_or_signup_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -99,5 +124,28 @@ defmodule Stytch.MagicLinks do
       response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
       opts: opts
     })
+  end
+
+  @doc false
+  @spec __fields__(atom) :: keyword
+  def __fields__(:invite_200_json_resp) do
+    [
+      member: {Stytch.Member, :t},
+      member_id: {:string, :generic},
+      organization: {Stytch.Organization, :t},
+      request_id: {:string, :generic},
+      status_code: :integer
+    ]
+  end
+
+  def __fields__(:login_or_signup_200_json_resp) do
+    [
+      member: {Stytch.Member, :t},
+      member_created: :boolean,
+      member_id: {:string, :generic},
+      organization: {Stytch.Organization, :t},
+      request_id: {:string, :generic},
+      status_code: :integer
+    ]
   end
 end
