@@ -76,6 +76,45 @@ defmodule Stytch.OAuth do
     })
   end
 
+  @type discovery_github_307_json_resp :: %{
+          redirect_url: String.t() | nil,
+          request_id: String.t() | nil,
+          status_code: integer | nil
+        }
+
+  @doc """
+  Use GitHub for discovery
+
+  ## Options
+
+    * `public_token`
+
+  """
+  @spec discovery_github(opts :: keyword) :: :ok | {:error, Stytch.Error.t()}
+  def discovery_github(opts \\ []) do
+    client = opts[:client] || @default_client
+    query = Keyword.take(opts, [:public_token])
+
+    client.request(%{
+      args: [],
+      call: {Stytch.OAuth, :discovery_github},
+      url: "/v1/b2b/public/oauth/github/discovery/start",
+      method: :get,
+      query: query,
+      response: [
+        {307, {Stytch.OAuth, :discovery_github_307_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
+      opts: opts
+    })
+  end
+
+  @type discovery_google_302_json_resp :: %{
+          redirect_url: String.t() | nil,
+          request_id: String.t() | nil,
+          status_code: integer | nil
+        }
+
   @doc """
   Use Google for discovery
 
@@ -84,7 +123,7 @@ defmodule Stytch.OAuth do
     * `public_token`
 
   """
-  @spec discovery_google(opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
+  @spec discovery_google(opts :: keyword) :: :ok | {:error, Stytch.Error.t()}
   def discovery_google(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:public_token])
@@ -95,10 +134,52 @@ defmodule Stytch.OAuth do
       url: "/v1/b2b/public/oauth/google/discovery/start",
       method: :get,
       query: query,
-      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
+      response: [
+        {302, {Stytch.OAuth, :discovery_google_302_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
+
+  @type discovery_hubspot_307_json_resp :: %{
+          redirect_url: String.t() | nil,
+          request_id: String.t() | nil,
+          status_code: integer | nil
+        }
+
+  @doc """
+  Use HubSpot for discovery
+
+  ## Options
+
+    * `public_token`
+
+  """
+  @spec discovery_hubspot(opts :: keyword) :: :ok | {:error, Stytch.Error.t()}
+  def discovery_hubspot(opts \\ []) do
+    client = opts[:client] || @default_client
+    query = Keyword.take(opts, [:public_token])
+
+    client.request(%{
+      args: [],
+      call: {Stytch.OAuth, :discovery_hubspot},
+      url: "/v1/b2b/public/oauth/hubspot/discovery/start",
+      method: :get,
+      query: query,
+      response: [
+        {307, {Stytch.OAuth, :discovery_hubspot_307_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
+      opts: opts
+    })
+  end
+
+  @type discovery_microsoft_302_json_resp :: %{
+          redirect_url: String.t() | nil,
+          request_id: String.t() | nil,
+          status_code: integer | nil
+        }
 
   @doc """
   Use Microsoft for discovery
@@ -108,7 +189,7 @@ defmodule Stytch.OAuth do
     * `public_token`
 
   """
-  @spec discovery_microsoft(opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
+  @spec discovery_microsoft(opts :: keyword) :: :ok | {:error, Stytch.Error.t()}
   def discovery_microsoft(opts \\ []) do
     client = opts[:client] || @default_client
     query = Keyword.take(opts, [:public_token])
@@ -119,7 +200,40 @@ defmodule Stytch.OAuth do
       url: "/v1/b2b/public/oauth/microsoft/discovery/start",
       method: :get,
       query: query,
-      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
+      response: [{302, {Stytch.OAuth, :discovery_microsoft_302_json_resp}}],
+      opts: opts
+    })
+  end
+
+  @type discovery_slack_307_json_resp :: %{
+          redirect_url: String.t() | nil,
+          request_id: String.t() | nil,
+          status_code: integer | nil
+        }
+
+  @doc """
+  Use Slack for discovery
+
+  ## Options
+
+    * `public_token`
+
+  """
+  @spec discovery_slack(opts :: keyword) :: :ok | {:error, Stytch.Error.t()}
+  def discovery_slack(opts \\ []) do
+    client = opts[:client] || @default_client
+    query = Keyword.take(opts, [:public_token])
+
+    client.request(%{
+      args: [],
+      call: {Stytch.OAuth, :discovery_slack},
+      url: "/v1/b2b/public/oauth/slack/discovery/start",
+      method: :get,
+      query: query,
+      response: [
+        {307, {Stytch.OAuth, :discovery_slack_307_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -321,6 +435,26 @@ defmodule Stytch.OAuth do
       refresh_token: {:string, :generic},
       scopes: [string: :generic]
     ]
+  end
+
+  def __fields__(:discovery_github_307_json_resp) do
+    [redirect_url: {:string, :generic}, request_id: {:string, :generic}, status_code: :integer]
+  end
+
+  def __fields__(:discovery_google_302_json_resp) do
+    [redirect_url: {:string, :generic}, request_id: {:string, :generic}, status_code: :integer]
+  end
+
+  def __fields__(:discovery_hubspot_307_json_resp) do
+    [redirect_url: {:string, :generic}, request_id: {:string, :generic}, status_code: :integer]
+  end
+
+  def __fields__(:discovery_microsoft_302_json_resp) do
+    [redirect_url: {:string, :generic}, request_id: {:string, :generic}, status_code: :integer]
+  end
+
+  def __fields__(:discovery_slack_307_json_resp) do
+    [redirect_url: {:string, :generic}, request_id: {:string, :generic}, status_code: :integer]
   end
 
   def __fields__(:login_github_307_json_resp) do
