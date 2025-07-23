@@ -3025,12 +3025,26 @@ paths:
             type: string
           example: "{{PUBLIC_TOKEN}}"
       responses:
-        "200":
+        "302":
           description: Successful response
           content:
             application/json:
               schema:
                 type: object
+                properties:
+                  status_code:
+                    type: integer
+                    description: >
+                      The HTTP status code of the response. Stytch follows standard HTTP response status code patterns, e.g.
+                      2XX values equate to success, 3XX values are redirects, 4XX are client errors, and 5XX are server errors.
+                  request_id:
+                    type: string
+                    description: >
+                      Globally unique UUID that is returned with every API call. This value is important to log for debugging
+                      purposes; we may ask for this value to help identify a specific API call when helping you debug an issue.
+                  redirect_url:
+                    type: string
+                    description: The url to redirect to. This should be done automatically by the browser.
         default:
           description: Error response
           content:
@@ -3052,12 +3066,149 @@ paths:
             type: string
           example: "{{PUBLIC_TOKEN}}"
       responses:
-        "200":
+        "302":
           description: Successful response
           content:
             application/json:
               schema:
                 type: object
+                properties:
+                  status_code:
+                    type: integer
+                    description: >
+                      The HTTP status code of the response. Stytch follows standard HTTP response status code patterns, e.g.
+                      2XX values equate to success, 3XX values are redirects, 4XX are client errors, and 5XX are server errors.
+                  request_id:
+                    type: string
+                    description: >
+                      Globally unique UUID that is returned with every API call. This value is important to log for debugging
+                      purposes; we may ask for this value to help identify a specific API call when helping you debug an issue.
+                  redirect_url:
+                    type: string
+                    description: The url to redirect to. This should be done automatically by the browser.
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/b2b/public/oauth/hubspot/start:
+    get:
+      operationId: oauth/login_hubspot
+      tags:
+        - oauth
+      summary: Login with HubSpot
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: public_token
+          in: query
+          schema:
+            type: string
+          example: "{{PUBLIC_TOKEN}}"
+      responses:
+        "307":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    description: >
+                      The HTTP status code of the response. Stytch follows standard HTTP response status code patterns, e.g.
+                      2XX values equate to success, 3XX values are redirects, 4XX are client errors, and 5XX are server errors.
+                  request_id:
+                    type: string
+                    description: >
+                      Globally unique UUID that is returned with every API call. This value is important to log for debugging
+                      purposes; we may ask for this value to help identify a specific API call when helping you debug an issue.
+                  redirect_url:
+                    type: string
+                    description: The url to redirect to. This should be done automatically by the browser.
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/b2b/public/oauth/slack/start:
+    get:
+      operationId: oauth/login_slack
+      tags:
+        - oauth
+      summary: Login with Slack
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: public_token
+          in: query
+          schema:
+            type: string
+          example: "{{PUBLIC_TOKEN}}"
+      responses:
+        "307":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    description: >
+                      The HTTP status code of the response. Stytch follows standard HTTP response status code patterns, e.g.
+                      2XX values equate to success, 3XX values are redirects, 4XX are client errors, and 5XX are server errors.
+                  request_id:
+                    type: string
+                    description: >
+                      Globally unique UUID that is returned with every API call. This value is important to log for debugging
+                      purposes; we may ask for this value to help identify a specific API call when helping you debug an issue.
+                  redirect_url:
+                    type: string
+                    description: The url to redirect to. This should be done automatically by the browser.
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /v1/b2b/public/oauth/github/start:
+    get:
+      operationId: oauth/login_github
+      tags:
+        - oauth
+      summary: Login with GitHub
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: public_token
+          in: query
+          schema:
+            type: string
+          example: "{{PUBLIC_TOKEN}}"
+      responses:
+        "307":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status_code:
+                    type: integer
+                    description: >
+                      The HTTP status code of the response. Stytch follows standard HTTP response status code patterns, e.g.
+                      2XX values equate to success, 3XX values are redirects, 4XX are client errors, and 5XX are server errors.
+                  request_id:
+                    type: string
+                    description: >
+                      Globally unique UUID that is returned with every API call. This value is important to log for debugging
+                      purposes; we may ask for this value to help identify a specific API call when helping you debug an issue.
+                  redirect_url:
+                    type: string
+                    description: The url to redirect to. This should be done automatically by the browser.
         default:
           description: Error response
           content:
