@@ -107,10 +107,13 @@ defmodule Stytch.MagicLinks do
     })
   end
 
+  @type send_discovery_200_json_resp :: %{request_id: String.t(), status_code: integer}
+
   @doc """
   Send discovery email
   """
-  @spec send_discovery(body :: map, opts :: keyword) :: {:ok, map} | {:error, Stytch.Error.t()}
+  @spec send_discovery(body :: map, opts :: keyword) ::
+          {:ok, Stytch.MagicLinks.send_discovery_200_json_resp()} | {:error, Stytch.Error.t()}
   def send_discovery(body, opts \\ []) do
     client = opts[:client] || @default_client
 
@@ -121,7 +124,10 @@ defmodule Stytch.MagicLinks do
       body: body,
       method: :post,
       request: [{"application/json", :map}],
-      response: [{200, :map}, default: {Stytch.ErrorResponse, :t}],
+      response: [
+        {200, {Stytch.MagicLinks, :send_discovery_200_json_resp}},
+        default: {Stytch.ErrorResponse, :t}
+      ],
       opts: opts
     })
   end
@@ -147,5 +153,9 @@ defmodule Stytch.MagicLinks do
       request_id: {:string, :generic},
       status_code: :integer
     ]
+  end
+
+  def __fields__(:send_discovery_200_json_resp) do
+    [request_id: {:string, :generic}, status_code: :integer]
   end
 end
