@@ -294,6 +294,30 @@ components:
         - id
         - provider_subject
 
+    DiscoveredOrganization:
+      type: object
+      properties:
+        member_authenticated:
+          type: boolean
+          description: >
+            Indicates whether the Member has all of the factors needed to fully authenticate to this Organization.
+            If false, the Member may need to complete an MFA step or complete a different primary authentication
+            flow. See the `primary_required` and `mfa_required` fields for more details on each.
+        organization:
+          $ref: "#/components/schemas/Organization"
+          description: The [Organization object](https://stytch.com/docs/b2b/api/organization-object).
+        membership:
+          $ref: "#/components/schemas/Membership"
+          description: Information about the membership.
+        primary_required:
+          $ref: "#/components/schemas/PrimaryRequired"
+          description: Information about the primary authentication requirements of the Organization.
+        mfa_required:
+          $ref: "#/components/schemas/MfaRequired"
+          description: Information about the MFA requirements of the Organization and the Member's options for fulfilling MFA.
+      required:
+        - member_authenticated
+
     EmailFactor:
       type: object
       properties:
@@ -655,6 +679,26 @@ components:
         - mfa_phone_number
         - default_mfa_method
         - roles
+
+    Membership:
+      type: object
+      properties:
+        type:
+          type: string
+          description: >
+            Either `active_member`, `pending_member`, `invited_member`, `eligible_to_join_by_email_domain`, or
+            `eligible_to_join_by_oauth_tenant`
+        details:
+          type: object
+          additionalProperties: true
+          description: An object containing additional metadata about the membership, if available.
+        member:
+          $ref: "#/components/schemas/Member"
+          description: >
+            The [Member object](https://stytch.com/docs/b2b/api/member-object) if one already exists, or null if one
+            does not.
+      required:
+        - type
 
     MemberOptions:
       type: object
@@ -2696,6 +2740,61 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  request_id:
+                    type: string
+                    description: >
+                      Globally unique UUID that is returned with every API call. This value is important to log for debugging
+                      purposes; we may ask for this value to help identify a specific API call when helping you debug an issue.
+                  intermediate_session_token:
+                    type: string
+                    description: >
+                      The Intermediate Session Token. This token does not necessarily belong to a specific instance of a
+                      Member, but represents a bag of factors that may be converted to a member session. The token can be used
+                      with the [OTP SMS Authenticate endpoint](https://stytch.com/docs/b2b/api/authenticate-otp-sms),
+                      [TOTP Authenticate endpoint](https://stytch.com/docs/b2b/api/authenticate-totp), or
+                      [Recovery Codes Recover endpoint](https://stytch.com/docs/b2b/api/recovery-codes-recover) to complete an
+                      MFA flow and log in to the Organization. The token has a default expiry of 10 minutes. It can also be
+                      used with the
+                      [Exchange Intermediate Session endpoint](https://stytch.com/docs/b2b/api/exchange-intermediate-session)
+                      to join a specific Organization that allows the factors represented by the intermediate session token;
+                      or the
+                      [Create Organization via Discovery endpoint](https://stytch.com/docs/b2b/api/create-organization-via-discovery) to create a new Organization and Member. Intermediate Session Tokens have a default expiry of 10 minutes.
+                  email_address:
+                    type: string
+                    description: The email address.
+                  discovered_organizations:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/DiscoveredOrganization"
+                    description: >
+                      An array of `discovered_organization` objects tied to the `intermediate_session_token`, `session_token`,
+                      or `session_jwt`. See the
+                      [Discovered Organization Object](https://stytch.com/docs/b2b/api/discovered-organization-object) for
+                      complete details.
+
+                        Note that Organizations will only appear here under any of the following conditions:
+                        1. The end user is already a Member of the Organization.
+                        2. The end user is invited to the Organization.
+                        3. The end user can join the Organization because:
+
+                            a) The Organization allows JIT provisioning.
+
+                            b) The Organizations' allowed domains list contains the Member's email domain.
+
+                            c) The Organization has at least one other Member with a verified email address with the same
+                      domain as the end user (to prevent phishing attacks).
+                  status_code:
+                    type: integer
+                    description: >
+                      The HTTP status code of the response. Stytch follows standard HTTP response status code patterns, e.g.
+                      2XX values equate to success, 3XX values are redirects, 4XX are client errors, and 5XX are server errors.
+                required:
+                  - request_id
+                  - intermediate_session_token
+                  - email_address
+                  - discovered_organizations
+                  - status_code
         default:
           description: Error response
           content:
