@@ -13,7 +13,14 @@ defmodule Stytch.MixProject do
       docs: docs(),
       name: "Stytch Elixir SDK",
       source_url: "https://github.com/togethercomputer/stytch-elixir",
-      homepage_url: "https://github.com/togethercomputer/stytch-elixir"
+      homepage_url: "https://github.com/togethercomputer/stytch-elixir",
+
+      # Dialyzer
+      dialyzer: [
+        # Put the project-level PLT in the priv/ directory (instead of the default _build/ location)
+        plt_file: {:no_warn, "priv/plts/project.plt"},
+        plt_add_apps: [:ex_unit, :mix]
+      ]
     ]
   end
 
@@ -26,6 +33,7 @@ defmodule Stytch.MixProject do
   defp deps do
     [
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.38", only: [:dev], runtime: false},
       {:jose, "~> 1.11"},
       {:oapi_generator, github: "aj-foster/open-api-generator", branch: "main"},
