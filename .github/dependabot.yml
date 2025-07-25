@@ -1,0 +1,14 @@
+version: 2
+
+updates:
+  - package-ecosystem: "mix"
+    directory: "/"
+    insecure-external-code-execution: "allow"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    groups:
+      non-security:
+        patterns:
+          - "*"
