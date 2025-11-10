@@ -43,7 +43,7 @@ jobs:
           mix test
 
       - name: Publish Results
-        uses: mikepenz/action-junit-report@v5
+        uses: mikepenz/action-junit-report@v6
         if: ${{ failure() }}
         with:
           check_name: Test Results
