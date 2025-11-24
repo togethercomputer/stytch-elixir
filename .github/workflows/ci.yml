@@ -20,7 +20,7 @@ jobs:
         run: apt update && apt install --no-install-recommends --yes build-essential git
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Fetch Hex Cache
         uses: actions/cache@v4
@@ -58,7 +58,7 @@ jobs:
         run: apt update && apt install --no-install-recommends --yes build-essential git
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Fetch Hex Cache
         uses: actions/cache/restore@v4
