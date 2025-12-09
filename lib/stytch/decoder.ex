@@ -13,10 +13,9 @@ defmodule Stytch.Decoder do
   end
 
   defp get_type(types, code) do
-    if res = Enum.find(types, fn {c, _} -> c == code end) do
-      {:ok, elem(res, 1)}
-    else
-      {:error, :not_found}
+    case Enum.find(types, fn {c, _} -> c == code end) do
+      nil -> {:error, :not_found}
+      type -> {:ok, elem(type, 1)}
     end
   end
 

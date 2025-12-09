@@ -93,7 +93,7 @@ defmodule Stytch.JWKS do
     key_set_name = Keyword.get(opts, :name, __MODULE__)
     jwks = Application.get_env(:stytch, key_set_name)[:jwks]
 
-    if is_list(jwks) and length(jwks) > 0 do
+    if is_list(jwks) and not Enum.empty?(jwks) do
       {:ok, jwks}
     else
       {:error, %RuntimeError{message: "No JWKs available for #{inspect(key_set_name)}"}}
