@@ -26,27 +26,130 @@ defmodule Stytch.JWKSTest do
 
     test "verifies a signed JWT", %{name: name} do
       jwk = JOSE.JWK.from(@valid_jwk)
-      Application.put_env(:stytch, name, jwks: [jwk])
+      Application.put_env(:stytch, name, jwks: %{jwk.fields["kid"] => jwk})
 
       assert {:ok, %{"sub" => "member-test-5de01109-bae1-4a4d-908f-f7a26720f4f2"}} =
                JWKS.verify(@valid_jwt, name: name)
     end
 
-    test "returns error when no JWKs are available", %{name: name} do
-      Application.put_env(:stytch, name, jwks: [])
-
-      assert {:error, %RuntimeError{message: "No JWKs available for " <> _}} =
-               JWKS.verify(@valid_jwt, name: name)
-    end
-
     test "returns error when JWT verification fails", %{name: name} do
       jwk = JOSE.JWK.from(@valid_jwk)
-      Application.put_env(:stytch, name, jwks: [jwk])
+      Application.put_env(:stytch, name, jwks: %{jwk.fields["kid"] => jwk})
 
       invalid_jwt = @valid_jwt <> "invalid"
 
-      assert {:error, %RuntimeError{message: "Failed to verify JWT"}} =
+      assert {:error, %RuntimeError{message: "Failed to verify JWT with key " <> _}} =
                JWKS.verify(invalid_jwt, name: name)
     end
+
+    test "refreshes due to unknown key IDs while avoiding denial of service", %{name: name} do
+      #
+      # Initialization: Get initial JWKS
+      #
+
+      start_jwks_server(name, [@valid_jwk])
+
+      assert {:ok, %{"sub" => "member-test-5de01109-bae1-4a4d-908f-f7a26720f4f2"}} =
+               JWKS.verify(@valid_jwt, name: name)
+
+      #
+      # Unknown Key ID: Do not fetch before minimum interval has passed
+      #
+
+      {new_jwk, new_jwt} = change_kid(@valid_jwk, @valid_jwt)
+
+      assert {:error, %RuntimeError{message: "No matching JWK found for key ID " <> _}} =
+               JWKS.verify(new_jwt, name: name)
+
+      #
+      # Unknown Key ID: Fetch new JWKS after minimum interval
+      #
+
+      stub_jwks_endpoint([@valid_jwk])
+
+      :sys.replace_state(name, fn state ->
+        %{state | next_fetch_after: :erlang.monotonic_time(:millisecond)}
+      end)
+
+      # Fetch attempted, but new key not found.
+      assert {:error, %RuntimeError{message: "No matching JWK found for key ID " <> _}} =
+               JWKS.verify(new_jwt, name: name)
+
+      Req.Test.verify!(Stytch.Client)
+
+      #
+      # Unknown Key ID: Do not fetch before key-specific cooldown has passed
+      #
+
+      stub_jwks_endpoint([@valid_jwk, new_jwk])
+
+      # Fetch not attempted.
+      assert {:error, %RuntimeError{message: "No matching JWK found for key ID " <> _}} =
+               JWKS.verify(new_jwt, name: name)
+
+      :sys.replace_state(name, fn state ->
+        now = :erlang.monotonic_time(:millisecond)
+        unknown_kids = Map.put(state.unknown_kids_fetch_after, new_jwk["kid"], now)
+        %{state | unknown_kids_fetch_after: unknown_kids, next_fetch_after: now}
+      end)
+
+      # Fetch completed, but the JWT is invalid due to our manual "kid" change.
+      assert {:error, %RuntimeError{message: "Failed to verify JWT with key " <> _}} =
+               JWKS.verify(new_jwt, name: name)
+
+      Req.Test.verify!(Stytch.Client)
+
+      #
+      # Cached Keys: Do not fetch
+      #
+
+      assert {:ok, %{"sub" => "member-test-5de01109-bae1-4a4d-908f-f7a26720f4f2"}} =
+               JWKS.verify(@valid_jwt, name: name)
+
+      # It's an invalid JWT, but no fetch occurred.
+      assert {:error, %RuntimeError{message: "Failed to verify JWT " <> _}} =
+               JWKS.verify(new_jwt, name: name)
+    end
+  end
+
+  defp start_jwks_server(name, initial_keyset) do
+    Req.Test.set_req_test_to_shared()
+    stub_jwks_endpoint(initial_keyset)
+
+    # Start GenServer, then wait for init + continue to finish.
+    start_supervised!({Stytch.JWKS, name: name})
+    :sys.resume(name)
+
+    :ok
+  end
+
+  defp stub_jwks_endpoint(keys) do
+    import Plug.Conn
+
+    Req.Test.expect(Stytch.Client, 1, fn conn ->
+      assert conn.method == "GET"
+      assert request_url(conn) == "https://test.stytch.com/v1/b2b/sessions/jwks/project-test-fake"
+      assert ["Basic " <> _] = get_req_header(conn, "authorization")
+
+      Req.Test.json(conn, %{keys: keys})
+    end)
+  end
+
+  defp change_kid(jwk, jwt) do
+    new_kid = "jwk-test-#{System.unique_integer([:positive])}"
+    [header, payload, signature] = String.split(jwt, ".")
+
+    header =
+      header
+      |> Base.decode64!(padding: false)
+      |> JSON.decode!()
+      |> Map.put("kid", new_kid)
+      |> JSON.encode!()
+      |> Base.encode64(padding: false)
+
+    jwt = Enum.join([header, payload, signature], ".")
+    jwk = Map.put(jwk, "kid", new_kid)
+
+    {jwk, jwt}
   end
 end
