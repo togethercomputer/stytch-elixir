@@ -31,3 +31,7 @@ config :oapi_generator,
       ]
     ]
   ]
+
+config :stytch,
+  default_auth: {"project-test-fake", "secret-test-fake"},
+  req_opts: [plug: {Req.Test, Stytch.Client}]

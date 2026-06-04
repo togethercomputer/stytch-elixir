@@ -83,33 +83,60 @@ defmodule Stytch.JWKS do
   @spec verify(String.t(), keyword) :: {:ok, map} | {:error, Exception.t()}
   def verify(jwt, opts \\ []) do
     with {:ok, jwks} <- get_jwks(opts),
-         {:ok, payload} <- verify_signature(jwks, jwt) do
+         {:ok, kid} <- peek_kid(jwt),
+         {:ok, jwk} <- select_jwk(jwks, kid, opts),
+         {:ok, payload} <- verify_signature(jwt, jwk) do
       decode_payload(payload)
     end
   end
 
-  @spec get_jwks(keyword) :: {:ok, [JOSE.JWK.t()]} | {:error, Exception.t()}
+  @spec get_jwks(keyword) :: {:ok, %{String.t() => JOSE.JWK.t()}} | {:error, Exception.t()}
   def get_jwks(opts) do
     key_set_name = Keyword.get(opts, :name, __MODULE__)
     jwks = Application.get_env(:stytch, key_set_name)[:jwks]
 
-    if is_list(jwks) and not Enum.empty?(jwks) do
+    if is_map(jwks) do
       {:ok, jwks}
     else
       {:error, %RuntimeError{message: "No JWKs available for #{inspect(key_set_name)}"}}
     end
   end
 
-  @spec verify_signature([JOSE.JWK.t()], String.t()) :: {:ok, binary} | {:error, Exception.t()}
-  defp verify_signature(jwks, jwt) do
-    Enum.find_value(jwks, {:error, %RuntimeError{message: "Failed to verify JWT"}}, fn jwk ->
-      %JOSE.JWK{fields: %{"alg" => algorithm}} = jwk
+  @spec peek_kid(String.t()) :: {:ok, String.t()} | {:error, Exception.t()}
+  defp peek_kid(jwt) do
+    case JOSE.JWT.peek_protected(jwt) do
+      %JOSE.JWS{fields: %{"kid" => <<_::binary>> = kid}} when byte_size(kid) > 0 -> {:ok, kid}
+      _ -> {:error, %RuntimeError{message: "Failed to extract key ID from JWT"}}
+    end
+  rescue
+    _error -> {:error, %RuntimeError{message: "Failed to extract key ID from JWT"}}
+  end
 
-      case JOSE.JWS.verify_strict(jwk, [algorithm], jwt) do
-        {true, payload, _header} -> {:ok, payload}
-        _ -> nil
-      end
-    end)
+  @spec select_jwk(%{String.t() => JOSE.JWK.t()}, String.t(), keyword) ::
+          {:ok, JOSE.JWK.t()} | {:error, Exception.t()}
+  defp select_jwk(jwks, kid, opts) do
+    if jwk = jwks[kid] do
+      {:ok, jwk}
+    else
+      key_set_name = Keyword.get(opts, :name, __MODULE__)
+      GenServer.call(key_set_name, {:fetch_jwk, kid})
+    end
+  end
+
+  @spec verify_signature(String.t(), JOSE.JWK.t()) :: {:ok, binary} | {:error, Exception.t()}
+  defp verify_signature(jwt, %JOSE.JWK{fields: %{"alg" => algorithm}} = jwk)
+       when is_binary(algorithm) do
+    case JOSE.JWS.verify_strict(jwk, [algorithm], jwt) do
+      {true, payload, _header} -> {:ok, payload}
+      _ -> {:error, %RuntimeError{message: "Failed to verify JWT with key #{jwk.fields["kid"]}"}}
+    end
+  rescue
+    _error ->
+      {:error, %RuntimeError{message: "Failed to verify JWT with key #{jwk.fields["kid"]}"}}
+  end
+
+  defp verify_signature(_jwt, %JOSE.JWK{fields: fields}) do
+    {:error, %RuntimeError{message: "JWK #{fields["kid"]} is missing signing algorithm"}}
   end
 
   @spec decode_payload(binary) :: {:ok, map} | {:error, Exception.t()}
@@ -127,61 +154,121 @@ defmodule Stytch.JWKS do
   # Server
   #
 
-  @fetch_interval_ms 24 * 60 * 60 * 1000
-  @fetch_retry_interval_ms 60 * 1000
+  @fetch_default_interval_ms :timer.hours(24)
+  @fetch_minimum_interval_ms :timer.minutes(1)
+  @fetch_per_key_interval_ms :timer.minutes(5)
+  @cleanup_interval_ms :timer.hours(1)
 
   @typep state :: %{
+           auth: {String.t(), String.t()} | nil,
            name: module,
+           next_fetch_after: integer,
            project_id: String.t() | nil,
-           secret: String.t() | nil,
-           jwks: [Stytch.JWK.t()]
+           unknown_kids_fetch_after: %{String.t() => integer}
          }
 
   @doc false
-  @spec init(keyword) :: {:ok, state, {:continue, :fetch_jwks}} | {:stop, Exception.t()}
+  @impl GenServer
   def init(opts) do
     state = new_state(opts)
 
-    if state.project_id && state.secret do
+    if state.project_id do
+      Process.send_after(self(), :cleanup_unknown_ids, @cleanup_interval_ms)
       {:ok, state, {:continue, :fetch_jwks}}
     else
       Logger.info("Invalid project ID or secret for Stytch.JWKS; JWT verification unavailable")
-      Application.put_env(:stytch, state.name, jwks: [])
+      Application.put_env(:stytch, state.name, jwks: %{})
       :ignore
     end
   end
 
   @doc false
-  @spec handle_continue(:fetch_jwks, state) :: {:noreply, state}
-  def handle_continue(:fetch_jwks, state) do
-    do_fetch_jwks(state)
+  @impl GenServer
+  def handle_info(:fetch_jwks_interval, state) do
+    {:noreply, state, {:continue, :fetch_jwks}}
+  end
+
+  def handle_info(:cleanup_unknown_ids, state) do
+    {:noreply, cleanup_unknown_kids(state)}
   end
 
   @doc false
-  @spec handle_info(:fetch_jwks, state) :: {:noreply, state}
-  def handle_info(:fetch_jwks, state) do
-    do_fetch_jwks(state)
+  @impl GenServer
+  def handle_continue(:fetch_jwks, state) do
+    next_fetch_after = :erlang.monotonic_time(:millisecond) + @fetch_minimum_interval_ms
+
+    case do_fetch_jwks(state) do
+      {:ok, _keys} ->
+        Process.send_after(self(), :fetch_jwks_interval, @fetch_default_interval_ms)
+
+      :error ->
+        Process.send_after(self(), :fetch_jwks_interval, @fetch_minimum_interval_ms)
+    end
+
+    {:noreply, %{state | next_fetch_after: next_fetch_after}}
+  end
+
+  @doc false
+  @impl GenServer
+  def handle_call({:fetch_jwk, kid}, _from, state) do
+    now = :erlang.monotonic_time(:millisecond)
+    maybe_minimum_fetch_time = state.unknown_kids_fetch_after[kid]
+    not_found_error = {:error, %RuntimeError{message: "No matching JWK found for key ID #{kid}"}}
+
+    cond do
+      maybe_minimum_fetch_time && now < maybe_minimum_fetch_time ->
+        {:reply, not_found_error, state}
+
+      now < state.next_fetch_after ->
+        {:reply, not_found_error, state}
+
+      :else ->
+        case do_fetch_jwks(state) do
+          {:ok, %{^kid => jwk}} ->
+            {:reply, {:ok, jwk}, state}
+
+          {:ok, _jwks} ->
+            {:reply, not_found_error, track_unknown_kid(state, kid, now)}
+
+          :error ->
+            {:reply, not_found_error, state}
+        end
+    end
+  end
+
+  #
+  # Unknown Key ID Management
+  #
+
+  @spec cleanup_unknown_kids(state) :: state
+  defp cleanup_unknown_kids(state) do
+    now = :erlang.monotonic_time(:millisecond)
+    update = Map.reject(state.unknown_kids_fetch_after, fn {_kid, ts} -> now >= ts end)
+    %{state | unknown_kids_fetch_after: update}
+  end
+
+  @spec track_unknown_kid(state, String.t(), pos_integer) :: state
+  defp track_unknown_kid(state, kid, now) do
+    update = Map.put(state.unknown_kids_fetch_after, kid, now + @fetch_per_key_interval_ms)
+    %{state | unknown_kids_fetch_after: update}
   end
 
   #
   # Helpers
   #
 
-  @spec do_fetch_jwks(state) :: {:noreply, state}
-  defp do_fetch_jwks(%{project_id: project_id, secret: secret} = state) do
-    case Stytch.Session.get_jwks(project_id, auth: {project_id, secret}) do
+  @spec do_fetch_jwks(state) :: {:ok, %{String.t() => JOSE.JWK.t()}} | :error
+  defp do_fetch_jwks(%{auth: auth, project_id: project_id} = state) do
+    case Stytch.Session.get_jwks(project_id, auth: auth) do
       {:ok, %{keys: keys}} ->
-        Process.send_after(self(), :fetch_jwks, @fetch_interval_ms)
-
-        keys = Enum.map(keys, &decode_jwk/1)
+        keys = Map.new(keys, fn jwk -> {jwk.kid, decode_jwk(jwk)} end)
         Application.put_env(:stytch, state.name, jwks: keys)
 
-        {:noreply, Map.put(state, :jwks, keys)}
+        {:ok, keys}
 
       {:error, error} ->
-        Process.send_after(self(), :fetch_jwks, @fetch_retry_interval_ms)
         Logger.error("Failed to fetch JWKS: #{inspect(error)}")
-        {:noreply, state}
+        :error
     end
   end
 
@@ -195,7 +282,16 @@ defmodule Stytch.JWKS do
 
   @spec new_state(keyword) :: state
   defp new_state(opts) do
-    put_auth(%{name: opts[:name], project_id: nil, secret: nil, jwks: []}, opts[:auth])
+    put_auth(
+      %{
+        auth: nil,
+        name: opts[:name],
+        next_fetch_after: :erlang.monotonic_time(:millisecond),
+        project_id: nil,
+        unknown_kids_fetch_after: %{}
+      },
+      opts[:auth]
+    )
   end
 
   @spec put_auth(state, {String.t(), String.t()} | false | nil) :: state
@@ -207,10 +303,10 @@ defmodule Stytch.JWKS do
         state
 
       {"project-test-" <> _ = project_id, "secret-test-" <> _ = secret} ->
-        Map.merge(state, %{project_id: project_id, secret: secret})
+        Map.merge(state, %{auth: {project_id, secret}, project_id: project_id})
 
       {"project-live-" <> _ = project_id, "secret-live-" <> _ = secret} ->
-        Map.merge(state, %{project_id: project_id, secret: secret})
+        Map.merge(state, %{auth: {project_id, secret}, project_id: project_id})
 
       _else ->
         Logger.warning("""
@@ -239,18 +335,12 @@ defmodule Stytch.JWKS do
     end
   end
 
-  defp put_auth(
-         state,
-         {"project-test-" <> _ = project_id, "secret-test-" <> _ = secret}
-       ) do
-    Map.merge(state, %{project_id: project_id, secret: secret})
+  defp put_auth(state, {"project-test-" <> _ = project_id, "secret-test-" <> _ = secret}) do
+    Map.merge(state, %{auth: {project_id, secret}, project_id: project_id})
   end
 
-  defp put_auth(
-         state,
-         {"project-live-" <> _ = project_id, "secret-live-" <> _ = secret}
-       ) do
-    Map.merge(state, %{project_id: project_id, secret: secret})
+  defp put_auth(state, {"project-live-" <> _ = project_id, "secret-live-" <> _ = secret}) do
+    Map.merge(state, %{auth: {project_id, secret}, project_id: project_id})
   end
 
   defp put_auth(state, _) do
