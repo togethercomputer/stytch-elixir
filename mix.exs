@@ -38,7 +38,7 @@ defmodule Stytch.MixProject do
       {:jose, "~> 1.11"},
       {:oapi_generator, github: "aj-foster/open-api-generator", branch: "main"},
       {:plug, "~> 1.14", only: [:test]},
-      {:req, "~> 0.5"},
+      {:req, "~> 0.7", override: true},
       {:req_telemetry, "~> 0.1"}
     ]
   end
